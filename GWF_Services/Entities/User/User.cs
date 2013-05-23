@@ -5,7 +5,7 @@ using System.Web;
 
 using System.Text.RegularExpressions;
 
-using GWF_Services.Entities.User.UserState;
+using GWF_Services.Entities.User;
 
 namespace GWF_Services.Entities.User
 {

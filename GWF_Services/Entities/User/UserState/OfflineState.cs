@@ -7,6 +7,8 @@ namespace GWF_Services.Entities.User
 {
     public class OfflineState: UserState
     {
-        public void handle();
+        public void handle()
+        {
+        }
     }
 }

@@ -15,7 +15,7 @@ using System.Data.OleDb;
 namespace GWF_Services
 {
     /// <summary>
-    /// Summary description for WebService1
+    /// Summary description for GWF_Services
     /// </summary>
     [WebService(Namespace = "http://tempuri.org/")]
     [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
@@ -45,7 +45,7 @@ namespace GWF_Services
         }
 
         [WebMethod]
-        public GWFMessage Register(GWFMessage newUserInfoMsg)
+        public GWFMessage SignUp(GWFMessage newUserInfoMsg)
         {
             User user = (User) newUserInfoMsg.content;
             if (this.isRegistered(user))
@@ -91,9 +91,9 @@ namespace GWF_Services
                 // Insert code to process data.
                 return conn;
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                throw new Exception("Failed to connect to data source");
+                throw new Exception("Failed to connect to data source: " + e.Message);
             }
         }
 

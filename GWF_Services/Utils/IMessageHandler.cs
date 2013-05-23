@@ -9,6 +9,6 @@ namespace GWF_Services.Utils
 {
     public interface IMessageHandler: IHandler
     {
-        public void setMessage(GWFMessage message);
+        void setMessage(GWFMessage message);
     }
 }

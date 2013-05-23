@@ -5,7 +5,7 @@ using System.Web;
 
 namespace GWF_Services.Types.Constants
 {
-    public static enum GWFErrorCode
+    public enum GWFErrorCode
     {
         GWF_E_LOGIN_ERROR,
         GWF_E_SIGNUP_ERROR,
@@ -14,7 +14,7 @@ namespace GWF_Services.Types.Constants
         GWF_E_INVALID_EMAIL_FORMAT
     }
 
-    public static enum GWFInfoCode
+    public enum GWFInfoCode
     {
         GWF_I_LOGIN_SUCCESS,
         GWF_I_SIGNUP_SUCCESS,

@@ -8,6 +8,6 @@ namespace GWF_Services.Utils
 {
     public interface IHandler
     {
-        public void process();
+        void process();
     }
 }

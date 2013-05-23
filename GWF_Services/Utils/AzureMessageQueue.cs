@@ -42,5 +42,9 @@ namespace GWF_Services
             CloudQueueMessage message = new CloudQueueMessage(gwf_msg.serialize());
             queue.AddMessage(message);
         }
+
+        public void putMessage(string msg_id, GWFMessage gwf_msg)
+        {
+        }
     }
 }

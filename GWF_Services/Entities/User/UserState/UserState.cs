@@ -7,6 +7,6 @@ namespace GWF_Services.Entities.User
 {
     public interface UserState
     {
-        public void handle();
+        void handle();
     }
 }

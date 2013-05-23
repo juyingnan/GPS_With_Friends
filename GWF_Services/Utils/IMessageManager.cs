@@ -10,16 +10,16 @@ namespace GWF_Services.Utils
         /**
          * Remove a meesage from the message manager
          */
-        public T getMessage ();
+        T getMessage ();
 
         /**
          * Add message to this Manager as the last one
          */
-        public void addMessage (T message);
+        void addMessage (T message);
 
         /**
          * Put message into the specified position
          */
-        public void putMessage (ID_Type id, T message); 
+        void putMessage (ID_Type id, T message); 
     }
 }
