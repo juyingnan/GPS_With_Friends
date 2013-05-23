@@ -66,13 +66,17 @@
     <Content Include="Register.asmx" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AzureMessageQueue.cs" />
-    <Compile Include="EmailRegexUtils.cs" />
-    <Compile Include="GWFType.cs" />
-    <Compile Include="GWFMessage.cs" />
-    <Compile Include="IMessageHandler.cs" />
-    <Compile Include="IMessageManager.cs" />
-    <Compile Include="IHandler.cs" />
+    <Compile Include="Entities\User\UserState\OfflineState.cs" />
+    <Compile Include="Entities\User\UserState\OnlineState.cs" />
+    <Compile Include="Entities\User\UserState\UserState.cs" />
+    <Compile Include="Types\Constants\GWFMessageCode.cs" />
+    <Compile Include="Utils\AzureMessageQueue.cs" />
+    <Compile Include="Utils\EmailRegexUtils.cs" />
+    <Compile Include="Types\GWFMessageType.cs" />
+    <Compile Include="Types\GWFMessage.cs" />
+    <Compile Include="Utils\IMessageHandler.cs" />
+    <Compile Include="Utils\IMessageManager.cs" />
+    <Compile Include="Utils\IHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -83,7 +87,7 @@
       <DependentUpon>Register.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="User.cs" />
+    <Compile Include="Entities\User\User.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Properties\Settings.settings">

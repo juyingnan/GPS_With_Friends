@@ -6,7 +6,7 @@ using System.Web;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
-namespace GWF_Services
+namespace GWF_Services.Utils
 {
     public class EmailRegexUtils
     {

@@ -7,7 +7,8 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace GWF_Services
+using GWF_Services.Types.Constants;
+namespace GWF_Services.Types
 {
     public class GWFMessage
     {
@@ -17,7 +18,7 @@ namespace GWF_Services
             set;
         }
 
-        public GWFType type
+        public GWFMessageType type
         {
             get;
             set;
@@ -31,11 +32,27 @@ namespace GWF_Services
 
         public GWFMessage()
         {
-            this.type = GWFType.DEFAULT_TYPE;
+            this.type = GWFMessageType.DEFAULT_TYPE;
             this.content = null;
             this.id = "";
         }
 
+        public GWFMessage(GWFMessageType type, Object obj) 
+        {
+            this.type = type;
+            this.content = obj;
+        }
+
+        public GWFMessage(GWFInfoCode info)
+        {
+            this.type = GWFMessageType.INFO;
+            this.content = info;
+        }
+        public GWFMessage(GWFErrorCode error)
+        {
+            this.type = GWFMessageType.ERROR;
+            this.content = error;
+        }
         //public void setID(string id)
         //{
         //    this.id = id;
@@ -105,7 +122,6 @@ namespace GWF_Services
             catch (Exception e)
             {
                 throw new Exception("Deserizalize failed: " + e.Message);
-                return null;
             }
         }
     }

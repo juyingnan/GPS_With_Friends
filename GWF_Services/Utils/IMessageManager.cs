@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace GWF_Services
+namespace GWF_Services.Utils
 {
     public interface IMessageManager <ID_Type, T>
     {

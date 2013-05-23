@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace GWF_Services
+namespace GWF_Services.Types
 {
-    public enum GWFType
+    public enum GWFMessageType
     {
         DEFAULT_TYPE,
         QUERY,
         POST,
-        COMMAND
+        PUSH,
+        INFO,
+        ERROR
     }
 }

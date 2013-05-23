@@ -5,7 +5,9 @@ using System.Web;
 
 using System.Text.RegularExpressions;
 
-namespace GWF_Services
+using GWF_Services.Entities.User.UserState;
+
+namespace GWF_Services.Entities.User
 {
     public class emailAddress 
     {
@@ -42,7 +44,12 @@ namespace GWF_Services
     }
     public class User
     {
-        public string id
+        public User()
+        {
+            currentState = new OfflineState();
+        }
+
+        public string uid
         {
             get;
             set;
@@ -55,6 +62,12 @@ namespace GWF_Services
         }
 
         public string nickName
+        {
+            get;
+            set;
+        }
+
+        public UserState currentState
         {
             get;
             set;
