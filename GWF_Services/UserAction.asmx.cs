@@ -22,8 +22,9 @@ namespace GWF_Services
     [System.ComponentModel.ToolboxItem(false)]
     // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
     // [System.Web.Script.Services.ScriptService]
-    public class Register : System.Web.Services.WebService
+    public class UserAction : System.Web.Services.WebService
     {
+        private Dictionary<String, User> allUserList = new Dictionary<String, User>();
 
         [WebMethod]
         public GWFMessage LogIn(GWFMessage userInfo)
@@ -35,12 +36,15 @@ namespace GWF_Services
             }
 
             user.currentState = new OnlineState();
+            this.allUserList.Add(user.uid, user);
             return new GWFMessage(GWFInfoCode.GWF_I_LOGIN_SUCCESS);
         }
 
         [WebMethod]
         public GWFMessage LogOut(GWFMessage userInfo)
         {
+            User user = (User) userInfo.content;
+            this.allUserList.Remove(user.uid);
             return new GWFMessage(GWFInfoCode.GWF_I_LOGOUT_SUCCESS);
         }
 
