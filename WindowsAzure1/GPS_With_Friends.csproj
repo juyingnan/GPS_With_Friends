@@ -35,6 +35,9 @@
     <Content Include="WindowsAzureTools.html" />
     <Content Include="VSlogo.gif" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Messaging" />
+  </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
