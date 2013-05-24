@@ -11,19 +11,19 @@ namespace GWF_Services.Utils.UserUtils
     {
         public static readonly UserManager instance = new UserManager();
 
-        private Dictionary<string, User> userList;
+        private Dictionary<string, GWFUser> userList;
 
         private UserManager()
         {
-            this.userList = new Dictionary<string, User>();
+            this.userList = new Dictionary<string, GWFUser>();
         }
 
-        public void addUser(User user)
+        public void addUser(GWFUser user)
         {
             this.userList.Add(user.uid, user);
         }
 
-        public User getUser(string uid)
+        public GWFUser getUser(string uid)
         {
             return this.userList[uid];
         }
@@ -40,7 +40,7 @@ namespace GWF_Services.Utils.UserUtils
             return success;
         }
 
-        public bool updateUser(User user)
+        public bool updateUser(GWFUser user)
         {
             bool success = false;
             if (!this.userExists(user.uid))

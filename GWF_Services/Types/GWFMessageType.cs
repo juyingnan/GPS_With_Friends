@@ -11,7 +11,6 @@ namespace GWF_Services.Types
         QUERY,
         POST,
         PUSH,
-        INFO,
-        ERROR
+        INFO
     }
 }

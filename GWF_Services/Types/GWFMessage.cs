@@ -48,11 +48,6 @@ namespace GWF_Services.Types
             this.type = GWFMessageType.INFO;
             this.content = info;
         }
-        public GWFMessage(GWFErrorCode error)
-        {
-            this.type = GWFMessageType.ERROR;
-            this.content = error;
-        }
         //public void setID(string id)
         //{
         //    this.id = id;

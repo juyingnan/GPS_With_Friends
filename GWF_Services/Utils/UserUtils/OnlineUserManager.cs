@@ -21,12 +21,12 @@ namespace GWF_Services.Utils.UserUtils
 
         public static readonly OnlineUserManager instance = new OnlineUserManager();
 
-        public void addUser(User user)
+        public void addUser(GWFUser user)
         {
             this.onlineUserList.Add(user.uid);
         }
 
-        public User getUser(string uid)
+        public GWFUser getUser(string uid)
         {
             return this.allUserList.getUser(uid);
         }
@@ -41,7 +41,7 @@ namespace GWF_Services.Utils.UserUtils
             return true;
         }
 
-        public bool updateUser(User user)
+        public bool updateUser(GWFUser user)
         {
             // Do nothing;
             return true;

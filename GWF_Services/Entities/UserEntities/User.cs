@@ -45,14 +45,20 @@ namespace GWF_Services.Entities.UserEntities
             return name + "@" + provider + appendix;
         }
     }
-    public class User
+    public class GWFUser
     {
-        public User()
+        public GWFUser()
         {
             currentState = new OfflineState();
         }
 
         public string uid
+        {
+            get;
+            set;
+        }
+
+        public string passwordMD5
         {
             get;
             set;

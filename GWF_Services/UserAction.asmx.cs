@@ -7,6 +7,7 @@ using System.Web.Services;
 using GWF_Services.Types;
 using GWF_Services.Types.Constants;
 using GWF_Services.Entities.UserEntities;
+using GWF_Services.Utils.UserUtils;
 
 //Databasse
 using System.Data.SqlClient;
@@ -24,7 +25,7 @@ namespace GWF_Services
     // [System.Web.Script.Services.ScriptService]
     public class UserAction : System.Web.Services.WebService
     {
-        private  Dictionary<String, User> allUserList = new Dictionary<String, User>();
+        private  Dictionary<String, GWFUser> allUserList = new Dictionary<String, GWFUser>();
 
         //[WebMethod]
         //public string Declaration(User user)
@@ -34,79 +35,186 @@ namespace GWF_Services
         //}
 
         [WebMethod]
+        public string LogIn(string email, string password)
+        {
+            GWFUser user = new GWFUser();
+            
+            EmailRegexUtils emailVal = new EmailRegexUtils();
+            if (!emailVal.IsValidEmail(email))
+            {
+                return GWFInfoCode.GWF_E_INVALID_EMAIL_FORMAT.ToString();
+            }
+            user.emailAccount = new EmailAddress(email);
+            user.passwordMD5 = password;
+
+            GWFMessage userInfoMsg = new GWFMessage();
+            userInfoMsg.content = user;
+            userInfoMsg.type = GWFMessageType.POST;
+
+            GWFMessage resp = this.LogIn(userInfoMsg);
+            string retStr = ((GWFInfoCode)(resp.content)).ToString();
+
+            return retStr;
+        }
+
+        [WebMethod]
+        public string FastSignUp(string email, string password, string nickName)
+        {
+            //return GWFInfoCode.GWF_E_INVALID_EMAIL_FORMAT.ToString();
+            GWFUser user = new GWFUser();
+
+            EmailRegexUtils emailVal = new EmailRegexUtils();
+            if (!emailVal.IsValidEmail(email))
+            {
+                return GWFInfoCode.GWF_E_INVALID_EMAIL_FORMAT.ToString();
+            }
+            user.emailAccount = new EmailAddress(email);
+            // TODO Add name validation
+            user.nickName = nickName;
+            user.passwordMD5 = password;
+
+            GWFMessage userInfoMsg = new GWFMessage();
+            userInfoMsg.type = GWFMessageType.POST;
+            userInfoMsg.content = user;
+
+            GWFMessage resp = this.SignUp(userInfoMsg);
+            string retStr = ((GWFInfoCode)(resp.content)).ToString();
+
+            return retStr;
+        }
+
+        [WebMethod]
+        public string LogOut(string uid)
+        {
+            GWFUser user = new GWFUser();
+            user.uid = uid;
+            GWFMessage userInfoMsg = new GWFMessage();
+            userInfoMsg.content = user;
+            userInfoMsg.type = GWFMessageType.POST;
+
+            GWFMessage resp = this.LogOut(userInfoMsg);
+            string retStr = ((GWFInfoCode)(resp.content)).ToString();
+
+            return retStr;
+        }
+
+
+        [WebMethod]
+        public string Follow(string uid)
+        {
+            GWFUser user = new GWFUser();
+            user.uid = uid;
+            GWFMessage userInfoMsg = new GWFMessage();
+            userInfoMsg.content = user;
+            userInfoMsg.type = GWFMessageType.POST;
+
+            GWFMessage resp = this.Follow(userInfoMsg);
+            string retStr = ((GWFInfoCode)(resp.content)).ToString();
+
+            return retStr;
+
+        }
+
+        [WebMethod]
+        public string UnFollow(string uid)
+        {
+            GWFUser user = new GWFUser();
+            user.uid = uid;
+            GWFMessage userInfoMsg = new GWFMessage();
+            userInfoMsg.content = user;
+            userInfoMsg.type = GWFMessageType.POST;
+
+            GWFMessage resp = this.UnFollow(userInfoMsg);
+            string retStr = ((GWFInfoCode)(resp.content)).ToString();
+
+            return retStr;
+        }
+
         public GWFMessage LogIn(GWFMessage userInfo)
         {
-            User user = (User)userInfo.content;
+            GWFUser user = (GWFUser)userInfo.content;
             if (!this.isRegistered(user))
             {
-                return new GWFMessage(GWFErrorCode.GWF_E_LOGIN_ERROR);
+                return new GWFMessage(GWFInfoCode.GWF_E_LOGIN_ERROR);
             }
 
+            SqlConnection conn = this.connectToDB();
+            String queryString = String.Format("SELECT * FROM GWFUser WHERE user_email='{0}' AND user_passwordMD5='{1}';", user.emailAccount.ToString(), user.passwordMD5);
+
+            SqlCommand comm = new SqlCommand(queryString, conn);
+            SqlDataReader reader = comm.ExecuteReader();
+            if (!reader.HasRows)
+            {
+                this.disconnectToDB(conn);
+                return new GWFMessage(GWFInfoCode.GWF_E_INVALID_EMAIL_PWD_PAIR);
+            }
+            if (reader.Read())
+            {
+                user.uid = reader.GetString(1);
+            }
+
+            this.disconnectToDB(conn);
             user.currentState = new OnlineState();
             this.allUserList.Add(user.uid, user);
             return new GWFMessage(GWFInfoCode.GWF_I_LOGIN_SUCCESS);
         }
 
-        [WebMethod]
         public GWFMessage LogOut(GWFMessage userInfo)
         {
-            User user = (User) userInfo.content;
+            GWFUser user = (GWFUser) userInfo.content;
             this.allUserList.Remove(user.uid);
             return new GWFMessage(GWFInfoCode.GWF_I_LOGOUT_SUCCESS);
         }
 
-        [WebMethod]
         public GWFMessage SignUp(GWFMessage newUserInfoMsg)
         {
-            User user = (User) newUserInfoMsg.content;
+            GWFUser user = (GWFUser) newUserInfoMsg.content;
             if (this.isRegistered(user))
             {
-                return new GWFMessage(GWFErrorCode.GWF_E_SIGNUP_ERROR);
+                return new GWFMessage(GWFInfoCode.GWF_E_SIGNUP_ERROR);
             }
             user.uid = Guid.NewGuid().ToString();
 
             SqlConnection conn = this.connectToDB();
-            String queryString = String.Format("INSERT INTO GWFUser (guid, name, email) VALUES ('{0}', '{1}', '{2}');", user.uid, user.nickName, user.emailAccount);
+            String queryString = String.Format("INSERT INTO GWFUser (user_id, user_name, user_email, user_passwordMD5) VALUES ('{0}', '{1}', '{2}', '{3}');", user.uid, user.nickName, user.emailAccount, user.passwordMD5);
             this.executeSQLQuery(conn, queryString);
             this.disconnectToDB(conn);
 
             return new GWFMessage(GWFInfoCode.GWF_I_SIGNUP_SUCCESS);
         }
 
-        [WebMethod]
         public GWFMessage Follow(GWFMessage targetUserInfoMsg)
         {
-            User user = (User)targetUserInfoMsg.content;
+            GWFUser user = (GWFUser)targetUserInfoMsg.content;
             if (!this.isRegistered(user))
             {
-                return new GWFMessage(GWFErrorCode.GWF_E_FOLLOW_ERROR);
+                return new GWFMessage(GWFInfoCode.GWF_E_FOLLOW_ERROR);
             }
 
             // TODO Add follower
             return new GWFMessage(GWFInfoCode.GWF_I_FOLLOW_SUCCESS);
         }
 
-        [WebMethod]
         public GWFMessage UnFollow(GWFMessage targetUserInfoMsg)
         {
-            User user = (User)targetUserInfoMsg.content;
+            GWFUser user = (GWFUser)targetUserInfoMsg.content;
             if (!this.isRegistered(user))
             {
-                return new GWFMessage(GWFErrorCode.GWF_E_UNFOLLOW_ERROR);
+                return new GWFMessage(GWFInfoCode.GWF_E_UNFOLLOW_ERROR);
             }
 
             return new GWFMessage(GWFInfoCode.GWF_I_UNFOLLOW_SUCCESS);
         }
 
-        private bool isRegistered(User user)
+        private bool isRegistered(GWFUser user)
         {
             bool isRegistered = false;
 
             SqlConnection conn = this.connectToDB();
-            String queryString = String.Format("SELECT COUNT(*) FROM GWFUser;");
+            String queryString = String.Format("SELECT * FROM GWFUser WHERE user_email = '{0}';", user.emailAccount);
             SqlCommand comm = new SqlCommand(queryString, conn);
             SqlDataReader reader = comm.ExecuteReader();
-            isRegistered = !reader.HasRows;
+            isRegistered = reader.HasRows;
             this.disconnectToDB(conn);
 
             return isRegistered;
@@ -119,8 +227,10 @@ namespace GWF_Services
             // TODO: Modify the connection string and include any
             // additional required properties for your database.
             conn.ConnectionString =
-             "integrated security=SSPI;data source=SQL Server Name;" +
-             "persist security info=False;initial catalog=northwind";
+            "user id=bunny;" +
+            "password=Test1340;" +
+            "database=GPSWithFriends_db;" +
+            "Server=pavh1f5kvg.database.windows.net;";
             try
             {
                 conn.Open();
@@ -131,12 +241,16 @@ namespace GWF_Services
             {
                 throw new Exception("Failed to connect to data source: " + e.Message);
             }
+            finally
+            {
+                //conn.Close();
+            }
         }
 
         private void executeSQLQuery(System.Data.SqlClient.SqlConnection conn, string queryString)
         {
             SqlCommand comm = new SqlCommand(queryString, conn);
-            comm.Connection.Open();
+            //comm.Connection.Open();
             comm.ExecuteNonQuery();
         }
         private void disconnectToDB(System.Data.SqlClient.SqlConnection conn)

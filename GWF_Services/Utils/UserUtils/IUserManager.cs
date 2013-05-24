@@ -10,10 +10,10 @@ namespace GWF_Services.Utils.UserUtils
 {
     interface IUserManager
     {
-        void addUser(User user);
-        User getUser(String uid);
+        void addUser(GWFUser user);
+        GWFUser getUser(String uid);
         bool removeUser(String uid);
-        bool updateUser(User user);
+        bool updateUser(GWFUser user);
         bool userExists(string uid);
     }
 }
