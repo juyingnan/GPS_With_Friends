@@ -45,9 +45,11 @@
             <!--<TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Bottom">Log in as bunny_gg@hotmail.com</TextBlock>-->
             <TextBlock VerticalAlignment="Center" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Opacity="0.5">EMAIL</TextBlock>
             <TextBlock VerticalAlignment="Center" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Opacity="0.5">PASSWORD</TextBlock>
-            <TextBox VerticalAlignment="Center" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"  Canvas.ZIndex="1" ></TextBox>
-            <PasswordBox  VerticalAlignment="Center" Grid.Row="4" Grid.Column="0"  Grid.ColumnSpan="2"  Canvas.ZIndex="1" ></PasswordBox>
+            <TextBox VerticalAlignment="Center" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"  Canvas.ZIndex="1" Name="LOGINEMAILTEXTBOX"></TextBox>
+            <PasswordBox  VerticalAlignment="Center" Grid.Row="4" Grid.Column="0"  Grid.ColumnSpan="2"  Canvas.ZIndex="1" Name="LOGINPASSWORDTEXTBOX"></PasswordBox>
             <Button VerticalAlignment="Center" Grid.Row="5" Grid.Column="0"  Grid.ColumnSpan="2" Width="200" Name="LOGINBUTTON" Click="LOGINBUTTON_Click">Login</Button>
+            <Button VerticalAlignment="Center" Grid.Row="6" Grid.Column="0"  Grid.ColumnSpan="2" Width="200" Name="REGISTERBUTTON" Click="REGISTERBUTTON_Click">REGISTER</Button>
+            <TextBlock Name="TempResult" Grid.Row="7">TEST</TextBlock>
             <!--<HyperlinkButton HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="7" Grid.Column="0" Margin="0,0,10,0">Press Here</HyperlinkButton>
             <TextBlock  Grid.Row="7" Grid.Column="1" VerticalAlignment="Center">if not bunny_gg@hotmail.com</TextBlock>-->
         </Grid>

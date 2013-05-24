@@ -1,0 +1,14 @@
+CLONE: (Only for first time)
+  git clone https://github.com/juyingnan/GPS_With_Friends.git
+  cd GPS_With_Friends
+=================================================================  
+PULL: 
+  git pull origin WP8Client
+  # pull latest update from "WP8Client" branch
+  
+COMMIT:
+  git add . && git commit -a -m "[COMMIT]"
+  
+PUSH:
+  git push origin master:WP8Client
+  # push latest commit from local "master" branch to remote "WP8Client" branch

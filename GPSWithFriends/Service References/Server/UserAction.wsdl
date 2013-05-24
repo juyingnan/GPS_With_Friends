@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="LogIn">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LogInResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LogInResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FastSignUp">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="nickName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FastSignUpResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="FastSignUpResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LogOut">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="uid" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LogOutResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LogOutResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Follow">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="uid" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FollowResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="FollowResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UnFollow">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="uid" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UnFollowResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UnFollowResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="LogInSoapIn">
+    <wsdl:part name="parameters" element="tns:LogIn" />
+  </wsdl:message>
+  <wsdl:message name="LogInSoapOut">
+    <wsdl:part name="parameters" element="tns:LogInResponse" />
+  </wsdl:message>
+  <wsdl:message name="FastSignUpSoapIn">
+    <wsdl:part name="parameters" element="tns:FastSignUp" />
+  </wsdl:message>
+  <wsdl:message name="FastSignUpSoapOut">
+    <wsdl:part name="parameters" element="tns:FastSignUpResponse" />
+  </wsdl:message>
+  <wsdl:message name="LogOutSoapIn">
+    <wsdl:part name="parameters" element="tns:LogOut" />
+  </wsdl:message>
+  <wsdl:message name="LogOutSoapOut">
+    <wsdl:part name="parameters" element="tns:LogOutResponse" />
+  </wsdl:message>
+  <wsdl:message name="FollowSoapIn">
+    <wsdl:part name="parameters" element="tns:Follow" />
+  </wsdl:message>
+  <wsdl:message name="FollowSoapOut">
+    <wsdl:part name="parameters" element="tns:FollowResponse" />
+  </wsdl:message>
+  <wsdl:message name="UnFollowSoapIn">
+    <wsdl:part name="parameters" element="tns:UnFollow" />
+  </wsdl:message>
+  <wsdl:message name="UnFollowSoapOut">
+    <wsdl:part name="parameters" element="tns:UnFollowResponse" />
+  </wsdl:message>
+  <wsdl:portType name="UserActionSoap">
+    <wsdl:operation name="LogIn">
+      <wsdl:input message="tns:LogInSoapIn" />
+      <wsdl:output message="tns:LogInSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="FastSignUp">
+      <wsdl:input message="tns:FastSignUpSoapIn" />
+      <wsdl:output message="tns:FastSignUpSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="LogOut">
+      <wsdl:input message="tns:LogOutSoapIn" />
+      <wsdl:output message="tns:LogOutSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Follow">
+      <wsdl:input message="tns:FollowSoapIn" />
+      <wsdl:output message="tns:FollowSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UnFollow">
+      <wsdl:input message="tns:UnFollowSoapIn" />
+      <wsdl:output message="tns:UnFollowSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="UserActionSoap" type="tns:UserActionSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="LogIn">
+      <soap:operation soapAction="http://tempuri.org/LogIn" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FastSignUp">
+      <soap:operation soapAction="http://tempuri.org/FastSignUp" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LogOut">
+      <soap:operation soapAction="http://tempuri.org/LogOut" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Follow">
+      <soap:operation soapAction="http://tempuri.org/Follow" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UnFollow">
+      <soap:operation soapAction="http://tempuri.org/UnFollow" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="UserActionSoap12" type="tns:UserActionSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="LogIn">
+      <soap12:operation soapAction="http://tempuri.org/LogIn" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FastSignUp">
+      <soap12:operation soapAction="http://tempuri.org/FastSignUp" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LogOut">
+      <soap12:operation soapAction="http://tempuri.org/LogOut" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Follow">
+      <soap12:operation soapAction="http://tempuri.org/Follow" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UnFollow">
+      <soap12:operation soapAction="http://tempuri.org/UnFollow" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="UserAction">
+    <wsdl:port name="UserActionSoap" binding="tns:UserActionSoap">
+      <soap:address location="http://gwf.azurewebsites.net/UserAction.asmx" />
+    </wsdl:port>
+    <wsdl:port name="UserActionSoap12" binding="tns:UserActionSoap12">
+      <soap12:address location="http://gwf.azurewebsites.net/UserAction.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
