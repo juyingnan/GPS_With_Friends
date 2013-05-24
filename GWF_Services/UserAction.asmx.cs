@@ -6,7 +6,7 @@ using System.Web.Services;
 
 using GWF_Services.Types;
 using GWF_Services.Types.Constants;
-using GWF_Services.Entities.User;
+using GWF_Services.Entities.UserEntities;
 
 //Databasse
 using System.Data.SqlClient;
@@ -24,7 +24,14 @@ namespace GWF_Services
     // [System.Web.Script.Services.ScriptService]
     public class UserAction : System.Web.Services.WebService
     {
-        private Dictionary<String, User> allUserList = new Dictionary<String, User>();
+        private  Dictionary<String, User> allUserList = new Dictionary<String, User>();
+
+        //[WebMethod]
+        //public string Declaration(User user)
+        ////public string Declaration(User user, OnlineState onlineState, OfflineState offlineState, HiddenState hiddenState)
+        //{
+        //    return "Don not use this fucking method!";
+        //}
 
         [WebMethod]
         public GWFMessage LogIn(GWFMessage userInfo)
@@ -64,6 +71,31 @@ namespace GWF_Services
             this.disconnectToDB(conn);
 
             return new GWFMessage(GWFInfoCode.GWF_I_SIGNUP_SUCCESS);
+        }
+
+        [WebMethod]
+        public GWFMessage Follow(GWFMessage targetUserInfoMsg)
+        {
+            User user = (User)targetUserInfoMsg.content;
+            if (!this.isRegistered(user))
+            {
+                return new GWFMessage(GWFErrorCode.GWF_E_FOLLOW_ERROR);
+            }
+
+            // TODO Add follower
+            return new GWFMessage(GWFInfoCode.GWF_I_FOLLOW_SUCCESS);
+        }
+
+        [WebMethod]
+        public GWFMessage UnFollow(GWFMessage targetUserInfoMsg)
+        {
+            User user = (User)targetUserInfoMsg.content;
+            if (!this.isRegistered(user))
+            {
+                return new GWFMessage(GWFErrorCode.GWF_E_UNFOLLOW_ERROR);
+            }
+
+            return new GWFMessage(GWFInfoCode.GWF_I_UNFOLLOW_SUCCESS);
         }
 
         private bool isRegistered(User user)

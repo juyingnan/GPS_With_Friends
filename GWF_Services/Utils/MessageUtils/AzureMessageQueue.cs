@@ -8,9 +8,8 @@ using Microsoft.WindowsAzure.Storage.Auth;
 using Microsoft.WindowsAzure.Storage.Queue;
 
 using GWF_Services.Types;
-using GWF_Services.Utils;
 
-namespace GWF_Services
+namespace GWF_Services.Utils.MessageUtils
 {
     public class AzureMessageQueue: IMessageManager<string, GWFMessage>
     {

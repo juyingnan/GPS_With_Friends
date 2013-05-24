@@ -5,13 +5,16 @@ using System.Web;
 
 using System.Text.RegularExpressions;
 
-using GWF_Services.Entities.User;
+using GWF_Services.Entities.UserEntities;
 
-namespace GWF_Services.Entities.User
+namespace GWF_Services.Entities.UserEntities
 {
-    public class emailAddress 
+    public class EmailAddress 
     {
-        public emailAddress(string emailAddr)
+        public EmailAddress()
+        {
+        }
+        public EmailAddress(string emailAddr)
         {
             string[] splited = emailAddr.Split('@');
             this.name = splited[0];
@@ -55,7 +58,7 @@ namespace GWF_Services.Entities.User
             set;
         }
 
-        public emailAddress emailAccount
+        public EmailAddress emailAccount
         {
             get;
             set;
