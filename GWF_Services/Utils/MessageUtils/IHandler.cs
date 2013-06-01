@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GWF_Services.Utils.MessageUtils
+namespace GWF_WebServices.Utils.MessageUtils
 {
     public interface IHandler
     {

@@ -1,1 +1,1 @@
-﻿<%@ WebService Language="C#" CodeBehind="UserAction.asmx.cs" Class="GWF_Services.UserAction" %>
+﻿<%@ WebService Language="C#" CodeBehind="UserAction.asmx.cs" Class="GWF_WebServices.UserAction" %>

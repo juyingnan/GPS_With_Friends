@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-using GWF_Services.Entities.UserEntities;
+using GWF_WebServices.Models;
 
-namespace GWF_Services.Utils.UserUtils
+namespace GWF_WebServices.Utils.ValidationUtils
 {
     public class OnlineUserManager: IUserManager
     {
@@ -21,12 +21,12 @@ namespace GWF_Services.Utils.UserUtils
 
         public static readonly OnlineUserManager instance = new OnlineUserManager();
 
-        public void addUser(GWFUser user)
+        public void addUser(GWF_User user)
         {
-            this.onlineUserList.Add(user.uid);
+            this.onlineUserList.Add(user.user_id);
         }
 
-        public GWFUser getUser(string uid)
+        public GWF_User getUser(string uid)
         {
             return this.allUserList.getUser(uid);
         }
@@ -41,7 +41,7 @@ namespace GWF_Services.Utils.UserUtils
             return true;
         }
 
-        public bool updateUser(GWFUser user)
+        public bool updateUser(GWF_User user)
         {
             // Do nothing;
             return true;

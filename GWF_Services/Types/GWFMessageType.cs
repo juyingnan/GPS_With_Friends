@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace GWF_Services.Types
+namespace GWF_WebServices.Types
 {
     public enum GWFMessageType
     {

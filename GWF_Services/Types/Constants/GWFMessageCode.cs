@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace GWF_Services.Types.Constants
+namespace GWF_WebServices.Types.Constants
 {
     public enum GWFInfoCode
     {

@@ -5,13 +5,13 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>2.0</ProductVersion>
-    <ProjectGuid>4358bf93-cbf7-419b-ba45-45c327a45081</ProjectGuid>
+    <ProjectGuid>fdc93cda-8c70-4e22-8a46-9c221bab24de</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WindowsAzure2</RootNamespace>
-    <AssemblyName>WindowsAzure2</AssemblyName>
+    <RootNamespace>GWF_WebServices.Azure</RootNamespace>
+    <AssemblyName>GWF_WebServices.Azure</AssemblyName>
     <StartDevelopmentStorage>True</StartDevelopmentStorage>
-    <Name>WindowsAzure2</Name>
+    <Name>GWF_CloudServices</Name>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -37,22 +37,26 @@
     <ServiceConfiguration Include="ServiceConfiguration.Cloud.cscfg" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\WorkerRole1\WorkerRole1.csproj">
-      <Name>WorkerRole1</Name>
-      <Project>{31b029b3-5508-4dc7-ada3-32fdc63e4c67}</Project>
+    <ProjectReference Include="..\GWF_Services\GWF_WebServices.csproj">
+      <Name>GWF_WebServices</Name>
+      <Project>{4b50d95c-2560-4a2e-b002-b093d1ea7152}</Project>
       <Private>True</Private>
-      <RoleType>Worker</RoleType>
-      <RoleName>WorkerRole1</RoleName>
+      <RoleType>Web</RoleType>
+      <RoleName>GWF_WebServices</RoleName>
       <UpdateDiagnosticsConnectionStringOnPublish>True</UpdateDiagnosticsConnectionStringOnPublish>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="WorkerRole1Content\" />
+    <Folder Include="GWF_WebServicesContent\" />
+    <Folder Include="Profiles" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="WorkerRole1Content\diagnostics.wadcfg">
+    <Content Include="GWF_WebServicesContent\diagnostics.wadcfg">
       <SubType>Content</SubType>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <PublishProfile Include="Profiles\GPSWithFriendsProduction.azurePubxml" />
   </ItemGroup>
   <!-- Import the target files for this project template -->
   <PropertyGroup>

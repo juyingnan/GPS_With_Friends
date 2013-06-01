@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using GWF_Services.Types;
+using GWF_WebServices.Types;
 
-namespace GWF_Services.Utils.MessageUtils
+namespace GWF_WebServices.Utils.MessageUtils
 {
     public interface IMessageHandler: IHandler
     {

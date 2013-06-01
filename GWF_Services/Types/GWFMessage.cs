@@ -7,8 +7,8 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 
-using GWF_Services.Types.Constants;
-namespace GWF_Services.Types
+using GWF_WebServices.Types.Constants;
+namespace GWF_WebServices.Types
 {
     public class GWFMessage
     {

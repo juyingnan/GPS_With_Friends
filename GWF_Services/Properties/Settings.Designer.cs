@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GWF_Services.Properties {
+namespace GWF_WebServices.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

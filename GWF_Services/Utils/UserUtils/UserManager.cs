@@ -3,27 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-using GWF_Services.Entities.UserEntities;
+using GWF_WebServices.Models;
 
-namespace GWF_Services.Utils.UserUtils
+namespace GWF_WebServices.Utils.ValidationUtils
 {
     public class UserManager: IUserManager
     {
         public static readonly UserManager instance = new UserManager();
 
-        private Dictionary<string, GWFUser> userList;
+        private Dictionary<string, GWF_User> userList;
 
         private UserManager()
         {
-            this.userList = new Dictionary<string, GWFUser>();
+            this.userList = new Dictionary<string, GWF_User>();
         }
 
-        public void addUser(GWFUser user)
+        public void addUser(GWF_User user)
         {
-            this.userList.Add(user.uid, user);
+            this.userList.Add(user.user_id, user);
         }
 
-        public GWFUser getUser(string uid)
+        public GWF_User getUser(string uid)
         {
             return this.userList[uid];
         }
@@ -40,15 +40,15 @@ namespace GWF_Services.Utils.UserUtils
             return success;
         }
 
-        public bool updateUser(GWFUser user)
+        public bool updateUser(GWF_User user)
         {
             bool success = false;
-            if (!this.userExists(user.uid))
+            if (!this.userExists(user.user_id))
             {
                 return success;
             }
             success = true;
-            this.userList[user.uid] = user;
+            this.userList[user.user_id] = user;
             return success;
         }
 
