@@ -1,0 +1,193 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="GPSWithFriends_dbModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="GPSWithFriends_dbModelStoreContainer">
+          <EntitySet Name="GWF_Device" EntityType="GPSWithFriends_dbModel.Store.GWF_Device" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="GWF_Profile" EntityType="GPSWithFriends_dbModel.Store.GWF_Profile" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="GWF_User" EntityType="GPSWithFriends_dbModel.Store.GWF_User" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_GWF_User_Profile" Association="GPSWithFriends_dbModel.Store.FK_GWF_User_Profile">
+            <End Role="GWF_Profile" EntitySet="GWF_Profile" />
+            <End Role="GWF_User" EntitySet="GWF_User" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="GWF_Device">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Dev_IMEI" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Dev_IMEI" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Dev_Type" Type="nvarchar" MaxLength="15" />
+          <Property Name="Dev_Man" Type="nvarchar" MaxLength="15" />
+        </EntityType>
+        <EntityType Name="GWF_Profile">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Firstname" Type="nvarchar" Nullable="false" MaxLength="15" />
+          <Property Name="Lastname" Type="nvarchar" Nullable="false" MaxLength="15" />
+          <Property Name="PictureURL" Type="nvarchar" MaxLength="50" />
+          <Property Name="PictureBigURL" Type="nvarchar" MaxLength="50" />
+          <Property Name="PictureSmallURL" Type="nvarchar" MaxLength="50" />
+          <Property Name="Birthday" Type="int" />
+        </EntityType>
+        <EntityType Name="GWF_User">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="user_id" />
+            <PropertyRef Name="user_email" />
+          </Key>
+          <Property Name="id" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="user_id" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="user_name" Type="nvarchar" Nullable="false" MaxLength="15" />
+          <Property Name="user_email" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="user_passwordMD5" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="user_property_id" Type="int" />
+        </EntityType>
+        <Association Name="FK_GWF_User_Profile">
+          <End Role="GWF_Profile" Type="GPSWithFriends_dbModel.Store.GWF_Profile" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="GWF_User" Type="GPSWithFriends_dbModel.Store.GWF_User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GWF_Profile">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="GWF_User">
+              <PropertyRef Name="user_property_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="GPSWithFriends_dbModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="GPSWithFriends_dbEntities" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="GWF_Device" EntityType="GPSWithFriends_dbModel.GWF_Device" />
+          <EntitySet Name="GWF_Profile" EntityType="GPSWithFriends_dbModel.GWF_Profile" />
+          <EntitySet Name="GWF_User" EntityType="GPSWithFriends_dbModel.GWF_User" />
+          <AssociationSet Name="FK_GWF_User_Profile" Association="GPSWithFriends_dbModel.FK_GWF_User_Profile">
+            <End Role="GWF_Profile" EntitySet="GWF_Profile" />
+            <End Role="GWF_User" EntitySet="GWF_User" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="GWF_Device">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Dev_IMEI" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Dev_IMEI" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Dev_Type" Type="String" MaxLength="15" Unicode="true" FixedLength="false" />
+          <Property Name="Dev_Man" Type="String" MaxLength="15" Unicode="true" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="GWF_Profile">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Firstname" Type="String" Nullable="false" MaxLength="15" Unicode="true" FixedLength="false" />
+          <Property Name="Lastname" Type="String" Nullable="false" MaxLength="15" Unicode="true" FixedLength="false" />
+          <Property Name="PictureURL" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="PictureBigURL" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="PictureSmallURL" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Birthday" Type="Int32" />
+          <NavigationProperty Name="GWF_User" Relationship="GPSWithFriends_dbModel.FK_GWF_User_Profile" FromRole="GWF_Profile" ToRole="GWF_User" />
+        </EntityType>
+        <EntityType Name="GWF_User">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="user_id" />
+            <PropertyRef Name="user_email" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="user_id" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="user_name" Type="String" Nullable="false" MaxLength="15" Unicode="true" FixedLength="false" />
+          <Property Name="user_email" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="user_passwordMD5" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="user_property_id" Type="Int32" />
+          <NavigationProperty Name="GWF_Profile" Relationship="GPSWithFriends_dbModel.FK_GWF_User_Profile" FromRole="GWF_User" ToRole="GWF_Profile" />
+        </EntityType>
+        <Association Name="FK_GWF_User_Profile">
+          <End Role="GWF_Profile" Type="GPSWithFriends_dbModel.GWF_Profile" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="GWF_User" Type="GPSWithFriends_dbModel.GWF_User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GWF_Profile">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="GWF_User">
+              <PropertyRef Name="user_property_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="GPSWithFriends_dbModelStoreContainer" CdmEntityContainer="GPSWithFriends_dbEntities">
+          <EntitySetMapping Name="GWF_Device">
+            <EntityTypeMapping TypeName="GPSWithFriends_dbModel.GWF_Device">
+              <MappingFragment StoreEntitySet="GWF_Device">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Dev_IMEI" ColumnName="Dev_IMEI" />
+                <ScalarProperty Name="Dev_Type" ColumnName="Dev_Type" />
+                <ScalarProperty Name="Dev_Man" ColumnName="Dev_Man" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GWF_Profile">
+            <EntityTypeMapping TypeName="GPSWithFriends_dbModel.GWF_Profile">
+              <MappingFragment StoreEntitySet="GWF_Profile">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Firstname" ColumnName="Firstname" />
+                <ScalarProperty Name="Lastname" ColumnName="Lastname" />
+                <ScalarProperty Name="PictureURL" ColumnName="PictureURL" />
+                <ScalarProperty Name="PictureBigURL" ColumnName="PictureBigURL" />
+                <ScalarProperty Name="PictureSmallURL" ColumnName="PictureSmallURL" />
+                <ScalarProperty Name="Birthday" ColumnName="Birthday" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GWF_User">
+            <EntityTypeMapping TypeName="GPSWithFriends_dbModel.GWF_User">
+              <MappingFragment StoreEntitySet="GWF_User">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="user_name" ColumnName="user_name" />
+                <ScalarProperty Name="user_email" ColumnName="user_email" />
+                <ScalarProperty Name="user_passwordMD5" ColumnName="user_passwordMD5" />
+                <ScalarProperty Name="user_property_id" ColumnName="user_property_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
