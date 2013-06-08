@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://cs.uoregon.edu/" targetNamespace="http://cs.uoregon.edu/" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="addMember" type="tns:addMember" />
+  <xs:element name="addMemberResponse" type="tns:addMemberResponse" />
+  <xs:element name="authenticate" type="tns:authenticate" />
+  <xs:element name="authenticateResponse" type="tns:authenticateResponse" />
+  <xs:element name="createGroup" type="tns:createGroup" />
+  <xs:element name="createGroupResponse" type="tns:createGroupResponse" />
+  <xs:element name="getGroup" type="tns:getGroup" />
+  <xs:element name="getGroupResponse" type="tns:getGroupResponse" />
+  <xs:element name="getGroups" type="tns:getGroups" />
+  <xs:element name="getGroupsResponse" type="tns:getGroupsResponse" />
+  <xs:element name="getHistory" type="tns:getHistory" />
+  <xs:element name="getHistoryResponse" type="tns:getHistoryResponse" />
+  <xs:element name="getLocation" type="tns:getLocation" />
+  <xs:element name="getLocationResponse" type="tns:getLocationResponse" />
+  <xs:element name="getMembers" type="tns:getMembers" />
+  <xs:element name="getMembersResponse" type="tns:getMembersResponse" />
+  <xs:element name="getUser" type="tns:getUser" />
+  <xs:element name="getUserByID" type="tns:getUserByID" />
+  <xs:element name="getUserByIDResponse" type="tns:getUserByIDResponse" />
+  <xs:element name="getUserResponse" type="tns:getUserResponse" />
+  <xs:element name="register" type="tns:register" />
+  <xs:element name="registerResponse" type="tns:registerResponse" />
+  <xs:element name="removeMember" type="tns:removeMember" />
+  <xs:element name="removeMemberResponse" type="tns:removeMemberResponse" />
+  <xs:element name="setLocation" type="tns:setLocation" />
+  <xs:element name="setLocationResponse" type="tns:setLocationResponse" />
+  <xs:complexType name="addMember">
+    <xs:sequence>
+      <xs:element name="uid" type="xs:int" />
+      <xs:element name="gid" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="addMemberResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:status" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="status">
+    <xs:sequence>
+      <xs:element name="success" type="xs:boolean" />
+      <xs:element minOccurs="0" name="error" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getGroups">
+    <xs:sequence>
+      <xs:element name="uid" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getGroupsResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="return" nillable="true" type="tns:group" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="group">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="users" nillable="true" type="tns:user" />
+      <xs:element minOccurs="0" name="name" type="xs:string" />
+      <xs:element name="gid" type="xs:int" />
+      <xs:element name="owner" type="xs:int" />
+      <xs:element minOccurs="0" name="date_created" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="user">
+    <xs:sequence>
+      <xs:element name="uid" type="xs:int" />
+      <xs:element minOccurs="0" name="fName" type="xs:string" />
+      <xs:element minOccurs="0" name="lName" type="xs:string" />
+      <xs:element minOccurs="0" name="email" type="xs:string" />
+      <xs:element minOccurs="0" name="lastLoc" type="tns:location" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="location">
+    <xs:sequence>
+      <xs:element name="uid" type="xs:int" />
+      <xs:element name="latitude" type="xs:double" />
+      <xs:element name="longitude" type="xs:double" />
+      <xs:element minOccurs="0" name="date" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getUser">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="email" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getUserResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:user" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="createGroup">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="uids" nillable="true" type="xs:int" />
+      <xs:element name="owner" type="xs:int" />
+      <xs:element minOccurs="0" name="name" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="createGroupResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:status" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="setLocation">
+    <xs:sequence>
+      <xs:element name="uid" type="xs:int" />
+      <xs:element name="latitude" type="xs:double" />
+      <xs:element name="longitude" type="xs:double" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="setLocationResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:status" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getLocation">
+    <xs:sequence>
+      <xs:element name="uid" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getLocationResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:location" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="register">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="email" type="xs:string" />
+      <xs:element minOccurs="0" name="password" type="xs:string" />
+      <xs:element minOccurs="0" name="fname" type="xs:string" />
+      <xs:element minOccurs="0" name="lname" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="registerResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:status" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="authenticate">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="email" type="xs:string" />
+      <xs:element minOccurs="0" name="password" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="authenticateResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:userStatus" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="userStatus">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:status">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="user" type="tns:user" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="removeMember">
+    <xs:sequence>
+      <xs:element name="uid" type="xs:int" />
+      <xs:element name="gid" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="removeMemberResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:status" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getHistory">
+    <xs:sequence>
+      <xs:element name="uid" type="xs:int" />
+      <xs:element name="number" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getHistoryResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="return" nillable="true" type="tns:location" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getMembers">
+    <xs:sequence>
+      <xs:element name="gid" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getMembersResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="return" nillable="true" type="tns:user" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getUserByID">
+    <xs:sequence>
+      <xs:element name="uid" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getUserByIDResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:user" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getGroup">
+    <xs:sequence>
+      <xs:element name="gid" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getGroupResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:group" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

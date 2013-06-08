@@ -15,68 +15,452 @@ namespace GPSWithFriends.Server {
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="Server.UserActionSoap")]
-    public interface UserActionSoap {
+    [System.ServiceModel.ServiceContractAttribute(Namespace="http://cs.uoregon.edu/", ConfigurationName="Server.GPSwfriends")]
+    public interface GPSwfriends {
         
-        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/LogIn", ReplyAction="*")]
-        System.IAsyncResult BeginLogIn(GPSWithFriends.Server.LogInRequest request, System.AsyncCallback callback, object asyncState);
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://cs.uoregon.edu/GPSwfriends/getGroupRequest", ReplyAction="http://cs.uoregon.edu/GPSwfriends/getGroupResponse")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        System.IAsyncResult BegingetGroup(GPSWithFriends.Server.getGroupRequest request, System.AsyncCallback callback, object asyncState);
         
-        GPSWithFriends.Server.LogInResponse EndLogIn(System.IAsyncResult result);
+        GPSWithFriends.Server.getGroupResponse EndgetGroup(System.IAsyncResult result);
         
-        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/FastSignUp", ReplyAction="*")]
-        System.IAsyncResult BeginFastSignUp(GPSWithFriends.Server.FastSignUpRequest request, System.AsyncCallback callback, object asyncState);
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://cs.uoregon.edu/GPSwfriends/authenticateRequest", ReplyAction="http://cs.uoregon.edu/GPSwfriends/authenticateResponse")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        System.IAsyncResult Beginauthenticate(GPSWithFriends.Server.authenticateRequest request, System.AsyncCallback callback, object asyncState);
         
-        GPSWithFriends.Server.FastSignUpResponse EndFastSignUp(System.IAsyncResult result);
+        GPSWithFriends.Server.authenticateResponse Endauthenticate(System.IAsyncResult result);
         
-        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/LogOut", ReplyAction="*")]
-        System.IAsyncResult BeginLogOut(GPSWithFriends.Server.LogOutRequest request, System.AsyncCallback callback, object asyncState);
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://cs.uoregon.edu/GPSwfriends/registerRequest", ReplyAction="http://cs.uoregon.edu/GPSwfriends/registerResponse")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        System.IAsyncResult Beginregister(GPSWithFriends.Server.registerRequest request, System.AsyncCallback callback, object asyncState);
         
-        GPSWithFriends.Server.LogOutResponse EndLogOut(System.IAsyncResult result);
+        GPSWithFriends.Server.registerResponse Endregister(System.IAsyncResult result);
         
-        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/Follow", ReplyAction="*")]
-        System.IAsyncResult BeginFollow(GPSWithFriends.Server.FollowRequest request, System.AsyncCallback callback, object asyncState);
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://cs.uoregon.edu/GPSwfriends/getLocationRequest", ReplyAction="http://cs.uoregon.edu/GPSwfriends/getLocationResponse")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        System.IAsyncResult BegingetLocation(GPSWithFriends.Server.getLocationRequest request, System.AsyncCallback callback, object asyncState);
         
-        GPSWithFriends.Server.FollowResponse EndFollow(System.IAsyncResult result);
+        GPSWithFriends.Server.getLocationResponse EndgetLocation(System.IAsyncResult result);
         
-        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/UnFollow", ReplyAction="*")]
-        System.IAsyncResult BeginUnFollow(GPSWithFriends.Server.UnFollowRequest request, System.AsyncCallback callback, object asyncState);
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://cs.uoregon.edu/GPSwfriends/getMembersRequest", ReplyAction="http://cs.uoregon.edu/GPSwfriends/getMembersResponse")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        System.IAsyncResult BegingetMembers(GPSWithFriends.Server.getMembersRequest request, System.AsyncCallback callback, object asyncState);
         
-        GPSWithFriends.Server.UnFollowResponse EndUnFollow(System.IAsyncResult result);
+        GPSWithFriends.Server.getMembersResponse EndgetMembers(System.IAsyncResult result);
+        
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://cs.uoregon.edu/GPSwfriends/createGroupRequest", ReplyAction="http://cs.uoregon.edu/GPSwfriends/createGroupResponse")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        System.IAsyncResult BegincreateGroup(GPSWithFriends.Server.createGroupRequest request, System.AsyncCallback callback, object asyncState);
+        
+        GPSWithFriends.Server.createGroupResponse EndcreateGroup(System.IAsyncResult result);
+        
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://cs.uoregon.edu/GPSwfriends/getGroupsRequest", ReplyAction="http://cs.uoregon.edu/GPSwfriends/getGroupsResponse")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        System.IAsyncResult BegingetGroups(GPSWithFriends.Server.getGroupsRequest request, System.AsyncCallback callback, object asyncState);
+        
+        GPSWithFriends.Server.getGroupsResponse EndgetGroups(System.IAsyncResult result);
+        
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://cs.uoregon.edu/GPSwfriends/getUserRequest", ReplyAction="http://cs.uoregon.edu/GPSwfriends/getUserResponse")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        System.IAsyncResult BegingetUser(GPSWithFriends.Server.getUserRequest request, System.AsyncCallback callback, object asyncState);
+        
+        GPSWithFriends.Server.getUserResponse EndgetUser(System.IAsyncResult result);
+        
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://cs.uoregon.edu/GPSwfriends/setLocationRequest", ReplyAction="http://cs.uoregon.edu/GPSwfriends/setLocationResponse")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        System.IAsyncResult BeginsetLocation(GPSWithFriends.Server.setLocationRequest request, System.AsyncCallback callback, object asyncState);
+        
+        GPSWithFriends.Server.setLocationResponse EndsetLocation(System.IAsyncResult result);
+        
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://cs.uoregon.edu/GPSwfriends/getHistoryRequest", ReplyAction="http://cs.uoregon.edu/GPSwfriends/getHistoryResponse")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        System.IAsyncResult BegingetHistory(GPSWithFriends.Server.getHistoryRequest request, System.AsyncCallback callback, object asyncState);
+        
+        GPSWithFriends.Server.getHistoryResponse EndgetHistory(System.IAsyncResult result);
+        
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://cs.uoregon.edu/GPSwfriends/getUserByIDRequest", ReplyAction="http://cs.uoregon.edu/GPSwfriends/getUserByIDResponse")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        System.IAsyncResult BegingetUserByID(GPSWithFriends.Server.getUserByIDRequest request, System.AsyncCallback callback, object asyncState);
+        
+        GPSWithFriends.Server.getUserByIDResponse EndgetUserByID(System.IAsyncResult result);
+        
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://cs.uoregon.edu/GPSwfriends/addMemberRequest", ReplyAction="http://cs.uoregon.edu/GPSwfriends/addMemberResponse")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        System.IAsyncResult BeginaddMember(GPSWithFriends.Server.addMemberRequest request, System.AsyncCallback callback, object asyncState);
+        
+        GPSWithFriends.Server.addMemberResponse EndaddMember(System.IAsyncResult result);
+        
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://cs.uoregon.edu/GPSwfriends/removeMemberRequest", ReplyAction="http://cs.uoregon.edu/GPSwfriends/removeMemberResponse")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        System.IAsyncResult BeginremoveMember(GPSWithFriends.Server.removeMemberRequest request, System.AsyncCallback callback, object asyncState);
+        
+        GPSWithFriends.Server.removeMemberResponse EndremoveMember(System.IAsyncResult result);
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.0.30319.18046")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://cs.uoregon.edu/")]
+    public partial class group : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private user[] usersField;
+        
+        private string nameField;
+        
+        private int gidField;
+        
+        private int ownerField;
+        
+        private string date_createdField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("users", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        public user[] users {
+            get {
+                return this.usersField;
+            }
+            set {
+                this.usersField = value;
+                this.RaisePropertyChanged("users");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public string name {
+            get {
+                return this.nameField;
+            }
+            set {
+                this.nameField = value;
+                this.RaisePropertyChanged("name");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public int gid {
+            get {
+                return this.gidField;
+            }
+            set {
+                this.gidField = value;
+                this.RaisePropertyChanged("gid");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public int owner {
+            get {
+                return this.ownerField;
+            }
+            set {
+                this.ownerField = value;
+                this.RaisePropertyChanged("owner");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        public string date_created {
+            get {
+                return this.date_createdField;
+            }
+            set {
+                this.date_createdField = value;
+                this.RaisePropertyChanged("date_created");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.0.30319.18046")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://cs.uoregon.edu/")]
+    public partial class user : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private int uidField;
+        
+        private string fNameField;
+        
+        private string lNameField;
+        
+        private string emailField;
+        
+        private location lastLocField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public int uid {
+            get {
+                return this.uidField;
+            }
+            set {
+                this.uidField = value;
+                this.RaisePropertyChanged("uid");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public string fName {
+            get {
+                return this.fNameField;
+            }
+            set {
+                this.fNameField = value;
+                this.RaisePropertyChanged("fName");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public string lName {
+            get {
+                return this.lNameField;
+            }
+            set {
+                this.lNameField = value;
+                this.RaisePropertyChanged("lName");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public string email {
+            get {
+                return this.emailField;
+            }
+            set {
+                this.emailField = value;
+                this.RaisePropertyChanged("email");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        public location lastLoc {
+            get {
+                return this.lastLocField;
+            }
+            set {
+                this.lastLocField = value;
+                this.RaisePropertyChanged("lastLoc");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.0.30319.18046")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://cs.uoregon.edu/")]
+    public partial class location : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private int uidField;
+        
+        private double latitudeField;
+        
+        private double longitudeField;
+        
+        private string dateField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public int uid {
+            get {
+                return this.uidField;
+            }
+            set {
+                this.uidField = value;
+                this.RaisePropertyChanged("uid");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public double latitude {
+            get {
+                return this.latitudeField;
+            }
+            set {
+                this.latitudeField = value;
+                this.RaisePropertyChanged("latitude");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public double longitude {
+            get {
+                return this.longitudeField;
+            }
+            set {
+                this.longitudeField = value;
+                this.RaisePropertyChanged("longitude");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public string date {
+            get {
+                return this.dateField;
+            }
+            set {
+                this.dateField = value;
+                this.RaisePropertyChanged("date");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(userStatus))]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.0.30319.18046")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://cs.uoregon.edu/")]
+    public partial class status : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private bool successField;
+        
+        private string errorField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public bool success {
+            get {
+                return this.successField;
+            }
+            set {
+                this.successField = value;
+                this.RaisePropertyChanged("success");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public string error {
+            get {
+                return this.errorField;
+            }
+            set {
+                this.errorField = value;
+                this.RaisePropertyChanged("error");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.0.30319.18046")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://cs.uoregon.edu/")]
+    public partial class userStatus : status {
+        
+        private user userField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public user user {
+            get {
+                return this.userField;
+            }
+            set {
+                this.userField = value;
+                this.RaisePropertyChanged("user");
+            }
+        }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
-    public partial class LogInRequest {
+    [System.ServiceModel.MessageContractAttribute(WrapperName="getGroup", WrapperNamespace="http://cs.uoregon.edu/", IsWrapped=true)]
+    public partial class getGroupRequest {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="LogIn", Namespace="http://tempuri.org/", Order=0)]
-        public GPSWithFriends.Server.LogInRequestBody Body;
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cs.uoregon.edu/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public int gid;
         
-        public LogInRequest() {
+        public getGroupRequest() {
         }
         
-        public LogInRequest(GPSWithFriends.Server.LogInRequestBody Body) {
-            this.Body = Body;
+        public getGroupRequest(int gid) {
+            this.gid = gid;
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
-    public partial class LogInRequestBody {
+    [System.ServiceModel.MessageContractAttribute(WrapperName="getGroupResponse", WrapperNamespace="http://cs.uoregon.edu/", IsWrapped=true)]
+    public partial class getGroupResponse {
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cs.uoregon.edu/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public GPSWithFriends.Server.group @return;
+        
+        public getGroupResponse() {
+        }
+        
+        public getGroupResponse(GPSWithFriends.Server.group @return) {
+            this.@return = @return;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="authenticate", WrapperNamespace="http://cs.uoregon.edu/", IsWrapped=true)]
+    public partial class authenticateRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cs.uoregon.edu/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public string email;
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=1)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cs.uoregon.edu/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public string password;
         
-        public LogInRequestBody() {
+        public authenticateRequest() {
         }
         
-        public LogInRequestBody(string email, string password) {
+        public authenticateRequest(string email, string password) {
             this.email = email;
             this.password = password;
         }
@@ -85,143 +469,86 @@ namespace GPSWithFriends.Server {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
-    public partial class LogInResponse {
+    [System.ServiceModel.MessageContractAttribute(WrapperName="authenticateResponse", WrapperNamespace="http://cs.uoregon.edu/", IsWrapped=true)]
+    public partial class authenticateResponse {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="LogInResponse", Namespace="http://tempuri.org/", Order=0)]
-        public GPSWithFriends.Server.LogInResponseBody Body;
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cs.uoregon.edu/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public GPSWithFriends.Server.userStatus @return;
         
-        public LogInResponse() {
+        public authenticateResponse() {
         }
         
-        public LogInResponse(GPSWithFriends.Server.LogInResponseBody Body) {
-            this.Body = Body;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
-    public partial class LogInResponseBody {
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
-        public string LogInResult;
-        
-        public LogInResponseBody() {
-        }
-        
-        public LogInResponseBody(string LogInResult) {
-            this.LogInResult = LogInResult;
+        public authenticateResponse(GPSWithFriends.Server.userStatus @return) {
+            this.@return = @return;
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
-    public partial class FastSignUpRequest {
+    [System.ServiceModel.MessageContractAttribute(WrapperName="register", WrapperNamespace="http://cs.uoregon.edu/", IsWrapped=true)]
+    public partial class registerRequest {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="FastSignUp", Namespace="http://tempuri.org/", Order=0)]
-        public GPSWithFriends.Server.FastSignUpRequestBody Body;
-        
-        public FastSignUpRequest() {
-        }
-        
-        public FastSignUpRequest(GPSWithFriends.Server.FastSignUpRequestBody Body) {
-            this.Body = Body;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
-    public partial class FastSignUpRequestBody {
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cs.uoregon.edu/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public string email;
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=1)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cs.uoregon.edu/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public string password;
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=2)]
-        public string nickName;
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cs.uoregon.edu/", Order=2)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string fname;
         
-        public FastSignUpRequestBody() {
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cs.uoregon.edu/", Order=3)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string lname;
+        
+        public registerRequest() {
         }
         
-        public FastSignUpRequestBody(string email, string password, string nickName) {
+        public registerRequest(string email, string password, string fname, string lname) {
             this.email = email;
             this.password = password;
-            this.nickName = nickName;
+            this.fname = fname;
+            this.lname = lname;
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
-    public partial class FastSignUpResponse {
+    [System.ServiceModel.MessageContractAttribute(WrapperName="registerResponse", WrapperNamespace="http://cs.uoregon.edu/", IsWrapped=true)]
+    public partial class registerResponse {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="FastSignUpResponse", Namespace="http://tempuri.org/", Order=0)]
-        public GPSWithFriends.Server.FastSignUpResponseBody Body;
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cs.uoregon.edu/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public GPSWithFriends.Server.status @return;
         
-        public FastSignUpResponse() {
+        public registerResponse() {
         }
         
-        public FastSignUpResponse(GPSWithFriends.Server.FastSignUpResponseBody Body) {
-            this.Body = Body;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
-    public partial class FastSignUpResponseBody {
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
-        public string FastSignUpResult;
-        
-        public FastSignUpResponseBody() {
-        }
-        
-        public FastSignUpResponseBody(string FastSignUpResult) {
-            this.FastSignUpResult = FastSignUpResult;
+        public registerResponse(GPSWithFriends.Server.status @return) {
+            this.@return = @return;
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
-    public partial class LogOutRequest {
+    [System.ServiceModel.MessageContractAttribute(WrapperName="getLocation", WrapperNamespace="http://cs.uoregon.edu/", IsWrapped=true)]
+    public partial class getLocationRequest {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="LogOut", Namespace="http://tempuri.org/", Order=0)]
-        public GPSWithFriends.Server.LogOutRequestBody Body;
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cs.uoregon.edu/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public int uid;
         
-        public LogOutRequest() {
+        public getLocationRequest() {
         }
         
-        public LogOutRequest(GPSWithFriends.Server.LogOutRequestBody Body) {
-            this.Body = Body;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
-    public partial class LogOutRequestBody {
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
-        public string uid;
-        
-        public LogOutRequestBody() {
-        }
-        
-        public LogOutRequestBody(string uid) {
+        public getLocationRequest(int uid) {
             this.uid = uid;
         }
     }
@@ -229,67 +556,117 @@ namespace GPSWithFriends.Server {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
-    public partial class LogOutResponse {
+    [System.ServiceModel.MessageContractAttribute(WrapperName="getLocationResponse", WrapperNamespace="http://cs.uoregon.edu/", IsWrapped=true)]
+    public partial class getLocationResponse {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="LogOutResponse", Namespace="http://tempuri.org/", Order=0)]
-        public GPSWithFriends.Server.LogOutResponseBody Body;
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cs.uoregon.edu/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public GPSWithFriends.Server.location @return;
         
-        public LogOutResponse() {
+        public getLocationResponse() {
         }
         
-        public LogOutResponse(GPSWithFriends.Server.LogOutResponseBody Body) {
-            this.Body = Body;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
-    public partial class LogOutResponseBody {
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
-        public string LogOutResult;
-        
-        public LogOutResponseBody() {
-        }
-        
-        public LogOutResponseBody(string LogOutResult) {
-            this.LogOutResult = LogOutResult;
+        public getLocationResponse(GPSWithFriends.Server.location @return) {
+            this.@return = @return;
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
-    public partial class FollowRequest {
+    [System.ServiceModel.MessageContractAttribute(WrapperName="getMembers", WrapperNamespace="http://cs.uoregon.edu/", IsWrapped=true)]
+    public partial class getMembersRequest {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="Follow", Namespace="http://tempuri.org/", Order=0)]
-        public GPSWithFriends.Server.FollowRequestBody Body;
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cs.uoregon.edu/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public int gid;
         
-        public FollowRequest() {
+        public getMembersRequest() {
         }
         
-        public FollowRequest(GPSWithFriends.Server.FollowRequestBody Body) {
-            this.Body = Body;
+        public getMembersRequest(int gid) {
+            this.gid = gid;
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
-    public partial class FollowRequestBody {
+    [System.ServiceModel.MessageContractAttribute(WrapperName="getMembersResponse", WrapperNamespace="http://cs.uoregon.edu/", IsWrapped=true)]
+    public partial class getMembersResponse {
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
-        public string uid;
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cs.uoregon.edu/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute("return", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true)]
+        public GPSWithFriends.Server.user[] @return;
         
-        public FollowRequestBody() {
+        public getMembersResponse() {
         }
         
-        public FollowRequestBody(string uid) {
+        public getMembersResponse(GPSWithFriends.Server.user[] @return) {
+            this.@return = @return;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="createGroup", WrapperNamespace="http://cs.uoregon.edu/", IsWrapped=true)]
+    public partial class createGroupRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cs.uoregon.edu/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute("uids", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true)]
+        public System.Nullable<int>[] uids;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cs.uoregon.edu/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public int owner;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cs.uoregon.edu/", Order=2)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string name;
+        
+        public createGroupRequest() {
+        }
+        
+        public createGroupRequest(System.Nullable<int>[] uids, int owner, string name) {
+            this.uids = uids;
+            this.owner = owner;
+            this.name = name;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="createGroupResponse", WrapperNamespace="http://cs.uoregon.edu/", IsWrapped=true)]
+    public partial class createGroupResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cs.uoregon.edu/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public GPSWithFriends.Server.status @return;
+        
+        public createGroupResponse() {
+        }
+        
+        public createGroupResponse(GPSWithFriends.Server.status @return) {
+            this.@return = @return;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="getGroups", WrapperNamespace="http://cs.uoregon.edu/", IsWrapped=true)]
+    public partial class getGroupsRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cs.uoregon.edu/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public int uid;
+        
+        public getGroupsRequest() {
+        }
+        
+        public getGroupsRequest(int uid) {
             this.uid = uid;
         }
     }
@@ -297,67 +674,158 @@ namespace GPSWithFriends.Server {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
-    public partial class FollowResponse {
+    [System.ServiceModel.MessageContractAttribute(WrapperName="getGroupsResponse", WrapperNamespace="http://cs.uoregon.edu/", IsWrapped=true)]
+    public partial class getGroupsResponse {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="FollowResponse", Namespace="http://tempuri.org/", Order=0)]
-        public GPSWithFriends.Server.FollowResponseBody Body;
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cs.uoregon.edu/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute("return", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true)]
+        public GPSWithFriends.Server.group[] @return;
         
-        public FollowResponse() {
+        public getGroupsResponse() {
         }
         
-        public FollowResponse(GPSWithFriends.Server.FollowResponseBody Body) {
-            this.Body = Body;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
-    public partial class FollowResponseBody {
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
-        public string FollowResult;
-        
-        public FollowResponseBody() {
-        }
-        
-        public FollowResponseBody(string FollowResult) {
-            this.FollowResult = FollowResult;
+        public getGroupsResponse(GPSWithFriends.Server.group[] @return) {
+            this.@return = @return;
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
-    public partial class UnFollowRequest {
+    [System.ServiceModel.MessageContractAttribute(WrapperName="getUser", WrapperNamespace="http://cs.uoregon.edu/", IsWrapped=true)]
+    public partial class getUserRequest {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="UnFollow", Namespace="http://tempuri.org/", Order=0)]
-        public GPSWithFriends.Server.UnFollowRequestBody Body;
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cs.uoregon.edu/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string email;
         
-        public UnFollowRequest() {
+        public getUserRequest() {
         }
         
-        public UnFollowRequest(GPSWithFriends.Server.UnFollowRequestBody Body) {
-            this.Body = Body;
+        public getUserRequest(string email) {
+            this.email = email;
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
-    public partial class UnFollowRequestBody {
+    [System.ServiceModel.MessageContractAttribute(WrapperName="getUserResponse", WrapperNamespace="http://cs.uoregon.edu/", IsWrapped=true)]
+    public partial class getUserResponse {
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
-        public string uid;
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cs.uoregon.edu/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public GPSWithFriends.Server.user @return;
         
-        public UnFollowRequestBody() {
+        public getUserResponse() {
         }
         
-        public UnFollowRequestBody(string uid) {
+        public getUserResponse(GPSWithFriends.Server.user @return) {
+            this.@return = @return;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="setLocation", WrapperNamespace="http://cs.uoregon.edu/", IsWrapped=true)]
+    public partial class setLocationRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cs.uoregon.edu/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public int uid;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cs.uoregon.edu/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public double latitude;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cs.uoregon.edu/", Order=2)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public double longitude;
+        
+        public setLocationRequest() {
+        }
+        
+        public setLocationRequest(int uid, double latitude, double longitude) {
+            this.uid = uid;
+            this.latitude = latitude;
+            this.longitude = longitude;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="setLocationResponse", WrapperNamespace="http://cs.uoregon.edu/", IsWrapped=true)]
+    public partial class setLocationResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cs.uoregon.edu/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public GPSWithFriends.Server.status @return;
+        
+        public setLocationResponse() {
+        }
+        
+        public setLocationResponse(GPSWithFriends.Server.status @return) {
+            this.@return = @return;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="getHistory", WrapperNamespace="http://cs.uoregon.edu/", IsWrapped=true)]
+    public partial class getHistoryRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cs.uoregon.edu/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public int uid;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cs.uoregon.edu/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public int number;
+        
+        public getHistoryRequest() {
+        }
+        
+        public getHistoryRequest(int uid, int number) {
+            this.uid = uid;
+            this.number = number;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="getHistoryResponse", WrapperNamespace="http://cs.uoregon.edu/", IsWrapped=true)]
+    public partial class getHistoryResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cs.uoregon.edu/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute("return", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true)]
+        public GPSWithFriends.Server.location[] @return;
+        
+        public getHistoryResponse() {
+        }
+        
+        public getHistoryResponse(GPSWithFriends.Server.location[] @return) {
+            this.@return = @return;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="getUserByID", WrapperNamespace="http://cs.uoregon.edu/", IsWrapped=true)]
+    public partial class getUserByIDRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cs.uoregon.edu/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public int uid;
+        
+        public getUserByIDRequest() {
+        }
+        
+        public getUserByIDRequest(int uid) {
             this.uid = uid;
         }
     }
@@ -365,169 +833,435 @@ namespace GPSWithFriends.Server {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
-    public partial class UnFollowResponse {
+    [System.ServiceModel.MessageContractAttribute(WrapperName="getUserByIDResponse", WrapperNamespace="http://cs.uoregon.edu/", IsWrapped=true)]
+    public partial class getUserByIDResponse {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="UnFollowResponse", Namespace="http://tempuri.org/", Order=0)]
-        public GPSWithFriends.Server.UnFollowResponseBody Body;
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cs.uoregon.edu/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public GPSWithFriends.Server.user @return;
         
-        public UnFollowResponse() {
+        public getUserByIDResponse() {
         }
         
-        public UnFollowResponse(GPSWithFriends.Server.UnFollowResponseBody Body) {
-            this.Body = Body;
+        public getUserByIDResponse(GPSWithFriends.Server.user @return) {
+            this.@return = @return;
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
-    public partial class UnFollowResponseBody {
+    [System.ServiceModel.MessageContractAttribute(WrapperName="addMember", WrapperNamespace="http://cs.uoregon.edu/", IsWrapped=true)]
+    public partial class addMemberRequest {
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
-        public string UnFollowResult;
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cs.uoregon.edu/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public int uid;
         
-        public UnFollowResponseBody() {
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cs.uoregon.edu/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public int gid;
+        
+        public addMemberRequest() {
         }
         
-        public UnFollowResponseBody(string UnFollowResult) {
-            this.UnFollowResult = UnFollowResult;
+        public addMemberRequest(int uid, int gid) {
+            this.uid = uid;
+            this.gid = gid;
         }
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface UserActionSoapChannel : GPSWithFriends.Server.UserActionSoap, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class LogInCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="addMemberResponse", WrapperNamespace="http://cs.uoregon.edu/", IsWrapped=true)]
+    public partial class addMemberResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cs.uoregon.edu/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public GPSWithFriends.Server.status @return;
+        
+        public addMemberResponse() {
+        }
+        
+        public addMemberResponse(GPSWithFriends.Server.status @return) {
+            this.@return = @return;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="removeMember", WrapperNamespace="http://cs.uoregon.edu/", IsWrapped=true)]
+    public partial class removeMemberRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cs.uoregon.edu/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public int uid;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cs.uoregon.edu/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public int gid;
+        
+        public removeMemberRequest() {
+        }
+        
+        public removeMemberRequest(int uid, int gid) {
+            this.uid = uid;
+            this.gid = gid;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="removeMemberResponse", WrapperNamespace="http://cs.uoregon.edu/", IsWrapped=true)]
+    public partial class removeMemberResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cs.uoregon.edu/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public GPSWithFriends.Server.status @return;
+        
+        public removeMemberResponse() {
+        }
+        
+        public removeMemberResponse(GPSWithFriends.Server.status @return) {
+            this.@return = @return;
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public interface GPSwfriendsChannel : GPSWithFriends.Server.GPSwfriends, System.ServiceModel.IClientChannel {
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public partial class getGroupCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
         private object[] results;
         
-        public LogInCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+        public getGroupCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }
         
-        public string Result {
+        public GPSWithFriends.Server.group Result {
             get {
                 base.RaiseExceptionIfNecessary();
-                return ((string)(this.results[0]));
+                return ((GPSWithFriends.Server.group)(this.results[0]));
             }
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class FastSignUpCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    public partial class authenticateCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
         private object[] results;
         
-        public FastSignUpCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+        public authenticateCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }
         
-        public string Result {
+        public GPSWithFriends.Server.userStatus Result {
             get {
                 base.RaiseExceptionIfNecessary();
-                return ((string)(this.results[0]));
+                return ((GPSWithFriends.Server.userStatus)(this.results[0]));
             }
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class LogOutCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    public partial class registerCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
         private object[] results;
         
-        public LogOutCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+        public registerCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }
         
-        public string Result {
+        public GPSWithFriends.Server.status Result {
             get {
                 base.RaiseExceptionIfNecessary();
-                return ((string)(this.results[0]));
+                return ((GPSWithFriends.Server.status)(this.results[0]));
             }
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class FollowCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    public partial class getLocationCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
         private object[] results;
         
-        public FollowCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+        public getLocationCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }
         
-        public string Result {
+        public GPSWithFriends.Server.location Result {
             get {
                 base.RaiseExceptionIfNecessary();
-                return ((string)(this.results[0]));
+                return ((GPSWithFriends.Server.location)(this.results[0]));
             }
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class UnFollowCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    public partial class getMembersCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
         private object[] results;
         
-        public UnFollowCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+        public getMembersCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }
         
-        public string Result {
+        public GPSWithFriends.Server.user[] Result {
             get {
                 base.RaiseExceptionIfNecessary();
-                return ((string)(this.results[0]));
+                return ((GPSWithFriends.Server.user[])(this.results[0]));
             }
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class UserActionSoapClient : System.ServiceModel.ClientBase<GPSWithFriends.Server.UserActionSoap>, GPSWithFriends.Server.UserActionSoap {
+    public partial class createGroupCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
-        private BeginOperationDelegate onBeginLogInDelegate;
+        private object[] results;
         
-        private EndOperationDelegate onEndLogInDelegate;
+        public createGroupCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
         
-        private System.Threading.SendOrPostCallback onLogInCompletedDelegate;
+        public GPSWithFriends.Server.status Result {
+            get {
+                base.RaiseExceptionIfNecessary();
+                return ((GPSWithFriends.Server.status)(this.results[0]));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public partial class getGroupsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
-        private BeginOperationDelegate onBeginFastSignUpDelegate;
+        private object[] results;
         
-        private EndOperationDelegate onEndFastSignUpDelegate;
+        public getGroupsCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
         
-        private System.Threading.SendOrPostCallback onFastSignUpCompletedDelegate;
+        public GPSWithFriends.Server.group[] Result {
+            get {
+                base.RaiseExceptionIfNecessary();
+                return ((GPSWithFriends.Server.group[])(this.results[0]));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public partial class getUserCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
-        private BeginOperationDelegate onBeginLogOutDelegate;
+        private object[] results;
         
-        private EndOperationDelegate onEndLogOutDelegate;
+        public getUserCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
         
-        private System.Threading.SendOrPostCallback onLogOutCompletedDelegate;
+        public GPSWithFriends.Server.user Result {
+            get {
+                base.RaiseExceptionIfNecessary();
+                return ((GPSWithFriends.Server.user)(this.results[0]));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public partial class setLocationCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
-        private BeginOperationDelegate onBeginFollowDelegate;
+        private object[] results;
         
-        private EndOperationDelegate onEndFollowDelegate;
+        public setLocationCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
         
-        private System.Threading.SendOrPostCallback onFollowCompletedDelegate;
+        public GPSWithFriends.Server.status Result {
+            get {
+                base.RaiseExceptionIfNecessary();
+                return ((GPSWithFriends.Server.status)(this.results[0]));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public partial class getHistoryCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
-        private BeginOperationDelegate onBeginUnFollowDelegate;
+        private object[] results;
         
-        private EndOperationDelegate onEndUnFollowDelegate;
+        public getHistoryCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
         
-        private System.Threading.SendOrPostCallback onUnFollowCompletedDelegate;
+        public GPSWithFriends.Server.location[] Result {
+            get {
+                base.RaiseExceptionIfNecessary();
+                return ((GPSWithFriends.Server.location[])(this.results[0]));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public partial class getUserByIDCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        public getUserByIDCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        public GPSWithFriends.Server.user Result {
+            get {
+                base.RaiseExceptionIfNecessary();
+                return ((GPSWithFriends.Server.user)(this.results[0]));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public partial class addMemberCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        public addMemberCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        public GPSWithFriends.Server.status Result {
+            get {
+                base.RaiseExceptionIfNecessary();
+                return ((GPSWithFriends.Server.status)(this.results[0]));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public partial class removeMemberCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        public removeMemberCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        public GPSWithFriends.Server.status Result {
+            get {
+                base.RaiseExceptionIfNecessary();
+                return ((GPSWithFriends.Server.status)(this.results[0]));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public partial class GPSwfriendsClient : System.ServiceModel.ClientBase<GPSWithFriends.Server.GPSwfriends>, GPSWithFriends.Server.GPSwfriends {
+        
+        private BeginOperationDelegate onBegingetGroupDelegate;
+        
+        private EndOperationDelegate onEndgetGroupDelegate;
+        
+        private System.Threading.SendOrPostCallback ongetGroupCompletedDelegate;
+        
+        private BeginOperationDelegate onBeginauthenticateDelegate;
+        
+        private EndOperationDelegate onEndauthenticateDelegate;
+        
+        private System.Threading.SendOrPostCallback onauthenticateCompletedDelegate;
+        
+        private BeginOperationDelegate onBeginregisterDelegate;
+        
+        private EndOperationDelegate onEndregisterDelegate;
+        
+        private System.Threading.SendOrPostCallback onregisterCompletedDelegate;
+        
+        private BeginOperationDelegate onBegingetLocationDelegate;
+        
+        private EndOperationDelegate onEndgetLocationDelegate;
+        
+        private System.Threading.SendOrPostCallback ongetLocationCompletedDelegate;
+        
+        private BeginOperationDelegate onBegingetMembersDelegate;
+        
+        private EndOperationDelegate onEndgetMembersDelegate;
+        
+        private System.Threading.SendOrPostCallback ongetMembersCompletedDelegate;
+        
+        private BeginOperationDelegate onBegincreateGroupDelegate;
+        
+        private EndOperationDelegate onEndcreateGroupDelegate;
+        
+        private System.Threading.SendOrPostCallback oncreateGroupCompletedDelegate;
+        
+        private BeginOperationDelegate onBegingetGroupsDelegate;
+        
+        private EndOperationDelegate onEndgetGroupsDelegate;
+        
+        private System.Threading.SendOrPostCallback ongetGroupsCompletedDelegate;
+        
+        private BeginOperationDelegate onBegingetUserDelegate;
+        
+        private EndOperationDelegate onEndgetUserDelegate;
+        
+        private System.Threading.SendOrPostCallback ongetUserCompletedDelegate;
+        
+        private BeginOperationDelegate onBeginsetLocationDelegate;
+        
+        private EndOperationDelegate onEndsetLocationDelegate;
+        
+        private System.Threading.SendOrPostCallback onsetLocationCompletedDelegate;
+        
+        private BeginOperationDelegate onBegingetHistoryDelegate;
+        
+        private EndOperationDelegate onEndgetHistoryDelegate;
+        
+        private System.Threading.SendOrPostCallback ongetHistoryCompletedDelegate;
+        
+        private BeginOperationDelegate onBegingetUserByIDDelegate;
+        
+        private EndOperationDelegate onEndgetUserByIDDelegate;
+        
+        private System.Threading.SendOrPostCallback ongetUserByIDCompletedDelegate;
+        
+        private BeginOperationDelegate onBeginaddMemberDelegate;
+        
+        private EndOperationDelegate onEndaddMemberDelegate;
+        
+        private System.Threading.SendOrPostCallback onaddMemberCompletedDelegate;
+        
+        private BeginOperationDelegate onBeginremoveMemberDelegate;
+        
+        private EndOperationDelegate onEndremoveMemberDelegate;
+        
+        private System.Threading.SendOrPostCallback onremoveMemberCompletedDelegate;
         
         private BeginOperationDelegate onBeginOpenDelegate;
         
@@ -541,22 +1275,22 @@ namespace GPSWithFriends.Server {
         
         private System.Threading.SendOrPostCallback onCloseCompletedDelegate;
         
-        public UserActionSoapClient() {
+        public GPSwfriendsClient() {
         }
         
-        public UserActionSoapClient(string endpointConfigurationName) : 
+        public GPSwfriendsClient(string endpointConfigurationName) : 
                 base(endpointConfigurationName) {
         }
         
-        public UserActionSoapClient(string endpointConfigurationName, string remoteAddress) : 
+        public GPSwfriendsClient(string endpointConfigurationName, string remoteAddress) : 
                 base(endpointConfigurationName, remoteAddress) {
         }
         
-        public UserActionSoapClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
+        public GPSwfriendsClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(endpointConfigurationName, remoteAddress) {
         }
         
-        public UserActionSoapClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
+        public GPSwfriendsClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(binding, remoteAddress) {
         }
         
@@ -582,327 +1316,834 @@ namespace GPSWithFriends.Server {
             }
         }
         
-        public event System.EventHandler<LogInCompletedEventArgs> LogInCompleted;
+        public event System.EventHandler<getGroupCompletedEventArgs> getGroupCompleted;
         
-        public event System.EventHandler<FastSignUpCompletedEventArgs> FastSignUpCompleted;
+        public event System.EventHandler<authenticateCompletedEventArgs> authenticateCompleted;
         
-        public event System.EventHandler<LogOutCompletedEventArgs> LogOutCompleted;
+        public event System.EventHandler<registerCompletedEventArgs> registerCompleted;
         
-        public event System.EventHandler<FollowCompletedEventArgs> FollowCompleted;
+        public event System.EventHandler<getLocationCompletedEventArgs> getLocationCompleted;
         
-        public event System.EventHandler<UnFollowCompletedEventArgs> UnFollowCompleted;
+        public event System.EventHandler<getMembersCompletedEventArgs> getMembersCompleted;
+        
+        public event System.EventHandler<createGroupCompletedEventArgs> createGroupCompleted;
+        
+        public event System.EventHandler<getGroupsCompletedEventArgs> getGroupsCompleted;
+        
+        public event System.EventHandler<getUserCompletedEventArgs> getUserCompleted;
+        
+        public event System.EventHandler<setLocationCompletedEventArgs> setLocationCompleted;
+        
+        public event System.EventHandler<getHistoryCompletedEventArgs> getHistoryCompleted;
+        
+        public event System.EventHandler<getUserByIDCompletedEventArgs> getUserByIDCompleted;
+        
+        public event System.EventHandler<addMemberCompletedEventArgs> addMemberCompleted;
+        
+        public event System.EventHandler<removeMemberCompletedEventArgs> removeMemberCompleted;
         
         public event System.EventHandler<System.ComponentModel.AsyncCompletedEventArgs> OpenCompleted;
         
         public event System.EventHandler<System.ComponentModel.AsyncCompletedEventArgs> CloseCompleted;
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.IAsyncResult GPSWithFriends.Server.UserActionSoap.BeginLogIn(GPSWithFriends.Server.LogInRequest request, System.AsyncCallback callback, object asyncState) {
-            return base.Channel.BeginLogIn(request, callback, asyncState);
+        System.IAsyncResult GPSWithFriends.Server.GPSwfriends.BegingetGroup(GPSWithFriends.Server.getGroupRequest request, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BegingetGroup(request, callback, asyncState);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        private System.IAsyncResult BeginLogIn(string email, string password, System.AsyncCallback callback, object asyncState) {
-            GPSWithFriends.Server.LogInRequest inValue = new GPSWithFriends.Server.LogInRequest();
-            inValue.Body = new GPSWithFriends.Server.LogInRequestBody();
-            inValue.Body.email = email;
-            inValue.Body.password = password;
-            return ((GPSWithFriends.Server.UserActionSoap)(this)).BeginLogIn(inValue, callback, asyncState);
+        private System.IAsyncResult BegingetGroup(int gid, System.AsyncCallback callback, object asyncState) {
+            GPSWithFriends.Server.getGroupRequest inValue = new GPSWithFriends.Server.getGroupRequest();
+            inValue.gid = gid;
+            return ((GPSWithFriends.Server.GPSwfriends)(this)).BegingetGroup(inValue, callback, asyncState);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        GPSWithFriends.Server.LogInResponse GPSWithFriends.Server.UserActionSoap.EndLogIn(System.IAsyncResult result) {
-            return base.Channel.EndLogIn(result);
+        GPSWithFriends.Server.getGroupResponse GPSWithFriends.Server.GPSwfriends.EndgetGroup(System.IAsyncResult result) {
+            return base.Channel.EndgetGroup(result);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        private string EndLogIn(System.IAsyncResult result) {
-            GPSWithFriends.Server.LogInResponse retVal = ((GPSWithFriends.Server.UserActionSoap)(this)).EndLogIn(result);
-            return retVal.Body.LogInResult;
+        private GPSWithFriends.Server.group EndgetGroup(System.IAsyncResult result) {
+            GPSWithFriends.Server.getGroupResponse retVal = ((GPSWithFriends.Server.GPSwfriends)(this)).EndgetGroup(result);
+            return retVal.@return;
         }
         
-        private System.IAsyncResult OnBeginLogIn(object[] inValues, System.AsyncCallback callback, object asyncState) {
-            string email = ((string)(inValues[0]));
-            string password = ((string)(inValues[1]));
-            return this.BeginLogIn(email, password, callback, asyncState);
+        private System.IAsyncResult OnBegingetGroup(object[] inValues, System.AsyncCallback callback, object asyncState) {
+            int gid = ((int)(inValues[0]));
+            return this.BegingetGroup(gid, callback, asyncState);
         }
         
-        private object[] OnEndLogIn(System.IAsyncResult result) {
-            string retVal = this.EndLogIn(result);
+        private object[] OnEndgetGroup(System.IAsyncResult result) {
+            GPSWithFriends.Server.group retVal = this.EndgetGroup(result);
             return new object[] {
                     retVal};
         }
         
-        private void OnLogInCompleted(object state) {
-            if ((this.LogInCompleted != null)) {
+        private void OngetGroupCompleted(object state) {
+            if ((this.getGroupCompleted != null)) {
                 InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
-                this.LogInCompleted(this, new LogInCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
+                this.getGroupCompleted(this, new getGroupCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
             }
         }
         
-        public void LogInAsync(string email, string password) {
-            this.LogInAsync(email, password, null);
+        public void getGroupAsync(int gid) {
+            this.getGroupAsync(gid, null);
         }
         
-        public void LogInAsync(string email, string password, object userState) {
-            if ((this.onBeginLogInDelegate == null)) {
-                this.onBeginLogInDelegate = new BeginOperationDelegate(this.OnBeginLogIn);
+        public void getGroupAsync(int gid, object userState) {
+            if ((this.onBegingetGroupDelegate == null)) {
+                this.onBegingetGroupDelegate = new BeginOperationDelegate(this.OnBegingetGroup);
             }
-            if ((this.onEndLogInDelegate == null)) {
-                this.onEndLogInDelegate = new EndOperationDelegate(this.OnEndLogIn);
+            if ((this.onEndgetGroupDelegate == null)) {
+                this.onEndgetGroupDelegate = new EndOperationDelegate(this.OnEndgetGroup);
             }
-            if ((this.onLogInCompletedDelegate == null)) {
-                this.onLogInCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnLogInCompleted);
+            if ((this.ongetGroupCompletedDelegate == null)) {
+                this.ongetGroupCompletedDelegate = new System.Threading.SendOrPostCallback(this.OngetGroupCompleted);
             }
-            base.InvokeAsync(this.onBeginLogInDelegate, new object[] {
+            base.InvokeAsync(this.onBegingetGroupDelegate, new object[] {
+                        gid}, this.onEndgetGroupDelegate, this.ongetGroupCompletedDelegate, userState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.IAsyncResult GPSWithFriends.Server.GPSwfriends.Beginauthenticate(GPSWithFriends.Server.authenticateRequest request, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.Beginauthenticate(request, callback, asyncState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        private System.IAsyncResult Beginauthenticate(string email, string password, System.AsyncCallback callback, object asyncState) {
+            GPSWithFriends.Server.authenticateRequest inValue = new GPSWithFriends.Server.authenticateRequest();
+            inValue.email = email;
+            inValue.password = password;
+            return ((GPSWithFriends.Server.GPSwfriends)(this)).Beginauthenticate(inValue, callback, asyncState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        GPSWithFriends.Server.authenticateResponse GPSWithFriends.Server.GPSwfriends.Endauthenticate(System.IAsyncResult result) {
+            return base.Channel.Endauthenticate(result);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        private GPSWithFriends.Server.userStatus Endauthenticate(System.IAsyncResult result) {
+            GPSWithFriends.Server.authenticateResponse retVal = ((GPSWithFriends.Server.GPSwfriends)(this)).Endauthenticate(result);
+            return retVal.@return;
+        }
+        
+        private System.IAsyncResult OnBeginauthenticate(object[] inValues, System.AsyncCallback callback, object asyncState) {
+            string email = ((string)(inValues[0]));
+            string password = ((string)(inValues[1]));
+            return this.Beginauthenticate(email, password, callback, asyncState);
+        }
+        
+        private object[] OnEndauthenticate(System.IAsyncResult result) {
+            GPSWithFriends.Server.userStatus retVal = this.Endauthenticate(result);
+            return new object[] {
+                    retVal};
+        }
+        
+        private void OnauthenticateCompleted(object state) {
+            if ((this.authenticateCompleted != null)) {
+                InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
+                this.authenticateCompleted(this, new authenticateCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
+            }
+        }
+        
+        public void authenticateAsync(string email, string password) {
+            this.authenticateAsync(email, password, null);
+        }
+        
+        public void authenticateAsync(string email, string password, object userState) {
+            if ((this.onBeginauthenticateDelegate == null)) {
+                this.onBeginauthenticateDelegate = new BeginOperationDelegate(this.OnBeginauthenticate);
+            }
+            if ((this.onEndauthenticateDelegate == null)) {
+                this.onEndauthenticateDelegate = new EndOperationDelegate(this.OnEndauthenticate);
+            }
+            if ((this.onauthenticateCompletedDelegate == null)) {
+                this.onauthenticateCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnauthenticateCompleted);
+            }
+            base.InvokeAsync(this.onBeginauthenticateDelegate, new object[] {
                         email,
-                        password}, this.onEndLogInDelegate, this.onLogInCompletedDelegate, userState);
+                        password}, this.onEndauthenticateDelegate, this.onauthenticateCompletedDelegate, userState);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.IAsyncResult GPSWithFriends.Server.UserActionSoap.BeginFastSignUp(GPSWithFriends.Server.FastSignUpRequest request, System.AsyncCallback callback, object asyncState) {
-            return base.Channel.BeginFastSignUp(request, callback, asyncState);
+        System.IAsyncResult GPSWithFriends.Server.GPSwfriends.Beginregister(GPSWithFriends.Server.registerRequest request, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.Beginregister(request, callback, asyncState);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        private System.IAsyncResult BeginFastSignUp(string email, string password, string nickName, System.AsyncCallback callback, object asyncState) {
-            GPSWithFriends.Server.FastSignUpRequest inValue = new GPSWithFriends.Server.FastSignUpRequest();
-            inValue.Body = new GPSWithFriends.Server.FastSignUpRequestBody();
-            inValue.Body.email = email;
-            inValue.Body.password = password;
-            inValue.Body.nickName = nickName;
-            return ((GPSWithFriends.Server.UserActionSoap)(this)).BeginFastSignUp(inValue, callback, asyncState);
+        private System.IAsyncResult Beginregister(string email, string password, string fname, string lname, System.AsyncCallback callback, object asyncState) {
+            GPSWithFriends.Server.registerRequest inValue = new GPSWithFriends.Server.registerRequest();
+            inValue.email = email;
+            inValue.password = password;
+            inValue.fname = fname;
+            inValue.lname = lname;
+            return ((GPSWithFriends.Server.GPSwfriends)(this)).Beginregister(inValue, callback, asyncState);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        GPSWithFriends.Server.FastSignUpResponse GPSWithFriends.Server.UserActionSoap.EndFastSignUp(System.IAsyncResult result) {
-            return base.Channel.EndFastSignUp(result);
+        GPSWithFriends.Server.registerResponse GPSWithFriends.Server.GPSwfriends.Endregister(System.IAsyncResult result) {
+            return base.Channel.Endregister(result);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        private string EndFastSignUp(System.IAsyncResult result) {
-            GPSWithFriends.Server.FastSignUpResponse retVal = ((GPSWithFriends.Server.UserActionSoap)(this)).EndFastSignUp(result);
-            return retVal.Body.FastSignUpResult;
+        private GPSWithFriends.Server.status Endregister(System.IAsyncResult result) {
+            GPSWithFriends.Server.registerResponse retVal = ((GPSWithFriends.Server.GPSwfriends)(this)).Endregister(result);
+            return retVal.@return;
         }
         
-        private System.IAsyncResult OnBeginFastSignUp(object[] inValues, System.AsyncCallback callback, object asyncState) {
+        private System.IAsyncResult OnBeginregister(object[] inValues, System.AsyncCallback callback, object asyncState) {
             string email = ((string)(inValues[0]));
             string password = ((string)(inValues[1]));
-            string nickName = ((string)(inValues[2]));
-            return this.BeginFastSignUp(email, password, nickName, callback, asyncState);
+            string fname = ((string)(inValues[2]));
+            string lname = ((string)(inValues[3]));
+            return this.Beginregister(email, password, fname, lname, callback, asyncState);
         }
         
-        private object[] OnEndFastSignUp(System.IAsyncResult result) {
-            string retVal = this.EndFastSignUp(result);
+        private object[] OnEndregister(System.IAsyncResult result) {
+            GPSWithFriends.Server.status retVal = this.Endregister(result);
             return new object[] {
                     retVal};
         }
         
-        private void OnFastSignUpCompleted(object state) {
-            if ((this.FastSignUpCompleted != null)) {
+        private void OnregisterCompleted(object state) {
+            if ((this.registerCompleted != null)) {
                 InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
-                this.FastSignUpCompleted(this, new FastSignUpCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
+                this.registerCompleted(this, new registerCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
             }
         }
         
-        public void FastSignUpAsync(string email, string password, string nickName) {
-            this.FastSignUpAsync(email, password, nickName, null);
+        public void registerAsync(string email, string password, string fname, string lname) {
+            this.registerAsync(email, password, fname, lname, null);
         }
         
-        public void FastSignUpAsync(string email, string password, string nickName, object userState) {
-            if ((this.onBeginFastSignUpDelegate == null)) {
-                this.onBeginFastSignUpDelegate = new BeginOperationDelegate(this.OnBeginFastSignUp);
+        public void registerAsync(string email, string password, string fname, string lname, object userState) {
+            if ((this.onBeginregisterDelegate == null)) {
+                this.onBeginregisterDelegate = new BeginOperationDelegate(this.OnBeginregister);
             }
-            if ((this.onEndFastSignUpDelegate == null)) {
-                this.onEndFastSignUpDelegate = new EndOperationDelegate(this.OnEndFastSignUp);
+            if ((this.onEndregisterDelegate == null)) {
+                this.onEndregisterDelegate = new EndOperationDelegate(this.OnEndregister);
             }
-            if ((this.onFastSignUpCompletedDelegate == null)) {
-                this.onFastSignUpCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnFastSignUpCompleted);
+            if ((this.onregisterCompletedDelegate == null)) {
+                this.onregisterCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnregisterCompleted);
             }
-            base.InvokeAsync(this.onBeginFastSignUpDelegate, new object[] {
+            base.InvokeAsync(this.onBeginregisterDelegate, new object[] {
                         email,
                         password,
-                        nickName}, this.onEndFastSignUpDelegate, this.onFastSignUpCompletedDelegate, userState);
+                        fname,
+                        lname}, this.onEndregisterDelegate, this.onregisterCompletedDelegate, userState);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.IAsyncResult GPSWithFriends.Server.UserActionSoap.BeginLogOut(GPSWithFriends.Server.LogOutRequest request, System.AsyncCallback callback, object asyncState) {
-            return base.Channel.BeginLogOut(request, callback, asyncState);
+        System.IAsyncResult GPSWithFriends.Server.GPSwfriends.BegingetLocation(GPSWithFriends.Server.getLocationRequest request, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BegingetLocation(request, callback, asyncState);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        private System.IAsyncResult BeginLogOut(string uid, System.AsyncCallback callback, object asyncState) {
-            GPSWithFriends.Server.LogOutRequest inValue = new GPSWithFriends.Server.LogOutRequest();
-            inValue.Body = new GPSWithFriends.Server.LogOutRequestBody();
-            inValue.Body.uid = uid;
-            return ((GPSWithFriends.Server.UserActionSoap)(this)).BeginLogOut(inValue, callback, asyncState);
+        private System.IAsyncResult BegingetLocation(int uid, System.AsyncCallback callback, object asyncState) {
+            GPSWithFriends.Server.getLocationRequest inValue = new GPSWithFriends.Server.getLocationRequest();
+            inValue.uid = uid;
+            return ((GPSWithFriends.Server.GPSwfriends)(this)).BegingetLocation(inValue, callback, asyncState);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        GPSWithFriends.Server.LogOutResponse GPSWithFriends.Server.UserActionSoap.EndLogOut(System.IAsyncResult result) {
-            return base.Channel.EndLogOut(result);
+        GPSWithFriends.Server.getLocationResponse GPSWithFriends.Server.GPSwfriends.EndgetLocation(System.IAsyncResult result) {
+            return base.Channel.EndgetLocation(result);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        private string EndLogOut(System.IAsyncResult result) {
-            GPSWithFriends.Server.LogOutResponse retVal = ((GPSWithFriends.Server.UserActionSoap)(this)).EndLogOut(result);
-            return retVal.Body.LogOutResult;
+        private GPSWithFriends.Server.location EndgetLocation(System.IAsyncResult result) {
+            GPSWithFriends.Server.getLocationResponse retVal = ((GPSWithFriends.Server.GPSwfriends)(this)).EndgetLocation(result);
+            return retVal.@return;
         }
         
-        private System.IAsyncResult OnBeginLogOut(object[] inValues, System.AsyncCallback callback, object asyncState) {
-            string uid = ((string)(inValues[0]));
-            return this.BeginLogOut(uid, callback, asyncState);
+        private System.IAsyncResult OnBegingetLocation(object[] inValues, System.AsyncCallback callback, object asyncState) {
+            int uid = ((int)(inValues[0]));
+            return this.BegingetLocation(uid, callback, asyncState);
         }
         
-        private object[] OnEndLogOut(System.IAsyncResult result) {
-            string retVal = this.EndLogOut(result);
+        private object[] OnEndgetLocation(System.IAsyncResult result) {
+            GPSWithFriends.Server.location retVal = this.EndgetLocation(result);
             return new object[] {
                     retVal};
         }
         
-        private void OnLogOutCompleted(object state) {
-            if ((this.LogOutCompleted != null)) {
+        private void OngetLocationCompleted(object state) {
+            if ((this.getLocationCompleted != null)) {
                 InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
-                this.LogOutCompleted(this, new LogOutCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
+                this.getLocationCompleted(this, new getLocationCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
             }
         }
         
-        public void LogOutAsync(string uid) {
-            this.LogOutAsync(uid, null);
+        public void getLocationAsync(int uid) {
+            this.getLocationAsync(uid, null);
         }
         
-        public void LogOutAsync(string uid, object userState) {
-            if ((this.onBeginLogOutDelegate == null)) {
-                this.onBeginLogOutDelegate = new BeginOperationDelegate(this.OnBeginLogOut);
+        public void getLocationAsync(int uid, object userState) {
+            if ((this.onBegingetLocationDelegate == null)) {
+                this.onBegingetLocationDelegate = new BeginOperationDelegate(this.OnBegingetLocation);
             }
-            if ((this.onEndLogOutDelegate == null)) {
-                this.onEndLogOutDelegate = new EndOperationDelegate(this.OnEndLogOut);
+            if ((this.onEndgetLocationDelegate == null)) {
+                this.onEndgetLocationDelegate = new EndOperationDelegate(this.OnEndgetLocation);
             }
-            if ((this.onLogOutCompletedDelegate == null)) {
-                this.onLogOutCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnLogOutCompleted);
+            if ((this.ongetLocationCompletedDelegate == null)) {
+                this.ongetLocationCompletedDelegate = new System.Threading.SendOrPostCallback(this.OngetLocationCompleted);
             }
-            base.InvokeAsync(this.onBeginLogOutDelegate, new object[] {
-                        uid}, this.onEndLogOutDelegate, this.onLogOutCompletedDelegate, userState);
+            base.InvokeAsync(this.onBegingetLocationDelegate, new object[] {
+                        uid}, this.onEndgetLocationDelegate, this.ongetLocationCompletedDelegate, userState);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.IAsyncResult GPSWithFriends.Server.UserActionSoap.BeginFollow(GPSWithFriends.Server.FollowRequest request, System.AsyncCallback callback, object asyncState) {
-            return base.Channel.BeginFollow(request, callback, asyncState);
+        System.IAsyncResult GPSWithFriends.Server.GPSwfriends.BegingetMembers(GPSWithFriends.Server.getMembersRequest request, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BegingetMembers(request, callback, asyncState);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        private System.IAsyncResult BeginFollow(string uid, System.AsyncCallback callback, object asyncState) {
-            GPSWithFriends.Server.FollowRequest inValue = new GPSWithFriends.Server.FollowRequest();
-            inValue.Body = new GPSWithFriends.Server.FollowRequestBody();
-            inValue.Body.uid = uid;
-            return ((GPSWithFriends.Server.UserActionSoap)(this)).BeginFollow(inValue, callback, asyncState);
+        private System.IAsyncResult BegingetMembers(int gid, System.AsyncCallback callback, object asyncState) {
+            GPSWithFriends.Server.getMembersRequest inValue = new GPSWithFriends.Server.getMembersRequest();
+            inValue.gid = gid;
+            return ((GPSWithFriends.Server.GPSwfriends)(this)).BegingetMembers(inValue, callback, asyncState);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        GPSWithFriends.Server.FollowResponse GPSWithFriends.Server.UserActionSoap.EndFollow(System.IAsyncResult result) {
-            return base.Channel.EndFollow(result);
+        GPSWithFriends.Server.getMembersResponse GPSWithFriends.Server.GPSwfriends.EndgetMembers(System.IAsyncResult result) {
+            return base.Channel.EndgetMembers(result);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        private string EndFollow(System.IAsyncResult result) {
-            GPSWithFriends.Server.FollowResponse retVal = ((GPSWithFriends.Server.UserActionSoap)(this)).EndFollow(result);
-            return retVal.Body.FollowResult;
+        private GPSWithFriends.Server.user[] EndgetMembers(System.IAsyncResult result) {
+            GPSWithFriends.Server.getMembersResponse retVal = ((GPSWithFriends.Server.GPSwfriends)(this)).EndgetMembers(result);
+            return retVal.@return;
         }
         
-        private System.IAsyncResult OnBeginFollow(object[] inValues, System.AsyncCallback callback, object asyncState) {
-            string uid = ((string)(inValues[0]));
-            return this.BeginFollow(uid, callback, asyncState);
+        private System.IAsyncResult OnBegingetMembers(object[] inValues, System.AsyncCallback callback, object asyncState) {
+            int gid = ((int)(inValues[0]));
+            return this.BegingetMembers(gid, callback, asyncState);
         }
         
-        private object[] OnEndFollow(System.IAsyncResult result) {
-            string retVal = this.EndFollow(result);
+        private object[] OnEndgetMembers(System.IAsyncResult result) {
+            GPSWithFriends.Server.user[] retVal = this.EndgetMembers(result);
             return new object[] {
                     retVal};
         }
         
-        private void OnFollowCompleted(object state) {
-            if ((this.FollowCompleted != null)) {
+        private void OngetMembersCompleted(object state) {
+            if ((this.getMembersCompleted != null)) {
                 InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
-                this.FollowCompleted(this, new FollowCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
+                this.getMembersCompleted(this, new getMembersCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
             }
         }
         
-        public void FollowAsync(string uid) {
-            this.FollowAsync(uid, null);
+        public void getMembersAsync(int gid) {
+            this.getMembersAsync(gid, null);
         }
         
-        public void FollowAsync(string uid, object userState) {
-            if ((this.onBeginFollowDelegate == null)) {
-                this.onBeginFollowDelegate = new BeginOperationDelegate(this.OnBeginFollow);
+        public void getMembersAsync(int gid, object userState) {
+            if ((this.onBegingetMembersDelegate == null)) {
+                this.onBegingetMembersDelegate = new BeginOperationDelegate(this.OnBegingetMembers);
             }
-            if ((this.onEndFollowDelegate == null)) {
-                this.onEndFollowDelegate = new EndOperationDelegate(this.OnEndFollow);
+            if ((this.onEndgetMembersDelegate == null)) {
+                this.onEndgetMembersDelegate = new EndOperationDelegate(this.OnEndgetMembers);
             }
-            if ((this.onFollowCompletedDelegate == null)) {
-                this.onFollowCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnFollowCompleted);
+            if ((this.ongetMembersCompletedDelegate == null)) {
+                this.ongetMembersCompletedDelegate = new System.Threading.SendOrPostCallback(this.OngetMembersCompleted);
             }
-            base.InvokeAsync(this.onBeginFollowDelegate, new object[] {
-                        uid}, this.onEndFollowDelegate, this.onFollowCompletedDelegate, userState);
+            base.InvokeAsync(this.onBegingetMembersDelegate, new object[] {
+                        gid}, this.onEndgetMembersDelegate, this.ongetMembersCompletedDelegate, userState);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.IAsyncResult GPSWithFriends.Server.UserActionSoap.BeginUnFollow(GPSWithFriends.Server.UnFollowRequest request, System.AsyncCallback callback, object asyncState) {
-            return base.Channel.BeginUnFollow(request, callback, asyncState);
+        System.IAsyncResult GPSWithFriends.Server.GPSwfriends.BegincreateGroup(GPSWithFriends.Server.createGroupRequest request, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BegincreateGroup(request, callback, asyncState);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        private System.IAsyncResult BeginUnFollow(string uid, System.AsyncCallback callback, object asyncState) {
-            GPSWithFriends.Server.UnFollowRequest inValue = new GPSWithFriends.Server.UnFollowRequest();
-            inValue.Body = new GPSWithFriends.Server.UnFollowRequestBody();
-            inValue.Body.uid = uid;
-            return ((GPSWithFriends.Server.UserActionSoap)(this)).BeginUnFollow(inValue, callback, asyncState);
+        private System.IAsyncResult BegincreateGroup(System.Nullable<int>[] uids, int owner, string name, System.AsyncCallback callback, object asyncState) {
+            GPSWithFriends.Server.createGroupRequest inValue = new GPSWithFriends.Server.createGroupRequest();
+            inValue.uids = uids;
+            inValue.owner = owner;
+            inValue.name = name;
+            return ((GPSWithFriends.Server.GPSwfriends)(this)).BegincreateGroup(inValue, callback, asyncState);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        GPSWithFriends.Server.UnFollowResponse GPSWithFriends.Server.UserActionSoap.EndUnFollow(System.IAsyncResult result) {
-            return base.Channel.EndUnFollow(result);
+        GPSWithFriends.Server.createGroupResponse GPSWithFriends.Server.GPSwfriends.EndcreateGroup(System.IAsyncResult result) {
+            return base.Channel.EndcreateGroup(result);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        private string EndUnFollow(System.IAsyncResult result) {
-            GPSWithFriends.Server.UnFollowResponse retVal = ((GPSWithFriends.Server.UserActionSoap)(this)).EndUnFollow(result);
-            return retVal.Body.UnFollowResult;
+        private GPSWithFriends.Server.status EndcreateGroup(System.IAsyncResult result) {
+            GPSWithFriends.Server.createGroupResponse retVal = ((GPSWithFriends.Server.GPSwfriends)(this)).EndcreateGroup(result);
+            return retVal.@return;
         }
         
-        private System.IAsyncResult OnBeginUnFollow(object[] inValues, System.AsyncCallback callback, object asyncState) {
-            string uid = ((string)(inValues[0]));
-            return this.BeginUnFollow(uid, callback, asyncState);
+        private System.IAsyncResult OnBegincreateGroup(object[] inValues, System.AsyncCallback callback, object asyncState) {
+            System.Nullable<int>[] uids = ((System.Nullable<int>[])(inValues[0]));
+            int owner = ((int)(inValues[1]));
+            string name = ((string)(inValues[2]));
+            return this.BegincreateGroup(uids, owner, name, callback, asyncState);
         }
         
-        private object[] OnEndUnFollow(System.IAsyncResult result) {
-            string retVal = this.EndUnFollow(result);
+        private object[] OnEndcreateGroup(System.IAsyncResult result) {
+            GPSWithFriends.Server.status retVal = this.EndcreateGroup(result);
             return new object[] {
                     retVal};
         }
         
-        private void OnUnFollowCompleted(object state) {
-            if ((this.UnFollowCompleted != null)) {
+        private void OncreateGroupCompleted(object state) {
+            if ((this.createGroupCompleted != null)) {
                 InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
-                this.UnFollowCompleted(this, new UnFollowCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
+                this.createGroupCompleted(this, new createGroupCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
             }
         }
         
-        public void UnFollowAsync(string uid) {
-            this.UnFollowAsync(uid, null);
+        public void createGroupAsync(System.Nullable<int>[] uids, int owner, string name) {
+            this.createGroupAsync(uids, owner, name, null);
         }
         
-        public void UnFollowAsync(string uid, object userState) {
-            if ((this.onBeginUnFollowDelegate == null)) {
-                this.onBeginUnFollowDelegate = new BeginOperationDelegate(this.OnBeginUnFollow);
+        public void createGroupAsync(System.Nullable<int>[] uids, int owner, string name, object userState) {
+            if ((this.onBegincreateGroupDelegate == null)) {
+                this.onBegincreateGroupDelegate = new BeginOperationDelegate(this.OnBegincreateGroup);
             }
-            if ((this.onEndUnFollowDelegate == null)) {
-                this.onEndUnFollowDelegate = new EndOperationDelegate(this.OnEndUnFollow);
+            if ((this.onEndcreateGroupDelegate == null)) {
+                this.onEndcreateGroupDelegate = new EndOperationDelegate(this.OnEndcreateGroup);
             }
-            if ((this.onUnFollowCompletedDelegate == null)) {
-                this.onUnFollowCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnUnFollowCompleted);
+            if ((this.oncreateGroupCompletedDelegate == null)) {
+                this.oncreateGroupCompletedDelegate = new System.Threading.SendOrPostCallback(this.OncreateGroupCompleted);
             }
-            base.InvokeAsync(this.onBeginUnFollowDelegate, new object[] {
-                        uid}, this.onEndUnFollowDelegate, this.onUnFollowCompletedDelegate, userState);
+            base.InvokeAsync(this.onBegincreateGroupDelegate, new object[] {
+                        uids,
+                        owner,
+                        name}, this.onEndcreateGroupDelegate, this.oncreateGroupCompletedDelegate, userState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.IAsyncResult GPSWithFriends.Server.GPSwfriends.BegingetGroups(GPSWithFriends.Server.getGroupsRequest request, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BegingetGroups(request, callback, asyncState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        private System.IAsyncResult BegingetGroups(int uid, System.AsyncCallback callback, object asyncState) {
+            GPSWithFriends.Server.getGroupsRequest inValue = new GPSWithFriends.Server.getGroupsRequest();
+            inValue.uid = uid;
+            return ((GPSWithFriends.Server.GPSwfriends)(this)).BegingetGroups(inValue, callback, asyncState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        GPSWithFriends.Server.getGroupsResponse GPSWithFriends.Server.GPSwfriends.EndgetGroups(System.IAsyncResult result) {
+            return base.Channel.EndgetGroups(result);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        private GPSWithFriends.Server.group[] EndgetGroups(System.IAsyncResult result) {
+            GPSWithFriends.Server.getGroupsResponse retVal = ((GPSWithFriends.Server.GPSwfriends)(this)).EndgetGroups(result);
+            return retVal.@return;
+        }
+        
+        private System.IAsyncResult OnBegingetGroups(object[] inValues, System.AsyncCallback callback, object asyncState) {
+            int uid = ((int)(inValues[0]));
+            return this.BegingetGroups(uid, callback, asyncState);
+        }
+        
+        private object[] OnEndgetGroups(System.IAsyncResult result) {
+            GPSWithFriends.Server.group[] retVal = this.EndgetGroups(result);
+            return new object[] {
+                    retVal};
+        }
+        
+        private void OngetGroupsCompleted(object state) {
+            if ((this.getGroupsCompleted != null)) {
+                InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
+                this.getGroupsCompleted(this, new getGroupsCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
+            }
+        }
+        
+        public void getGroupsAsync(int uid) {
+            this.getGroupsAsync(uid, null);
+        }
+        
+        public void getGroupsAsync(int uid, object userState) {
+            if ((this.onBegingetGroupsDelegate == null)) {
+                this.onBegingetGroupsDelegate = new BeginOperationDelegate(this.OnBegingetGroups);
+            }
+            if ((this.onEndgetGroupsDelegate == null)) {
+                this.onEndgetGroupsDelegate = new EndOperationDelegate(this.OnEndgetGroups);
+            }
+            if ((this.ongetGroupsCompletedDelegate == null)) {
+                this.ongetGroupsCompletedDelegate = new System.Threading.SendOrPostCallback(this.OngetGroupsCompleted);
+            }
+            base.InvokeAsync(this.onBegingetGroupsDelegate, new object[] {
+                        uid}, this.onEndgetGroupsDelegate, this.ongetGroupsCompletedDelegate, userState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.IAsyncResult GPSWithFriends.Server.GPSwfriends.BegingetUser(GPSWithFriends.Server.getUserRequest request, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BegingetUser(request, callback, asyncState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        private System.IAsyncResult BegingetUser(string email, System.AsyncCallback callback, object asyncState) {
+            GPSWithFriends.Server.getUserRequest inValue = new GPSWithFriends.Server.getUserRequest();
+            inValue.email = email;
+            return ((GPSWithFriends.Server.GPSwfriends)(this)).BegingetUser(inValue, callback, asyncState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        GPSWithFriends.Server.getUserResponse GPSWithFriends.Server.GPSwfriends.EndgetUser(System.IAsyncResult result) {
+            return base.Channel.EndgetUser(result);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        private GPSWithFriends.Server.user EndgetUser(System.IAsyncResult result) {
+            GPSWithFriends.Server.getUserResponse retVal = ((GPSWithFriends.Server.GPSwfriends)(this)).EndgetUser(result);
+            return retVal.@return;
+        }
+        
+        private System.IAsyncResult OnBegingetUser(object[] inValues, System.AsyncCallback callback, object asyncState) {
+            string email = ((string)(inValues[0]));
+            return this.BegingetUser(email, callback, asyncState);
+        }
+        
+        private object[] OnEndgetUser(System.IAsyncResult result) {
+            GPSWithFriends.Server.user retVal = this.EndgetUser(result);
+            return new object[] {
+                    retVal};
+        }
+        
+        private void OngetUserCompleted(object state) {
+            if ((this.getUserCompleted != null)) {
+                InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
+                this.getUserCompleted(this, new getUserCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
+            }
+        }
+        
+        public void getUserAsync(string email) {
+            this.getUserAsync(email, null);
+        }
+        
+        public void getUserAsync(string email, object userState) {
+            if ((this.onBegingetUserDelegate == null)) {
+                this.onBegingetUserDelegate = new BeginOperationDelegate(this.OnBegingetUser);
+            }
+            if ((this.onEndgetUserDelegate == null)) {
+                this.onEndgetUserDelegate = new EndOperationDelegate(this.OnEndgetUser);
+            }
+            if ((this.ongetUserCompletedDelegate == null)) {
+                this.ongetUserCompletedDelegate = new System.Threading.SendOrPostCallback(this.OngetUserCompleted);
+            }
+            base.InvokeAsync(this.onBegingetUserDelegate, new object[] {
+                        email}, this.onEndgetUserDelegate, this.ongetUserCompletedDelegate, userState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.IAsyncResult GPSWithFriends.Server.GPSwfriends.BeginsetLocation(GPSWithFriends.Server.setLocationRequest request, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginsetLocation(request, callback, asyncState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        private System.IAsyncResult BeginsetLocation(int uid, double latitude, double longitude, System.AsyncCallback callback, object asyncState) {
+            GPSWithFriends.Server.setLocationRequest inValue = new GPSWithFriends.Server.setLocationRequest();
+            inValue.uid = uid;
+            inValue.latitude = latitude;
+            inValue.longitude = longitude;
+            return ((GPSWithFriends.Server.GPSwfriends)(this)).BeginsetLocation(inValue, callback, asyncState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        GPSWithFriends.Server.setLocationResponse GPSWithFriends.Server.GPSwfriends.EndsetLocation(System.IAsyncResult result) {
+            return base.Channel.EndsetLocation(result);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        private GPSWithFriends.Server.status EndsetLocation(System.IAsyncResult result) {
+            GPSWithFriends.Server.setLocationResponse retVal = ((GPSWithFriends.Server.GPSwfriends)(this)).EndsetLocation(result);
+            return retVal.@return;
+        }
+        
+        private System.IAsyncResult OnBeginsetLocation(object[] inValues, System.AsyncCallback callback, object asyncState) {
+            int uid = ((int)(inValues[0]));
+            double latitude = ((double)(inValues[1]));
+            double longitude = ((double)(inValues[2]));
+            return this.BeginsetLocation(uid, latitude, longitude, callback, asyncState);
+        }
+        
+        private object[] OnEndsetLocation(System.IAsyncResult result) {
+            GPSWithFriends.Server.status retVal = this.EndsetLocation(result);
+            return new object[] {
+                    retVal};
+        }
+        
+        private void OnsetLocationCompleted(object state) {
+            if ((this.setLocationCompleted != null)) {
+                InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
+                this.setLocationCompleted(this, new setLocationCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
+            }
+        }
+        
+        public void setLocationAsync(int uid, double latitude, double longitude) {
+            this.setLocationAsync(uid, latitude, longitude, null);
+        }
+        
+        public void setLocationAsync(int uid, double latitude, double longitude, object userState) {
+            if ((this.onBeginsetLocationDelegate == null)) {
+                this.onBeginsetLocationDelegate = new BeginOperationDelegate(this.OnBeginsetLocation);
+            }
+            if ((this.onEndsetLocationDelegate == null)) {
+                this.onEndsetLocationDelegate = new EndOperationDelegate(this.OnEndsetLocation);
+            }
+            if ((this.onsetLocationCompletedDelegate == null)) {
+                this.onsetLocationCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnsetLocationCompleted);
+            }
+            base.InvokeAsync(this.onBeginsetLocationDelegate, new object[] {
+                        uid,
+                        latitude,
+                        longitude}, this.onEndsetLocationDelegate, this.onsetLocationCompletedDelegate, userState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.IAsyncResult GPSWithFriends.Server.GPSwfriends.BegingetHistory(GPSWithFriends.Server.getHistoryRequest request, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BegingetHistory(request, callback, asyncState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        private System.IAsyncResult BegingetHistory(int uid, int number, System.AsyncCallback callback, object asyncState) {
+            GPSWithFriends.Server.getHistoryRequest inValue = new GPSWithFriends.Server.getHistoryRequest();
+            inValue.uid = uid;
+            inValue.number = number;
+            return ((GPSWithFriends.Server.GPSwfriends)(this)).BegingetHistory(inValue, callback, asyncState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        GPSWithFriends.Server.getHistoryResponse GPSWithFriends.Server.GPSwfriends.EndgetHistory(System.IAsyncResult result) {
+            return base.Channel.EndgetHistory(result);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        private GPSWithFriends.Server.location[] EndgetHistory(System.IAsyncResult result) {
+            GPSWithFriends.Server.getHistoryResponse retVal = ((GPSWithFriends.Server.GPSwfriends)(this)).EndgetHistory(result);
+            return retVal.@return;
+        }
+        
+        private System.IAsyncResult OnBegingetHistory(object[] inValues, System.AsyncCallback callback, object asyncState) {
+            int uid = ((int)(inValues[0]));
+            int number = ((int)(inValues[1]));
+            return this.BegingetHistory(uid, number, callback, asyncState);
+        }
+        
+        private object[] OnEndgetHistory(System.IAsyncResult result) {
+            GPSWithFriends.Server.location[] retVal = this.EndgetHistory(result);
+            return new object[] {
+                    retVal};
+        }
+        
+        private void OngetHistoryCompleted(object state) {
+            if ((this.getHistoryCompleted != null)) {
+                InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
+                this.getHistoryCompleted(this, new getHistoryCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
+            }
+        }
+        
+        public void getHistoryAsync(int uid, int number) {
+            this.getHistoryAsync(uid, number, null);
+        }
+        
+        public void getHistoryAsync(int uid, int number, object userState) {
+            if ((this.onBegingetHistoryDelegate == null)) {
+                this.onBegingetHistoryDelegate = new BeginOperationDelegate(this.OnBegingetHistory);
+            }
+            if ((this.onEndgetHistoryDelegate == null)) {
+                this.onEndgetHistoryDelegate = new EndOperationDelegate(this.OnEndgetHistory);
+            }
+            if ((this.ongetHistoryCompletedDelegate == null)) {
+                this.ongetHistoryCompletedDelegate = new System.Threading.SendOrPostCallback(this.OngetHistoryCompleted);
+            }
+            base.InvokeAsync(this.onBegingetHistoryDelegate, new object[] {
+                        uid,
+                        number}, this.onEndgetHistoryDelegate, this.ongetHistoryCompletedDelegate, userState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.IAsyncResult GPSWithFriends.Server.GPSwfriends.BegingetUserByID(GPSWithFriends.Server.getUserByIDRequest request, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BegingetUserByID(request, callback, asyncState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        private System.IAsyncResult BegingetUserByID(int uid, System.AsyncCallback callback, object asyncState) {
+            GPSWithFriends.Server.getUserByIDRequest inValue = new GPSWithFriends.Server.getUserByIDRequest();
+            inValue.uid = uid;
+            return ((GPSWithFriends.Server.GPSwfriends)(this)).BegingetUserByID(inValue, callback, asyncState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        GPSWithFriends.Server.getUserByIDResponse GPSWithFriends.Server.GPSwfriends.EndgetUserByID(System.IAsyncResult result) {
+            return base.Channel.EndgetUserByID(result);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        private GPSWithFriends.Server.user EndgetUserByID(System.IAsyncResult result) {
+            GPSWithFriends.Server.getUserByIDResponse retVal = ((GPSWithFriends.Server.GPSwfriends)(this)).EndgetUserByID(result);
+            return retVal.@return;
+        }
+        
+        private System.IAsyncResult OnBegingetUserByID(object[] inValues, System.AsyncCallback callback, object asyncState) {
+            int uid = ((int)(inValues[0]));
+            return this.BegingetUserByID(uid, callback, asyncState);
+        }
+        
+        private object[] OnEndgetUserByID(System.IAsyncResult result) {
+            GPSWithFriends.Server.user retVal = this.EndgetUserByID(result);
+            return new object[] {
+                    retVal};
+        }
+        
+        private void OngetUserByIDCompleted(object state) {
+            if ((this.getUserByIDCompleted != null)) {
+                InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
+                this.getUserByIDCompleted(this, new getUserByIDCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
+            }
+        }
+        
+        public void getUserByIDAsync(int uid) {
+            this.getUserByIDAsync(uid, null);
+        }
+        
+        public void getUserByIDAsync(int uid, object userState) {
+            if ((this.onBegingetUserByIDDelegate == null)) {
+                this.onBegingetUserByIDDelegate = new BeginOperationDelegate(this.OnBegingetUserByID);
+            }
+            if ((this.onEndgetUserByIDDelegate == null)) {
+                this.onEndgetUserByIDDelegate = new EndOperationDelegate(this.OnEndgetUserByID);
+            }
+            if ((this.ongetUserByIDCompletedDelegate == null)) {
+                this.ongetUserByIDCompletedDelegate = new System.Threading.SendOrPostCallback(this.OngetUserByIDCompleted);
+            }
+            base.InvokeAsync(this.onBegingetUserByIDDelegate, new object[] {
+                        uid}, this.onEndgetUserByIDDelegate, this.ongetUserByIDCompletedDelegate, userState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.IAsyncResult GPSWithFriends.Server.GPSwfriends.BeginaddMember(GPSWithFriends.Server.addMemberRequest request, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginaddMember(request, callback, asyncState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        private System.IAsyncResult BeginaddMember(int uid, int gid, System.AsyncCallback callback, object asyncState) {
+            GPSWithFriends.Server.addMemberRequest inValue = new GPSWithFriends.Server.addMemberRequest();
+            inValue.uid = uid;
+            inValue.gid = gid;
+            return ((GPSWithFriends.Server.GPSwfriends)(this)).BeginaddMember(inValue, callback, asyncState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        GPSWithFriends.Server.addMemberResponse GPSWithFriends.Server.GPSwfriends.EndaddMember(System.IAsyncResult result) {
+            return base.Channel.EndaddMember(result);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        private GPSWithFriends.Server.status EndaddMember(System.IAsyncResult result) {
+            GPSWithFriends.Server.addMemberResponse retVal = ((GPSWithFriends.Server.GPSwfriends)(this)).EndaddMember(result);
+            return retVal.@return;
+        }
+        
+        private System.IAsyncResult OnBeginaddMember(object[] inValues, System.AsyncCallback callback, object asyncState) {
+            int uid = ((int)(inValues[0]));
+            int gid = ((int)(inValues[1]));
+            return this.BeginaddMember(uid, gid, callback, asyncState);
+        }
+        
+        private object[] OnEndaddMember(System.IAsyncResult result) {
+            GPSWithFriends.Server.status retVal = this.EndaddMember(result);
+            return new object[] {
+                    retVal};
+        }
+        
+        private void OnaddMemberCompleted(object state) {
+            if ((this.addMemberCompleted != null)) {
+                InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
+                this.addMemberCompleted(this, new addMemberCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
+            }
+        }
+        
+        public void addMemberAsync(int uid, int gid) {
+            this.addMemberAsync(uid, gid, null);
+        }
+        
+        public void addMemberAsync(int uid, int gid, object userState) {
+            if ((this.onBeginaddMemberDelegate == null)) {
+                this.onBeginaddMemberDelegate = new BeginOperationDelegate(this.OnBeginaddMember);
+            }
+            if ((this.onEndaddMemberDelegate == null)) {
+                this.onEndaddMemberDelegate = new EndOperationDelegate(this.OnEndaddMember);
+            }
+            if ((this.onaddMemberCompletedDelegate == null)) {
+                this.onaddMemberCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnaddMemberCompleted);
+            }
+            base.InvokeAsync(this.onBeginaddMemberDelegate, new object[] {
+                        uid,
+                        gid}, this.onEndaddMemberDelegate, this.onaddMemberCompletedDelegate, userState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.IAsyncResult GPSWithFriends.Server.GPSwfriends.BeginremoveMember(GPSWithFriends.Server.removeMemberRequest request, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginremoveMember(request, callback, asyncState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        private System.IAsyncResult BeginremoveMember(int uid, int gid, System.AsyncCallback callback, object asyncState) {
+            GPSWithFriends.Server.removeMemberRequest inValue = new GPSWithFriends.Server.removeMemberRequest();
+            inValue.uid = uid;
+            inValue.gid = gid;
+            return ((GPSWithFriends.Server.GPSwfriends)(this)).BeginremoveMember(inValue, callback, asyncState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        GPSWithFriends.Server.removeMemberResponse GPSWithFriends.Server.GPSwfriends.EndremoveMember(System.IAsyncResult result) {
+            return base.Channel.EndremoveMember(result);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        private GPSWithFriends.Server.status EndremoveMember(System.IAsyncResult result) {
+            GPSWithFriends.Server.removeMemberResponse retVal = ((GPSWithFriends.Server.GPSwfriends)(this)).EndremoveMember(result);
+            return retVal.@return;
+        }
+        
+        private System.IAsyncResult OnBeginremoveMember(object[] inValues, System.AsyncCallback callback, object asyncState) {
+            int uid = ((int)(inValues[0]));
+            int gid = ((int)(inValues[1]));
+            return this.BeginremoveMember(uid, gid, callback, asyncState);
+        }
+        
+        private object[] OnEndremoveMember(System.IAsyncResult result) {
+            GPSWithFriends.Server.status retVal = this.EndremoveMember(result);
+            return new object[] {
+                    retVal};
+        }
+        
+        private void OnremoveMemberCompleted(object state) {
+            if ((this.removeMemberCompleted != null)) {
+                InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
+                this.removeMemberCompleted(this, new removeMemberCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
+            }
+        }
+        
+        public void removeMemberAsync(int uid, int gid) {
+            this.removeMemberAsync(uid, gid, null);
+        }
+        
+        public void removeMemberAsync(int uid, int gid, object userState) {
+            if ((this.onBeginremoveMemberDelegate == null)) {
+                this.onBeginremoveMemberDelegate = new BeginOperationDelegate(this.OnBeginremoveMember);
+            }
+            if ((this.onEndremoveMemberDelegate == null)) {
+                this.onEndremoveMemberDelegate = new EndOperationDelegate(this.OnEndremoveMember);
+            }
+            if ((this.onremoveMemberCompletedDelegate == null)) {
+                this.onremoveMemberCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnremoveMemberCompleted);
+            }
+            base.InvokeAsync(this.onBeginremoveMemberDelegate, new object[] {
+                        uid,
+                        gid}, this.onEndremoveMemberDelegate, this.onremoveMemberCompletedDelegate, userState);
         }
         
         private System.IAsyncResult OnBeginOpen(object[] inValues, System.AsyncCallback callback, object asyncState) {
@@ -971,78 +2212,182 @@ namespace GPSWithFriends.Server {
             base.InvokeAsync(this.onBeginCloseDelegate, null, this.onEndCloseDelegate, this.onCloseCompletedDelegate, userState);
         }
         
-        protected override GPSWithFriends.Server.UserActionSoap CreateChannel() {
-            return new UserActionSoapClientChannel(this);
+        protected override GPSWithFriends.Server.GPSwfriends CreateChannel() {
+            return new GPSwfriendsClientChannel(this);
         }
         
-        private class UserActionSoapClientChannel : ChannelBase<GPSWithFriends.Server.UserActionSoap>, GPSWithFriends.Server.UserActionSoap {
+        private class GPSwfriendsClientChannel : ChannelBase<GPSWithFriends.Server.GPSwfriends>, GPSWithFriends.Server.GPSwfriends {
             
-            public UserActionSoapClientChannel(System.ServiceModel.ClientBase<GPSWithFriends.Server.UserActionSoap> client) : 
+            public GPSwfriendsClientChannel(System.ServiceModel.ClientBase<GPSWithFriends.Server.GPSwfriends> client) : 
                     base(client) {
             }
             
-            public System.IAsyncResult BeginLogIn(GPSWithFriends.Server.LogInRequest request, System.AsyncCallback callback, object asyncState) {
+            public System.IAsyncResult BegingetGroup(GPSWithFriends.Server.getGroupRequest request, System.AsyncCallback callback, object asyncState) {
                 object[] _args = new object[1];
                 _args[0] = request;
-                System.IAsyncResult _result = base.BeginInvoke("LogIn", _args, callback, asyncState);
+                System.IAsyncResult _result = base.BeginInvoke("getGroup", _args, callback, asyncState);
                 return _result;
             }
             
-            public GPSWithFriends.Server.LogInResponse EndLogIn(System.IAsyncResult result) {
+            public GPSWithFriends.Server.getGroupResponse EndgetGroup(System.IAsyncResult result) {
                 object[] _args = new object[0];
-                GPSWithFriends.Server.LogInResponse _result = ((GPSWithFriends.Server.LogInResponse)(base.EndInvoke("LogIn", _args, result)));
+                GPSWithFriends.Server.getGroupResponse _result = ((GPSWithFriends.Server.getGroupResponse)(base.EndInvoke("getGroup", _args, result)));
                 return _result;
             }
             
-            public System.IAsyncResult BeginFastSignUp(GPSWithFriends.Server.FastSignUpRequest request, System.AsyncCallback callback, object asyncState) {
+            public System.IAsyncResult Beginauthenticate(GPSWithFriends.Server.authenticateRequest request, System.AsyncCallback callback, object asyncState) {
                 object[] _args = new object[1];
                 _args[0] = request;
-                System.IAsyncResult _result = base.BeginInvoke("FastSignUp", _args, callback, asyncState);
+                System.IAsyncResult _result = base.BeginInvoke("authenticate", _args, callback, asyncState);
                 return _result;
             }
             
-            public GPSWithFriends.Server.FastSignUpResponse EndFastSignUp(System.IAsyncResult result) {
+            public GPSWithFriends.Server.authenticateResponse Endauthenticate(System.IAsyncResult result) {
                 object[] _args = new object[0];
-                GPSWithFriends.Server.FastSignUpResponse _result = ((GPSWithFriends.Server.FastSignUpResponse)(base.EndInvoke("FastSignUp", _args, result)));
+                GPSWithFriends.Server.authenticateResponse _result = ((GPSWithFriends.Server.authenticateResponse)(base.EndInvoke("authenticate", _args, result)));
                 return _result;
             }
             
-            public System.IAsyncResult BeginLogOut(GPSWithFriends.Server.LogOutRequest request, System.AsyncCallback callback, object asyncState) {
+            public System.IAsyncResult Beginregister(GPSWithFriends.Server.registerRequest request, System.AsyncCallback callback, object asyncState) {
                 object[] _args = new object[1];
                 _args[0] = request;
-                System.IAsyncResult _result = base.BeginInvoke("LogOut", _args, callback, asyncState);
+                System.IAsyncResult _result = base.BeginInvoke("register", _args, callback, asyncState);
                 return _result;
             }
             
-            public GPSWithFriends.Server.LogOutResponse EndLogOut(System.IAsyncResult result) {
+            public GPSWithFriends.Server.registerResponse Endregister(System.IAsyncResult result) {
                 object[] _args = new object[0];
-                GPSWithFriends.Server.LogOutResponse _result = ((GPSWithFriends.Server.LogOutResponse)(base.EndInvoke("LogOut", _args, result)));
+                GPSWithFriends.Server.registerResponse _result = ((GPSWithFriends.Server.registerResponse)(base.EndInvoke("register", _args, result)));
                 return _result;
             }
             
-            public System.IAsyncResult BeginFollow(GPSWithFriends.Server.FollowRequest request, System.AsyncCallback callback, object asyncState) {
+            public System.IAsyncResult BegingetLocation(GPSWithFriends.Server.getLocationRequest request, System.AsyncCallback callback, object asyncState) {
                 object[] _args = new object[1];
                 _args[0] = request;
-                System.IAsyncResult _result = base.BeginInvoke("Follow", _args, callback, asyncState);
+                System.IAsyncResult _result = base.BeginInvoke("getLocation", _args, callback, asyncState);
                 return _result;
             }
             
-            public GPSWithFriends.Server.FollowResponse EndFollow(System.IAsyncResult result) {
+            public GPSWithFriends.Server.getLocationResponse EndgetLocation(System.IAsyncResult result) {
                 object[] _args = new object[0];
-                GPSWithFriends.Server.FollowResponse _result = ((GPSWithFriends.Server.FollowResponse)(base.EndInvoke("Follow", _args, result)));
+                GPSWithFriends.Server.getLocationResponse _result = ((GPSWithFriends.Server.getLocationResponse)(base.EndInvoke("getLocation", _args, result)));
                 return _result;
             }
             
-            public System.IAsyncResult BeginUnFollow(GPSWithFriends.Server.UnFollowRequest request, System.AsyncCallback callback, object asyncState) {
+            public System.IAsyncResult BegingetMembers(GPSWithFriends.Server.getMembersRequest request, System.AsyncCallback callback, object asyncState) {
                 object[] _args = new object[1];
                 _args[0] = request;
-                System.IAsyncResult _result = base.BeginInvoke("UnFollow", _args, callback, asyncState);
+                System.IAsyncResult _result = base.BeginInvoke("getMembers", _args, callback, asyncState);
                 return _result;
             }
             
-            public GPSWithFriends.Server.UnFollowResponse EndUnFollow(System.IAsyncResult result) {
+            public GPSWithFriends.Server.getMembersResponse EndgetMembers(System.IAsyncResult result) {
                 object[] _args = new object[0];
-                GPSWithFriends.Server.UnFollowResponse _result = ((GPSWithFriends.Server.UnFollowResponse)(base.EndInvoke("UnFollow", _args, result)));
+                GPSWithFriends.Server.getMembersResponse _result = ((GPSWithFriends.Server.getMembersResponse)(base.EndInvoke("getMembers", _args, result)));
+                return _result;
+            }
+            
+            public System.IAsyncResult BegincreateGroup(GPSWithFriends.Server.createGroupRequest request, System.AsyncCallback callback, object asyncState) {
+                object[] _args = new object[1];
+                _args[0] = request;
+                System.IAsyncResult _result = base.BeginInvoke("createGroup", _args, callback, asyncState);
+                return _result;
+            }
+            
+            public GPSWithFriends.Server.createGroupResponse EndcreateGroup(System.IAsyncResult result) {
+                object[] _args = new object[0];
+                GPSWithFriends.Server.createGroupResponse _result = ((GPSWithFriends.Server.createGroupResponse)(base.EndInvoke("createGroup", _args, result)));
+                return _result;
+            }
+            
+            public System.IAsyncResult BegingetGroups(GPSWithFriends.Server.getGroupsRequest request, System.AsyncCallback callback, object asyncState) {
+                object[] _args = new object[1];
+                _args[0] = request;
+                System.IAsyncResult _result = base.BeginInvoke("getGroups", _args, callback, asyncState);
+                return _result;
+            }
+            
+            public GPSWithFriends.Server.getGroupsResponse EndgetGroups(System.IAsyncResult result) {
+                object[] _args = new object[0];
+                GPSWithFriends.Server.getGroupsResponse _result = ((GPSWithFriends.Server.getGroupsResponse)(base.EndInvoke("getGroups", _args, result)));
+                return _result;
+            }
+            
+            public System.IAsyncResult BegingetUser(GPSWithFriends.Server.getUserRequest request, System.AsyncCallback callback, object asyncState) {
+                object[] _args = new object[1];
+                _args[0] = request;
+                System.IAsyncResult _result = base.BeginInvoke("getUser", _args, callback, asyncState);
+                return _result;
+            }
+            
+            public GPSWithFriends.Server.getUserResponse EndgetUser(System.IAsyncResult result) {
+                object[] _args = new object[0];
+                GPSWithFriends.Server.getUserResponse _result = ((GPSWithFriends.Server.getUserResponse)(base.EndInvoke("getUser", _args, result)));
+                return _result;
+            }
+            
+            public System.IAsyncResult BeginsetLocation(GPSWithFriends.Server.setLocationRequest request, System.AsyncCallback callback, object asyncState) {
+                object[] _args = new object[1];
+                _args[0] = request;
+                System.IAsyncResult _result = base.BeginInvoke("setLocation", _args, callback, asyncState);
+                return _result;
+            }
+            
+            public GPSWithFriends.Server.setLocationResponse EndsetLocation(System.IAsyncResult result) {
+                object[] _args = new object[0];
+                GPSWithFriends.Server.setLocationResponse _result = ((GPSWithFriends.Server.setLocationResponse)(base.EndInvoke("setLocation", _args, result)));
+                return _result;
+            }
+            
+            public System.IAsyncResult BegingetHistory(GPSWithFriends.Server.getHistoryRequest request, System.AsyncCallback callback, object asyncState) {
+                object[] _args = new object[1];
+                _args[0] = request;
+                System.IAsyncResult _result = base.BeginInvoke("getHistory", _args, callback, asyncState);
+                return _result;
+            }
+            
+            public GPSWithFriends.Server.getHistoryResponse EndgetHistory(System.IAsyncResult result) {
+                object[] _args = new object[0];
+                GPSWithFriends.Server.getHistoryResponse _result = ((GPSWithFriends.Server.getHistoryResponse)(base.EndInvoke("getHistory", _args, result)));
+                return _result;
+            }
+            
+            public System.IAsyncResult BegingetUserByID(GPSWithFriends.Server.getUserByIDRequest request, System.AsyncCallback callback, object asyncState) {
+                object[] _args = new object[1];
+                _args[0] = request;
+                System.IAsyncResult _result = base.BeginInvoke("getUserByID", _args, callback, asyncState);
+                return _result;
+            }
+            
+            public GPSWithFriends.Server.getUserByIDResponse EndgetUserByID(System.IAsyncResult result) {
+                object[] _args = new object[0];
+                GPSWithFriends.Server.getUserByIDResponse _result = ((GPSWithFriends.Server.getUserByIDResponse)(base.EndInvoke("getUserByID", _args, result)));
+                return _result;
+            }
+            
+            public System.IAsyncResult BeginaddMember(GPSWithFriends.Server.addMemberRequest request, System.AsyncCallback callback, object asyncState) {
+                object[] _args = new object[1];
+                _args[0] = request;
+                System.IAsyncResult _result = base.BeginInvoke("addMember", _args, callback, asyncState);
+                return _result;
+            }
+            
+            public GPSWithFriends.Server.addMemberResponse EndaddMember(System.IAsyncResult result) {
+                object[] _args = new object[0];
+                GPSWithFriends.Server.addMemberResponse _result = ((GPSWithFriends.Server.addMemberResponse)(base.EndInvoke("addMember", _args, result)));
+                return _result;
+            }
+            
+            public System.IAsyncResult BeginremoveMember(GPSWithFriends.Server.removeMemberRequest request, System.AsyncCallback callback, object asyncState) {
+                object[] _args = new object[1];
+                _args[0] = request;
+                System.IAsyncResult _result = base.BeginInvoke("removeMember", _args, callback, asyncState);
+                return _result;
+            }
+            
+            public GPSWithFriends.Server.removeMemberResponse EndremoveMember(System.IAsyncResult result) {
+                object[] _args = new object[0];
+                GPSWithFriends.Server.removeMemberResponse _result = ((GPSWithFriends.Server.removeMemberResponse)(base.EndInvoke("removeMember", _args, result)));
                 return _result;
             }
         }

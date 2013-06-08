@@ -15,6 +15,14 @@ namespace GPSWithFriends
         public DetailPage()
         {
             InitializeComponent();
+            DataContext = App.ViewModel.CurrentFriend;
+        }
+
+        private void AddFriendButton_Click(object sender, RoutedEventArgs e)
+        {
+            Button button = sender as Button;
+            button.IsEnabled = false;
+            //MainPage.SendFriendRequest(App.ViewModel.CurrentFriend.Email);
         }
     }
 }

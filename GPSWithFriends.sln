@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GPSWithFriends", "GPSWithFriends\GPSWithFriends.csproj", "{EB1C7838-3A40-4721-951C-9CF7BF9F9ED8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GWFUnitTestProject", "GWFUnitTestProject\GWFUnitTestProject.csproj", "{AC0161BC-9FEC-46CE-97CA-0998FEAB6B95}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,14 @@ Global
 		{EB1C7838-3A40-4721-951C-9CF7BF9F9ED8}.Release|x86.ActiveCfg = Release|x86
 		{EB1C7838-3A40-4721-951C-9CF7BF9F9ED8}.Release|x86.Build.0 = Release|x86
 		{EB1C7838-3A40-4721-951C-9CF7BF9F9ED8}.Release|x86.Deploy.0 = Release|x86
+		{AC0161BC-9FEC-46CE-97CA-0998FEAB6B95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC0161BC-9FEC-46CE-97CA-0998FEAB6B95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC0161BC-9FEC-46CE-97CA-0998FEAB6B95}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{AC0161BC-9FEC-46CE-97CA-0998FEAB6B95}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AC0161BC-9FEC-46CE-97CA-0998FEAB6B95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC0161BC-9FEC-46CE-97CA-0998FEAB6B95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC0161BC-9FEC-46CE-97CA-0998FEAB6B95}.Release|ARM.ActiveCfg = Release|Any CPU
+		{AC0161BC-9FEC-46CE-97CA-0998FEAB6B95}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="7abf0d29-aeef-40e6-be06-ccecdcc91f7f" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="9200414e-9771-4daa-bd95-88433fa0eec4" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
   <ClientOptions>
     <GenerateAsynchronousMethods>true</GenerateAsynchronousMethods>
     <EnableDataBinding>true</EnableDataBinding>
@@ -20,10 +20,11 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://gwf.azurewebsites.net/UserAction.asmx?WSDL" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://ec2-54-244-86-37.us-west-2.compute.amazonaws.com/GPSwfriends/GPSwfriends?wsdl" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="UserAction.wsdl" MetadataType="Wsdl" ID="d1ac47fd-6fa1-4024-a0cd-1e9bab523c66" SourceId="1" SourceUrl="http://gwf.azurewebsites.net/UserAction.asmx?WSDL" />
+    <MetadataFile FileName="GPSwfriends.wsdl" MetadataType="Wsdl" ID="14f822bf-9c00-46e1-b8f7-f51d5f2f63c0" SourceId="1" SourceUrl="http://ec2-54-244-86-37.us-west-2.compute.amazonaws.com/GPSwfriends/GPSwfriends?wsdl" />
+    <MetadataFile FileName="GPSwfriends.xsd" MetadataType="Schema" ID="3be98490-6eb7-4792-9cc0-70822a060933" SourceId="1" SourceUrl="http://ec2-54-244-86-37.us-west-2.compute.amazonaws.com/GPSwfriends/GPSwfriends?xsd=1" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

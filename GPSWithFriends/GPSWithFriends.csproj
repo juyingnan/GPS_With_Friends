@@ -96,6 +96,7 @@
     <Compile Include="DetailPage.xaml.cs">
       <DependentUpon>DetailPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="InverseBooleanConverter.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
@@ -103,7 +104,13 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MapPage.xaml.cs">
+      <DependentUpon>MapPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RegisterPage.xaml.cs">
+      <DependentUpon>RegisterPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Resources\AppResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -114,6 +121,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\Group.cs" />
     <Compile Include="ViewModels\Friend.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\Request.cs" />
@@ -135,6 +143,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="MapPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="RegisterPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="SampleData\MainViewModelSampleData.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -148,27 +164,67 @@
     </None>
     <None Include="Service References\Server\configuration91.svcinfo" />
     <None Include="Service References\Server\configuration.svcinfo" />
-    <None Include="Service References\Server\GPSWithFriends.Server.FastSignUpResponse.datasource">
+    <None Include="Service References\Server\GPSWithFriends.Server.addMemberResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\Server\GPSWithFriends.Server.FollowResponse.datasource">
+    <None Include="Service References\Server\GPSWithFriends.Server.authenticateResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\Server\GPSWithFriends.Server.LogInResponse.datasource">
+    <None Include="Service References\Server\GPSWithFriends.Server.createGroupResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\Server\GPSWithFriends.Server.LogOutResponse.datasource">
+    <None Include="Service References\Server\GPSWithFriends.Server.getGroupResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\Server\GPSWithFriends.Server.UnFollowResponse.datasource">
+    <None Include="Service References\Server\GPSWithFriends.Server.getGroupsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Server\GPSWithFriends.Server.getHistoryResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Server\GPSWithFriends.Server.getLocationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Server\GPSWithFriends.Server.getMembersResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Server\GPSWithFriends.Server.getUserByIDResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Server\GPSWithFriends.Server.getUserResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Server\GPSWithFriends.Server.registerResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Server\GPSWithFriends.Server.removeMemberResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Server\GPSWithFriends.Server.setLocationResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\Server\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <Content Include="Assets\add.png" />
+    <Content Include="Assets\Circle&amp;Arrow.png" />
+    <Content Include="Assets\logo_300_trans.png" />
+    <Content Include="Assets\minus.png" />
+    <Content Include="Assets\refresh.png" />
+    <Content Include="Assets\showall.png" />
+    <Content Include="Assets\logo_1044.png" />
+    <Content Include="Assets\logo_300.png" />
+    <Content Include="Assets\logo_500.png" />
+    <Content Include="Assets\switch.png" />
+    <Content Include="logo_159_trans.png" />
+    <Content Include="logo_300_trans.png" />
+    <Content Include="logo_336_trans.png" />
     <Content Include="ServiceReferences.ClientConfig" />
-    <None Include="Service References\Server\UserAction.wsdl" />
+    <None Include="Service References\Server\GPSwfriends.wsdl" />
+    <None Include="Service References\Server\GPSwfriends.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\AlignmentGrid.png" />
@@ -193,7 +249,6 @@
     <Content Include="Assets\Tiles\IconicTileSmall.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="README_FIRST.txt" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
@@ -206,6 +261,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="JeffWilcox.PhoneThemeManager">
+      <HintPath>..\packages\PhoneThemeManager.1.3.3\lib\sl4-windowsphone71\JeffWilcox.PhoneThemeManager.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Phone.Controls.Toolkit">
       <HintPath>..\packages\WPtoolkit.4.2012.10.30\lib\wp8\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
     </Reference>

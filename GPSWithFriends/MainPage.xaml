@@ -6,20 +6,42 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:maptk="clr-namespace:Microsoft.Phone.Maps.Toolkit;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:maps="clr-namespace:Microsoft.Phone.Maps.Controls;assembly=Microsoft.Phone.Maps"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
-    d:DataContext="{d:DesignData SampleData/MainViewModelSampleData.xaml}"
-    mc:Ignorable="d"
+    mc:Ignorable="d"    
+    
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait"  Orientation="Portrait"
-    shell:SystemTray.IsVisible="True" Loaded="PhoneApplicationPage_Loaded">
+    shell:SystemTray.IsVisible="True" Loaded="PhoneApplicationPage_Loaded"
+    toolkit:TiltEffect.IsTiltEnabled="True"
+    >
+    <!--d:DataContext="{d:DesignData SampleData/MainViewModelSampleData.xaml}"-->
 
-    
+    <toolkit:TransitionService.NavigationInTransition>
+        <toolkit:NavigationInTransition>
+            <toolkit:NavigationInTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardIn" />
+            </toolkit:NavigationInTransition.Backward>
+            <toolkit:NavigationInTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardIn" />
+            </toolkit:NavigationInTransition.Forward>
+        </toolkit:NavigationInTransition>
+    </toolkit:TransitionService.NavigationInTransition>
+    <toolkit:TransitionService.NavigationOutTransition>
+        <toolkit:NavigationOutTransition>
+            <toolkit:NavigationOutTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardOut" />
+            </toolkit:NavigationOutTransition.Backward>
+            <toolkit:NavigationOutTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardOut" />
+            </toolkit:NavigationOutTransition.Forward>
+        </toolkit:NavigationOutTransition>
+    </toolkit:TransitionService.NavigationOutTransition>
+
     <Grid x:Name="LayoutRoot" Background="Transparent">
-
-
         <!--Pivot Control-->
         <phone:Pivot Title="GPS With Friends">
             <!--Pivot item one-->
@@ -30,15 +52,31 @@
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
+                        <RowDefinition Height="50"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <maps:Map Grid.Row="0" x:Name="MyMap" Center="37.6097, 119.3331"  ZoomLevel="12"/>
+                    <StackPanel Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Horizontal" Canvas.ZIndex="1" >
+                        <Image Source="/Assets/add.png" Height="60" Width="60" Tap="Add_Image_Tap" Opacity="0.7"></Image>
+                        <Image Source="/Assets/minus.png" Height="60" Width="60" Tap="Minus_Image_Tap" Opacity="0.7"></Image>
+                    </StackPanel>
+                    <maps:Map Grid.Row="0" x:Name="MyMap" Center="39, 116"  ZoomLevel="14" Pitch="45">
+                        <maptk:MapExtensions.Children>
+                            <maptk:MapItemsControl  ItemsSource="{Binding Friends}" Name="FriendsLocationMarkerList">
+                                <maptk:MapItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <maptk:Pushpin Visibility="Visible" GeoCoordinate="{Binding Geocoordinate}" Content="{Binding NickName}" Background="{StaticResource PhoneAccentBrush}"/>
+                                    </DataTemplate>
+                                </maptk:MapItemsControl.ItemTemplate>
+                            </maptk:MapItemsControl>
+                            <maptk:UserLocationMarker DataContext="Me" GeoCoordinate="{Binding Geocoordinate}" Name="MyLocationMarker" Visibility="Collapsed"></maptk:UserLocationMarker>
+                        </maptk:MapExtensions.Children>
+                    </maps:Map>
                     <TextBlock Grid.Row="0" Name="GPSLocationTextblock" VerticalAlignment="Bottom" Foreground="Black">Location:</TextBlock>
-                    <ListBox x:Name="FriendsListBox"  ItemsSource="{Binding Friends}" Grid.Row="1" HorizontalContentAlignment="Stretch">
+                    <TextBlock Grid.Row="1" FontSize="40" Name="GroupNameTextBlock" Text="{Binding CurrentGroup.Name}"></TextBlock>
+                    <ListBox x:Name="FriendsListBox"  ItemsSource="{Binding Friends}" Grid.Row="2" HorizontalContentAlignment="Stretch" SelectionChanged="FriendsListBox_SelectionChanged" toolkit:TiltEffect.IsTiltEnabled="True">
                         <ListBox.ItemTemplate >
                             <DataTemplate>
-                                <Button HorizontalAlignment="Stretch" Padding="0" BorderThickness="0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" MinWidth="456" Height="100">
-                                    <Grid>
+                                <Grid HorizontalAlignment="Stretch" MinWidth="456" Height="80">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="100"/>
                                             <ColumnDefinition Width="*"/>
@@ -46,15 +84,22 @@
                                             <ColumnDefinition Width="100"/>
                                         </Grid.ColumnDefinitions>
                                         <Grid.RowDefinitions>
+                                            <RowDefinition Height="5"/>
                                             <RowDefinition Height="2*"/>
                                             <RowDefinition Height="*"/>
+                                            <RowDefinition Height="5"/>
                                         </Grid.RowDefinitions>
-                                        <Image Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Source="{Binding ImagePath}"></Image>
-                                        <TextBlock Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Text="{Binding Name}" FontSize="32" VerticalAlignment="Bottom"></TextBlock>
-                                        <TextBlock Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding Status}" FontSize="16" VerticalAlignment="Bottom"></TextBlock>
-                                        <TextBlock Grid.Column="3" Grid.Row="0" Grid.RowSpan="2" Text="{Binding Distance}" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
-                                    </Grid>
-                                </Button>
+                                        <Image Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" Source="{Binding ImagePath}"></Image>
+                                        <TextBlock Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding NickName}" FontSize="32" VerticalAlignment="Bottom"></TextBlock>
+                                        <TextBlock Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding Status}" FontSize="16" VerticalAlignment="Bottom"></TextBlock>
+                                        <TextBlock Grid.Column="2" Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="2" Text="{Binding Distance}" FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBlock>
+                                        <toolkit:ContextMenuService.ContextMenu>
+                                            <toolkit:ContextMenu toolkit:TiltEffect.IsTiltEnabled="True">
+                                                <toolkit:MenuItem Header="Get Route" Foreground="Black" Click="FriendList_Route"/>
+                                                <toolkit:MenuItem Header="Remove from Group" Foreground="Black" Click="RemoveFromGroupItem_Click"/>
+                                            </toolkit:ContextMenu>
+                                        </toolkit:ContextMenuService.ContextMenu>
+                                </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
@@ -72,16 +117,15 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="4*"/>
                     </Grid.RowDefinitions>
-                    <Button Grid.Row="0" Padding="0,4,0,0" BorderThickness="0" FontFamily="Segoe WP SemiLight" FontSize="48" HorizontalAlignment="Left">INVITE A FRIEND</Button>
+                    <Button Grid.Row="0" Padding="0,4,0,0" BorderThickness="0" FontFamily="Segoe WP SemiLight" FontSize="48" HorizontalAlignment="Left" Name="InviteButton" Click="InviteButton_Click">INVITE A FRIEND</Button>
                     <Button Grid.Row="1" Padding="0,4,0,0" BorderThickness="0" FontFamily="Segoe WP SemiLight" FontSize="48" HorizontalAlignment="Left">SWING ANYONE</Button>
                     <StackPanel Orientation="Vertical" Grid.Row="2">
                         <TextBlock></TextBlock>
                         <TextBlock FontSize="30">Friends Requests:</TextBlock>
-                        <ListBox x:Name="RequestsListBox"  ItemsSource="{Binding Requests}">
+                        <ListBox x:Name="RequestsListBox"  ItemsSource="{Binding Requests}" SelectionChanged="RequestsListBox_SelectionChanged">
                             <ListBox.ItemTemplate >
                                 <DataTemplate>
-                                    <Button HorizontalAlignment="Stretch" Padding="0" BorderThickness="0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" MinWidth="456" Height="90">
-                                        <Grid>
+                                    <Grid HorizontalAlignment="Stretch" MinWidth="456" Height="90">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
@@ -92,16 +136,15 @@
                                             <TextBlock Grid.Row="0" Text="{Binding Content}" FontSize="32" VerticalAlignment="Bottom"></TextBlock>
                                             <TextBlock Grid.Row="1" Text="{Binding Time}" FontSize="16" VerticalAlignment="Top"></TextBlock>
                                         </Grid>
-                                    </Button>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
-                        </ListBox>
+                        </ListBox>                        
                     </StackPanel>
                 </Grid>
             </phone:PivotItem>
+            
             <!--Pivot item three-->
             <phone:PivotItem Header="ME">
-                <StackPanel Orientation="Vertical">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="3*"/>
@@ -109,45 +152,49 @@
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="3*"/>
                         </Grid.RowDefinitions>
-                        <TextBlock Grid.Column="0" Grid.Row="0" FontSize="36">Hide Me</TextBlock>
-                        <toolkit:ToggleSwitch Grid.Column="1" Grid.Row="0" VerticalAlignment="Top"></toolkit:ToggleSwitch>
-                    </Grid>
-                    <TextBlock FontSize="30">Manage Friends</TextBlock>
-                    <ListBox x:Name="FriendsManageListBox"  ItemsSource="{Binding Friends}" Grid.Row="1" HorizontalContentAlignment="Stretch">
+                        <toolkit:ToggleSwitch Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" VerticalAlignment="Top" Header="Hide Me"></toolkit:ToggleSwitch>
+                    <TextBlock FontSize="30" Grid.Row="1">Manage Friends</TextBlock>
+                    <ListBox x:Name="FriendsManageListBox"  ItemsSource="{Binding AllGroup.Friends}" Grid.Row="2" Grid.ColumnSpan="2" HorizontalContentAlignment="Stretch" SelectionChanged="FriendsManageListBox_SelectionChanged">
                         <ListBox.ItemTemplate >
                             <DataTemplate>
-                                <Button HorizontalAlignment="Stretch" Padding="0" BorderThickness="0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" MinWidth="456" Height="100">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="100"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="100"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="2*"/>
-                                            <RowDefinition Height="*"/>
-                                        </Grid.RowDefinitions>
-                                        <Image Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Source="{Binding ImagePath}"></Image>
-                                        <TextBlock Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Text="{Binding Name}" FontSize="32" VerticalAlignment="Bottom"></TextBlock>
-                                        <TextBlock Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding Email}" FontSize="16" VerticalAlignment="Bottom"></TextBlock>
-                                        <TextBlock Grid.Column="3" Grid.Row="0" Grid.RowSpan="2"  VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="60">⇒</TextBlock>
-                                    </Grid>
-                                </Button>
+                                <Grid HorizontalAlignment="Stretch" MinWidth="456" Height="100">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="100"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="70"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="5"/>
+                                        <RowDefinition Height="2*"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="5"/>
+                                    </Grid.RowDefinitions>
+                                    <Image Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" Source="{Binding ImagePath}"></Image>
+                                    <TextBlock Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding NickName}" FontSize="32" VerticalAlignment="Bottom"></TextBlock>
+                                    <TextBlock Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding Email}" FontSize="16" VerticalAlignment="Bottom"></TextBlock>
+                                    <Image Grid.Column="3" Grid.Row="1" Grid.RowSpan="2"  VerticalAlignment="Center" HorizontalAlignment="Center" Source="/Assets/Circle&amp;Arrow.png"></Image>
+                                </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
-                </StackPanel>
+                </Grid>                    
             </phone:PivotItem>
-
         </phone:Pivot>
-
     </Grid>
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar Mode="Minimized" Opacity="1.0" IsMenuEnabled="False" IsVisible="True">
-            <shell:ApplicationBarIconButton IconUri="/Assets/locate.png" Text="Me" Click="ApplicationBarIconButton_Click"/>
+        <shell:ApplicationBar Mode="Default" Opacity="1.0" IsMenuEnabled="True" IsVisible="True">
+            <shell:ApplicationBarIconButton IconUri="/Assets/locate.png" Text="Me" Click="ApplicationBarIconLocateMeButton_Click"/>
+            <shell:ApplicationBarIconButton IconUri="/Assets/showall.png" Text="Set View" Click="ApplicationBarIconShowAllButton_Click"/>
+            <shell:ApplicationBarIconButton IconUri="/Assets/switch.png" Text="Groups" Click="ApplicationBarIconSwitchGroupButton_Click"/>
+            <shell:ApplicationBarIconButton IconUri="/Assets/refresh.png" Text="Refresh" Click="ApplicationBarIconRefreshButton_Click"/>
+            <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem Text="Add a group"/>
+                <shell:ApplicationBarMenuItem Text="Remove a group"/>
+            </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 </phone:PhoneApplicationPage>

@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.Phone.Maps.Controls;
+using System;
 using System.ComponentModel;
+using System.Device.Location;
 using System.Diagnostics;
 using System.Net;
 using System.Windows;
@@ -12,19 +14,89 @@ namespace GPSWithFriends.ViewModels
 {
     public class Friend : INotifyPropertyChanged
     {
-        private string name;
-        public string Name
+        public Friend()
+        {
+            nickName = "";
+            status = "";
+            distance = "";
+            email = "";
+            isFriend = false;
+            imagePath = "";
+            latitude = 181;
+            longitude = 181;
+            if (this.isLocated())
+            {
+                CalculteGeoCoordinate();
+                CalculateDistance();
+            }
+        }
+
+        public void CalculateDistance()
+        {
+            double temp;
+            if (App.ViewModel.Me.isLocated() && this.isLocated())
+            {
+                temp = this.Geocoordinate.GetDistanceTo(App.ViewModel.Me.Geocoordinate);
+                this.distance = ConvertDoubleToDistance(temp);
+            }
+        }
+
+        private string ConvertDoubleToDistance(double temp)
+        {
+            if (temp < 0)
+                return "???";
+            else if (temp < 1000)
+                return ((int)temp).ToString() + " m";
+            else return (temp / 1000).ToString("f1") + " km";
+        }
+
+        private void CalculteGeoCoordinate()
+        {
+            if (latitude > -90 && latitude < 90 && longitude > -180 && longitude < 180)
+            {
+                ///Geocoordinate.Latitude = latitude;
+                //Geocoordinate.Longitude = longitude;
+                Geocoordinate = new GeoCoordinate(latitude, longitude);
+            }
+        }
+
+        public bool isLocated()
+        {
+            if (latitude < 90 && longitude < 180 && latitude > -90 && longitude > -180)
+                return true;
+            else return false;
+        }
+
+        private string nickName;
+        public string NickName
         {
             get
             {
-                return name;
+                return nickName;
             }
             set
             {
-                if (value != name)
+                if (value != nickName)
                 {
-                    name = value;
-                    NotifyPropertyChanged("Name");
+                    nickName = value;
+                    NotifyPropertyChanged("NickName");
+                }
+            }
+        }
+
+        private int uid;
+        public int Uid
+        {
+            get
+            {
+                return uid;
+            }
+            set
+            {
+                if (value != uid)
+                {
+                    uid = value;
+                    NotifyPropertyChanged("Uid");
                 }
             }
         }
@@ -114,7 +186,68 @@ namespace GPSWithFriends.ViewModels
             }
         }
 
+        private double latitude;
+        public double Latitude
+        {
+            get
+            {
+                return latitude;
+            }
+            set
+            {
+                if (value != latitude)
+                {
+                    latitude = value;
+                    NotifyPropertyChanged("Latitude");
+                    if (this.isLocated())
+                    {
+                        CalculteGeoCoordinate();
+                        CalculateDistance();
+                    }
+                }
+            }
+        }
 
+        private double longitude;
+        public double Longitude
+        {
+            get
+            {
+                return longitude;
+            }
+            set
+            {
+                if (value != longitude)
+                {
+                    longitude = value;
+                    NotifyPropertyChanged("Longitude");
+                    if (this.isLocated())
+                    {
+                        CalculteGeoCoordinate();
+                        CalculateDistance();
+                    }
+                }
+            }
+        }
+
+        private GeoCoordinate geocoordinate;
+        [TypeConverter(typeof(GeoCoordinateConverter))]
+        public GeoCoordinate Geocoordinate
+        {
+            get
+            {
+                return geocoordinate;
+            }
+            set
+            {
+                if (value != geocoordinate)
+                {
+                    geocoordinate = value;
+                    NotifyPropertyChanged("Geocoordinate");
+                }
+            }
+
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged(String propertyName)
