@@ -613,45 +613,141 @@ namespace GPSWithFriends
             }
         }
 
-        private void ApplicationBarIconFriendManageAddButton_Click(object sender, EventArgs e)
+        private void ApplicationBarIconFriendManageAddGroupButton_Click(object sender, EventArgs e)
+        {
+            //check group quantity
+            //if >=5, no new group
+            if (App.ViewModel.GroupInfos.Count >= 5)
+            {
+                MessageBox.Show("Group quantity is limited to be less than 5.");
+            }
+            else
+            {
+                //get group name
+                TextBox groupInputBox = new TextBox();
+                TiltEffect.SetIsTiltEnabled(groupInputBox, true);
+                CustomMessageBox messageBox = new CustomMessageBox()
+                {
+                    Caption = "Group Name:",
+                    Message = "Please input the new group name.",
+                    Content = groupInputBox,
+                    LeftButtonContent = "Add",
+                    RightButtonContent = "Cancel",
+                    IsFullScreen = false,
+                };
+
+                messageBox.Dismissed += (s1, e1) =>
+                {
+                    switch (e1.Result)
+                    {
+                        case CustomMessageBoxResult.LeftButton:
+                            string result = "";
+                            result = groupInputBox.Text;
+                            bool isExisted = false;
+                            foreach (var groupinfo in App.ViewModel.GroupInfos)
+                            {
+                                if (groupinfo.Title.Equals(result))
+                                    isExisted = true;
+                            }
+                            if (result.Length > 0 && !isExisted)  //make sure there is input and the no repeated name
+                            //if!=null
+                            {
+                                //add group
+                                App.ViewModel.GroupInfos.Add(new GroupInfo(result, null));
+                                //group refresh
+                                App.ViewModel.RefreshGroup();
+                                //upload group info
+                            }
+                            else
+                                MessageBox.Show("Input is empty or there has already been a group with that name.");
+                            break;
+                        case CustomMessageBoxResult.RightButton:
+                            // Do something.
+                            break;
+                        case CustomMessageBoxResult.None:
+                            // Do something.
+                            break;
+                        default:
+                            break;
+                    }
+                };
+
+                messageBox.Show();
+            }
+        }
+
+        private void ApplicationBarIconFriendManageRemoveGroupButton_Click(object sender, EventArgs e)
         {
             //get group name
-            TextBox groupInputBox = new TextBox();
-            TiltEffect.SetIsTiltEnabled(groupInputBox, true);
+            ListPicker groupListPicker = new ListPicker();
+            groupListPicker.ItemsSource = App.ViewModel.Groups;
+            TiltEffect.SetIsTiltEnabled(groupListPicker, true);
             CustomMessageBox messageBox = new CustomMessageBox()
             {
-                Caption = "Group Name:",
-                Message = "Please input the new group name.",
-                Content = groupInputBox,
-                LeftButtonContent = "Add",
+                Caption = "Select a group:",
+                Message = "Please select a group to remove",
+                Content = groupListPicker,
+                LeftButtonContent = "Remove",
                 RightButtonContent = "Cancel",
                 IsFullScreen = false,
             };
 
-            messageBox.Dismissed += (s1, e1) =>
+            messageBox.Dismissing += (s1, e1) =>
             {
-                switch (e1.Result)
+                if (groupListPicker.ListPickerMode == ListPickerMode.Expanded)
+                {
+                    e1.Cancel = true;
+                }
+            };
+
+            messageBox.Dismissing += (s1, e2) =>
+            {
+                if (groupListPicker.ListPickerMode == ListPickerMode.Full)
+                {
+                    e2.Cancel = true;
+                }
+            };
+
+            messageBox.Dismissed += (s1, e3) =>
+            {
+                switch (e3.Result)
                 {
                     case CustomMessageBoxResult.LeftButton:
-                        string result = "";
-                        result = groupInputBox.Text;
-                        bool isExisted = false;
-                        foreach (var groupinfo in App.ViewModel.GroupInfos)
+                        //upgrouped can not be removed
+                        if (App.ViewModel.Groups[groupListPicker.SelectedIndex].Title.Equals("My Friends"))
                         {
-                            if (groupinfo.Title.Equals(result))
-                                isExisted = true;
-                        }
-                        if (result.Length > 0 && !isExisted)  //make sure there is input and the no repeated name
-                        //if!=null
-                        {
-                            //add group
-                            App.ViewModel.GroupInfos.Add(new GroupInfo(result, null));
-                            //group refresh
-                            App.ViewModel.RefreshGroup();
-                            //upload group info
+                            MessageBox.Show("This group cannot be removed.");
                         }
                         else
-                            MessageBox.Show("Input is empty or there has already been a group with that name.");
+                        {
+                            //Double check
+                            MessageBoxResult result = MessageBox.Show("Would you really like to remove this group?", "Remove group", MessageBoxButton.OKCancel);
+
+                            if (result == MessageBoxResult.OK)
+                            {
+                                //remove group
+                                //remove all members toMy Friends
+                                foreach (var friend in App.ViewModel.Groups[groupListPicker.SelectedIndex])
+                                {
+                                    friend.Group = "My Friends";
+                                }
+                                //find the groupinfo to be removed
+                                GroupInfo toBeRemovedGroupInfo = null;
+                                foreach (var groupinfo in App.ViewModel.GroupInfos)
+                                {
+                                    if (groupinfo.Title.Equals(App.ViewModel.Groups[groupListPicker.SelectedIndex].Title))
+                                    {
+                                        toBeRemovedGroupInfo = groupinfo;
+                                        break;
+                                    }
+                                }
+                                //remove groupinfo
+                                App.ViewModel.GroupInfos.Remove(toBeRemovedGroupInfo);
+                                //group refresh
+                                App.ViewModel.RefreshGroup();
+                                //upload group info
+                            }                            
+                        }
                         break;
                     case CustomMessageBoxResult.RightButton:
                         // Do something.
@@ -665,11 +761,6 @@ namespace GPSWithFriends
             };
 
             messageBox.Show();
-        }
-
-        private void ApplicationBarIconFriendManageRemoveButton_Click(object sender, EventArgs e)
-        {
-
         }
 
         //void proxy_removeMemberCompleted(object sender, Server.removeMemberCompletedEventArgs e)

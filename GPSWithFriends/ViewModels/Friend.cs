@@ -24,7 +24,7 @@ namespace GPSWithFriends.ViewModels
             imagePath = "";
             latitude = 181;
             longitude = 181;
-            group = " Ungrouped";
+            group = "My Friends";
             if (this.isLocated())
             {
                 CalculteGeoCoordinate();

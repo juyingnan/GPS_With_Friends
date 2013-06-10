@@ -66,7 +66,8 @@
                         HorizontalAlignment="Left"
                         Margin="6" 
                         Background="{StaticResource PhoneAccentBrush}" 
-                        CornerRadius="20">
+                        Opacity="0.5"
+                        CornerRadius="0">
                 <TextBlock Text="{Binding Title}"  
                            FontSize="32" 
                            Padding="15,3" 
@@ -77,7 +78,7 @@
         </DataTemplate>
 
         <DataTemplate x:Key="FriendLongListSelectorDataTemplate">
-            <Grid HorizontalAlignment="Stretch" MinWidth="456" Height="80">
+            <Grid HorizontalAlignment="Stretch" MinWidth="456" Height="60">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="100"/>
                     <ColumnDefinition Width="*"/>
@@ -87,12 +88,12 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="5"/>
                     <RowDefinition Height="2*"/>
-                    <RowDefinition Height="*"/>
+                    <!--<RowDefinition Height="*"/>-->
                     <RowDefinition Height="5"/>
                 </Grid.RowDefinitions>
                 <Image Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" Source="{Binding ImagePath}"></Image>
                 <TextBlock Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding NickName}" FontSize="32" VerticalAlignment="Bottom"></TextBlock>
-                <TextBlock Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding Status}" FontSize="16" VerticalAlignment="Bottom"></TextBlock>
+                <!--<TextBlock Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding Status}" FontSize="16" VerticalAlignment="Bottom"></TextBlock>-->
                 <TextBlock Grid.Column="2" Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="2" Text="{Binding Distance}" FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Right" Padding="0,0,20,0"></TextBlock>
                 <toolkit:ContextMenuService.ContextMenu>
                     <toolkit:ContextMenu toolkit:TiltEffect.IsTiltEnabled="True">
@@ -106,16 +107,17 @@
         <Style x:Key="PivotHeaderBackgroundBoader" TargetType="Border">
             <Setter Property="Height" Value="60"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>
-            <Setter Property="Margin" Value="-11,10,-11,0"/>
-            <Setter Property="Background">
+            <Setter Property="Margin" Value="-30,10,0,0"/>
+            <!--<Setter Property="Margin" Value="-11,10,-11,0"/>-->
+            <!--<Setter Property="Background">
                 <Setter.Value>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <GradientStop Color="{StaticResource PhoneAccentColor}" Offset="0"/>
-                        <GradientStop Color="{StaticResource PhoneAccentColor}" Offset="0.4"/>
+                        <GradientStop Color="{StaticResource PhoneAccentColor}" Offset="0.1"/>
                         <GradientStop Color="White" Offset="1"/>
                     </LinearGradientBrush>
                 </Setter.Value>
-            </Setter>
+            </Setter>-->
             <Setter Property="Padding" Value="30,0,30,0"/>
         </Style>    
         
@@ -177,12 +179,12 @@
 
         <shell:ApplicationBar x:Key="AppBar_Me" Mode="Default" Opacity="1.0" IsMenuEnabled="False" IsVisible="True"  BackgroundColor="{StaticResource PhoneAccentColor}">
             <shell:ApplicationBarIconButton IconUri="/Assets/AppBar/refresh.png" Text="Refresh" Click="ApplicationBarIconFriendManageRefreshButton_Click"/>
-            <shell:ApplicationBarIconButton IconUri="/Assets/AppBar/add.png" Text="Refresh" Click="ApplicationBarIconFriendManageAddButton_Click"/>
-            <shell:ApplicationBarIconButton IconUri="/Assets/AppBar/minus.png" Text="Refresh" Click="ApplicationBarIconFriendManageRemoveButton_Click"/>
+            <shell:ApplicationBarIconButton IconUri="/Assets/AppBar/add.png" Text="Add Group" Click="ApplicationBarIconFriendManageAddGroupButton_Click"/>
+            <shell:ApplicationBarIconButton IconUri="/Assets/AppBar/minus.png" Text="Remove Group" Click="ApplicationBarIconFriendManageRemoveGroupButton_Click"/>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.Resources>
 
-    <Grid x:Name="LayoutRoot" Background="Transparent">
+    <Grid x:Name="LayoutRoot" Background="Azure">
         <!--Pivot Control-->
         <phone:Pivot Title="GPS With Friends" SelectionChanged="Pivot_SelectionChanged" Margin="0,-50,0,0">
             <!--Pivot item Home-->

@@ -110,7 +110,7 @@ namespace GPSWithFriends.ViewModels
             this.Requests.Add(new Request() { Content = "Kevin wants to friend you", Time = "7/5/2013 10:21", SenderName = "Kevin", SenderEmail = "Kevin@163.com" });
 
             //get group info from web
-            GroupInfos.Add(new GroupInfo(" Ungrouped", new int[] { 1, 2 }));
+            GroupInfos.Add(new GroupInfo("My Friends", new int[] { 1, 2 }));
             GroupInfos.Add(new GroupInfo("Classmates", new int[] { 3 }));
             GroupInfos.Add(new GroupInfo("Other", new int[] { 4 }));
             GroupInfos.Add(new GroupInfo("Test", null));
@@ -172,15 +172,15 @@ namespace GPSWithFriends.ViewModels
                 }
             }
 
-            //check GroupInfos contains " Ungrouped"
+            //check GroupInfos contains "My Friends"
             bool isContainedUngrouped = false;
             foreach (var item in GroupInfos)
             {
-                if (item.Title.Equals(" Ungrouped"))
+                if (item.Title.Equals("My Friends"))
                     isContainedUngrouped = true;
             }
             if (!isContainedUngrouped)
-                GroupInfos.Add(new GroupInfo(" Ungrouped", null));
+                GroupInfos.Add(new GroupInfo("My Friends", null));
 
             //Add empty froups
             foreach (var groupInfo in GroupInfos)
