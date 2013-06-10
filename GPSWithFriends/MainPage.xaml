@@ -13,7 +13,7 @@
     d:DataContext="{d:DesignData SampleData/MainViewModelSampleData.xaml}"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
-    Foreground="{StaticResource PhoneForegroundBrush}"
+    Foreground="Black"
     SupportedOrientations="Portrait"  Orientation="Portrait"
     shell:SystemTray.IsVisible="False" Loaded="PhoneApplicationPage_Loaded"
     toolkit:TiltEffect.IsTiltEnabled="True"
@@ -49,7 +49,7 @@
                     <DataTemplate>
                         <Border Background="{StaticResource PhoneAccentBrush}"
                                 Width="480" Height="100" Margin="6" >
-                        <TextBlock Text="{Binding Title}"
+                            <TextBlock Text="{Binding Title}"
                                    FontFamily="{StaticResource PhoneFontFamilySemiBold}"
                                    FontSize="32" Padding="3"
                                    Foreground="White"
@@ -62,7 +62,7 @@
         </Style>
 
         <DataTemplate x:Key="groupHeaderTemplate">
-                <Border Height="40"
+            <Border Height="40"
                         HorizontalAlignment="Left"
                         Margin="6" 
                         Background="{StaticResource PhoneAccentBrush}" 
@@ -119,8 +119,8 @@
                 </Setter.Value>
             </Setter>-->
             <Setter Property="Padding" Value="30,0,30,0"/>
-        </Style>    
-        
+        </Style>
+
         <Style x:Key="NoBorderBigButtonStyle" TargetType="Button">
             <Setter Property="Padding" Value="0,4,0,0"/>
             <Setter Property="FontFamily" Value="Segoe WP SemiLight"/>
@@ -184,17 +184,25 @@
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.Resources>
 
-    <Grid x:Name="LayoutRoot" Background="Azure">
+    <Grid x:Name="LayoutRoot">
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="White" Offset="0"/>
+                <GradientStop Color="Azure" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
         <!--Pivot Control-->
         <phone:Pivot Title="GPS With Friends" SelectionChanged="Pivot_SelectionChanged" Margin="0,-50,0,0">
             <!--Pivot item Home-->
             <phone:PivotItem>
-                <phone:PivotItem.Header>
-                    <Border Style="{StaticResource PivotHeaderBackgroundBoader}">
-                        <TextBlock FontSize="48" Text="Home"/>
-                    </Border>
+                <phone:PivotItem.Header>Home
+                    <!--<phone:PivotItem.Header>
+                        <Border Style="{StaticResource PivotHeaderBackgroundBoader}">
+                            <TextBlock FontSize="48" Text="Invite"/>
+                        </Border>
+                    </phone:PivotItem.Header>-->
                 </phone:PivotItem.Header>
-                <Grid>
+                <Grid Margin="0,-35,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
@@ -202,34 +210,38 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <StackPanel Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Horizontal" Canvas.ZIndex="1" >
+                    <StackPanel Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Bottom" Orientation="Horizontal" Canvas.ZIndex="1" >
                         <Image Source="/Assets/AppBar/add.png" Height="60" Width="60" Tap="Add_Image_Tap" Opacity="0.7"></Image>
                         <Image Source="/Assets/AppBar/minus.png" Height="60" Width="60" Tap="Minus_Image_Tap" Opacity="0.7"></Image>
                     </StackPanel>
-                    <maps:Map Grid.Row="0" x:Name="MyMap" Center="39, 116"  ZoomLevel="14" Pitch="45" Margin="0,-25,0,0">
+                    <maps:Map Grid.Row="0" x:Name="MyMap" Center="39, 116"  ZoomLevel="14" Pitch="45" >
                         <maptk:MapExtensions.Children>
                             <maptk:MapItemsControl  ItemsSource="{Binding Friends}" Name="FriendsLocationMarkerList">
                                 <maptk:MapItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <maptk:Pushpin Visibility="Visible" GeoCoordinate="{Binding Geocoordinate}" Content="{Binding NickName}" Background="{StaticResource PhoneAccentBrush}"/>
+                                        <maptk:Pushpin Visibility="{Binding Geocoordinate, Converter={StaticResource geo2visConverter}}"
+                                                       GeoCoordinate="{Binding Geocoordinate}" 
+                                                       Content="{Binding NickName}" 
+                                                       Background="{StaticResource PhoneAccentBrush}" 
+                                                       Tap="Pushpin_Tap"/>
                                     </DataTemplate>
                                 </maptk:MapItemsControl.ItemTemplate>
                             </maptk:MapItemsControl>
                             <maptk:UserLocationMarker DataContext="Me" GeoCoordinate="{Binding Geocoordinate}" Name="MyLocationMarker" Visibility="Collapsed"></maptk:UserLocationMarker>
                         </maptk:MapExtensions.Children>
                     </maps:Map>
-                    <Border Grid.Row="0"  VerticalAlignment="Bottom" Background="{StaticResource PhoneAccentBrush}" Opacity="0.5" OpacityMask="White" CornerRadius="10" Padding="20,0,20,0">
+                    <Border Grid.Row="0"  VerticalAlignment="Top" Background="{StaticResource PhoneAccentBrush}" Opacity="0.5" OpacityMask="White" CornerRadius="0" Padding="20,0,20,0">
                         <TextBlock  Name="GPSLocationTextblock" Foreground="White">Location:</TextBlock>
                     </Border>
                     <!--Friend List-->
                     <phone:LongListSelector  x:Name="FriendsListBox" 
                                              ItemsSource="{Binding Groups}" 
                                              Grid.Row="1" HorizontalContentAlignment="Stretch" 
-                                             SelectionChanged="FriendsListBox_SelectionChanged" 
+                                             Tap="FriendsListBox_Tap"
                                              toolkit:TiltEffect.IsTiltEnabled="True" 
                                              IsGroupingEnabled="true" 
                                              LayoutMode="List" 
-                                             HideEmptyGroups="False" 
+                                             HideEmptyGroups="True" 
                                              GroupHeaderTemplate="{StaticResource groupHeaderTemplate}"
                                              ItemTemplate="{StaticResource FriendLongListSelectorDataTemplate}"
                                              JumpListStyle="{StaticResource LongListSelectorJumpListStyle}"/>
@@ -238,11 +250,7 @@
 
             <!--Pivot item Invite-->
             <phone:PivotItem>
-                <phone:PivotItem.Header>
-                    <Border Style="{StaticResource PivotHeaderBackgroundBoader}">
-                        <TextBlock FontSize="48" Text="Invite"/>
-                    </Border>
-                </phone:PivotItem.Header>
+                <phone:PivotItem.Header>Invite</phone:PivotItem.Header>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -261,26 +269,22 @@
                         <ListBox x:Name="RequestsListBox" 
                                  ItemsSource="{Binding Requests}" 
                                  ItemTemplate="{StaticResource RequestDataTemplate}"
-                                 SelectionChanged="RequestsListBox_SelectionChanged"/>
+                                 Tap="RequestsListBox_Tap"/>
                     </StackPanel>
                 </Grid>
             </phone:PivotItem>
-            
+
             <!--Pivot item Me-->
             <phone:PivotItem>
-                <phone:PivotItem.Header>
-                    <Border Style="{StaticResource PivotHeaderBackgroundBoader}">
-                        <TextBlock FontSize="48" Text="Me"/>
-                    </Border>
-                </phone:PivotItem.Header>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="50"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
+                <phone:PivotItem.Header>Me</phone:PivotItem.Header>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
                     <StackPanel Grid.Column="0" Grid.Row="0">
                         <toolkit:ToggleSwitch  VerticalAlignment="Top" Header="Hide Me" Margin="0,-20,0,-30"></toolkit:ToggleSwitch>
                         <Button Name="ChangePhotoButton" Style="{StaticResource NoBorderBigButtonStyle}" FontSize="40">Change my Photo</Button>
@@ -290,7 +294,7 @@
                                      HorizontalAlignment="Left"
                                      Tap="LogOutButton_Tap"
                                      >Log out</HyperlinkButton>
-                    </StackPanel>  
+                    </StackPanel>
                     <TextBlock FontSize="30" Grid.Row="1">Manage Friends</TextBlock>
                     <phone:LongListSelector  x:Name="FriendsManageListBox" 
                                              ItemsSource="{Binding Groups}" 
@@ -301,16 +305,16 @@
                                              LayoutMode="List" 
                                              HideEmptyGroups="False" 
                                              ItemTemplate="{StaticResource FriendManagementDataTemplate}"
-                                             SelectionChanged="FriendsManageListBox_SelectionChanged"
+                                             Tap="FriendsManageListBox_Tap"
                                              GroupHeaderTemplate="{StaticResource groupHeaderTemplate}"
                                              JumpListStyle="{StaticResource LongListSelectorJumpListStyle}"/>
-                    </Grid>                    
+                </Grid>
             </phone:PivotItem>
         </phone:Pivot>
     </Grid>
-    
+
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar Mode="Default" Opacity="1.0" IsMenuEnabled="True" IsVisible="True">            
+        <shell:ApplicationBar Mode="Default" Opacity="1.0" IsMenuEnabled="True" IsVisible="True">
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 </phone:PhoneApplicationPage>

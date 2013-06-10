@@ -29,6 +29,13 @@ namespace GPSWithFriends
 {
     public partial class MainPage : PhoneApplicationPage
     {
+        const int MOVEMENT_THRESHOLD = 50;
+        const int TEST_TIMER_TIMERSPAN = 3;
+        const int MAP_RECTANGLE_THICKNESS = 10;
+        const int MAP_MAX_ZOOMLEVEL = 19;
+        const int MAP_MIN_ZOOMLEVEL = 1;
+        const string DEFAULT_GROUP_NAME = "My Friends";
+
         //GPS
         Geolocator myGeoLocator = new Geolocator();
         Friend Me = App.ViewModel.Me;
@@ -54,7 +61,7 @@ namespace GPSWithFriends
             //BuildLocalizedApplicationBar();
 
             myGeoLocator.DesiredAccuracy = PositionAccuracy.High;
-            myGeoLocator.MovementThreshold = 50;
+            myGeoLocator.MovementThreshold = MOVEMENT_THRESHOLD;
 
             //map extension controls data binding
             this.FriendsLocationMarkerList.ItemsSource = App.ViewModel.Friends;
@@ -66,7 +73,7 @@ namespace GPSWithFriends
         private void TimerInitiate()
         {
             testTimer.Tick += testTimer_Tick;
-            testTimer.Interval = TimeSpan.FromSeconds(3);
+            testTimer.Interval = TimeSpan.FromSeconds(TEST_TIMER_TIMERSPAN);
         }
 
         void testTimer_Tick(object sender, EventArgs e)
@@ -137,8 +144,8 @@ namespace GPSWithFriends
             try
             {
                 Geoposition position = await myGeoLocator.GetGeopositionAsync(maximumAge: TimeSpan.FromMinutes(1), timeout: TimeSpan.FromSeconds(30));
-                GPSLocationTextblock.Text = "Location: " + string.Format("Lat: {0:0.0000}, Long: {1:0.0000}, Acc: {2}m",
-                 position.Coordinate.Latitude, position.Coordinate.Longitude, position.Coordinate.Accuracy);
+                GPSLocationTextblock.Text = "Location of Me: " + string.Format("Lat: {0:0.0000}, Long: {1:0.0000}",
+                 position.Coordinate.Latitude, position.Coordinate.Longitude);
                 Me.Latitude = position.Coordinate.Latitude;
                 Me.Longitude = position.Coordinate.Longitude;
             }
@@ -172,31 +179,45 @@ namespace GPSWithFriends
             }
         }
 
-        //void proxy_setLocationCompleted(object sender, Server.setLocationCompletedEventArgs e)
-        //{
-        //    //throw new NotImplementedException();
-        //}
-
-        /// <summary>
-        /// Click a Listbox Item and the map will focus on that friend
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void FriendsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void FriendsListBox_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            //get index
-            IList addedItems = e.AddedItems;
-            if (addedItems == null || addedItems.Count < 1)
+            Friend friend = ((sender as LongListSelector).SelectedItem as Friend);
+            if (friend != null)
             {
-                return;
+                if (friend.isLocated())
+                {
+                    GPSLocationTextblock.Text = "Location of " + friend.NickName + ": " + string.Format("Lat: {0:0.00}, Long: {1:0.00}", friend.Latitude, friend.Longitude);
+                    MyMap.SetView(new GeoCoordinate(friend.Latitude, friend.Longitude), MyMap.ZoomLevel, MapAnimationKind.Parabolic);
+                }
             }
 
-            Friend friend = addedItems[0] as Friend;
-            if (friend.isLocated())
-            {
-                GPSLocationTextblock.Text = "Location: " + string.Format("Lat: {0:0.0000}, Long: {1:0.0000}",friend.Latitude, friend.Longitude);
-                MyMap.SetView(new GeoCoordinate(friend.Latitude, friend.Longitude), MyMap.ZoomLevel, MapAnimationKind.Parabolic);
-            }
+            //void proxy_setLocationCompleted(object sender, Server.setLocationCompletedEventArgs e)
+            //{
+            //    //throw new NotImplementedException();
+            //}
+
+            ///// <summary>
+            ///// Click a Listbox Item and the map will focus on that friend
+            ///// </summary>
+            ///// <param name="sender"></param>
+            ///// <param name="e"></param>
+            //private void FriendsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+            //{
+            //    //get index
+            //    IList addedItems = e.AddedItems;
+            //    if (addedItems == null || addedItems.Count < 1)
+            //    {
+            //        return;
+            //    }
+
+            //    Friend friend = addedItems[0] as Friend;
+            //    if (friend.isLocated())
+            //    {
+            //        GPSLocationTextblock.Text = "Location of "+friend.NickName+": " + string.Format("Lat: {0:0.00}, Long: {1:0.00}",friend.Latitude, friend.Longitude);
+            //        MyMap.SetView(new GeoCoordinate(friend.Latitude, friend.Longitude), MyMap.ZoomLevel, MapAnimationKind.Parabolic);
+            //    }
+            //}
+
         }
 
         /// <summary>
@@ -314,20 +335,28 @@ namespace GPSWithFriends
         //    }
         //}
 
-        /// <summary>
-        /// Select a request to handle
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void RequestsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void RequestsListBox_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            ListBox listbox = sender as ListBox;
-            int index = listbox.SelectedIndex;            
-            if (index > -1 && index < App.ViewModel.Requests.Count)
+            Request request = (sender as ListBox).SelectedItem as Request;
+            if (request != null)
             {
-                Request request = App.ViewModel.Requests[index];
                 RequestHandle(request);
             }
+            ///// <summary>
+            ///// Select a request to handle
+            ///// </summary>
+            ///// <param name="sender"></param>
+            ///// <param name="e"></param>
+            //private void RequestsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+            //{
+            //    ListBox listbox = sender as ListBox;
+            //    int index = listbox.SelectedIndex;            
+            //    if (index > -1 && index < App.ViewModel.Requests.Count)
+            //    {
+            //        Request request = App.ViewModel.Requests[index];
+
+            //    }
+            //}
         }
 
         public void RequestHandle(Request request)
@@ -378,29 +407,40 @@ namespace GPSWithFriends
                     Email = request.SenderEmail,
                     NickName = request.SenderName,
                     Distance="???",
-                    ImagePath = "/Assets/fakePor.png"
+                    ImagePath = "/Assets/fakePor.png",
+                    Uid = App.ViewModel.Friends.Count+1
                 });
+                App.ViewModel.RefreshGroup();
                 //throw new NotImplementedException();
             }
         }
 
-        /// <summary>
-        /// Select a friend to see detail page
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void FriendsManageListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void FriendsManageListBox_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            //get index
-            IList addedItems = e.AddedItems;
-            if (addedItems == null || addedItems.Count < 1)
+            App.ViewModel.CurrentFriend = (sender as LongListSelector).SelectedItem as Friend;
+            if (App.ViewModel.CurrentFriend != null)
             {
-                return;
+                this.NavigationService.Navigate(new Uri("/DetailPage.xaml", UriKind.Relative));
             }
 
-            App.ViewModel.CurrentFriend = addedItems[0] as Friend;
-            this.NavigationService.Navigate(new Uri("/DetailPage.xaml", UriKind.Relative));
-        }    
+            ///// <summary>
+            ///// Select a friend to see detail page
+            ///// </summary>
+            ///// <param name="sender"></param>
+            ///// <param name="e"></param>
+            //private void FriendsManageListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+            //{
+            //    //get index
+            //    IList addedItems = e.AddedItems;
+            //    if (addedItems == null || addedItems.Count < 1)
+            //    {
+            //        return;
+            //    }
+
+            //    App.ViewModel.CurrentFriend = addedItems[0] as Friend;
+            //    this.NavigationService.Navigate(new Uri("/DetailPage.xaml", UriKind.Relative));
+            //}
+        }
 
         /// <summary>
         /// Get the route from me to a friend
@@ -454,7 +494,7 @@ namespace GPSWithFriends
 
                 //set the map view to fit the route
                 LocationRectangle locationRectangle = LocationRectangle.CreateBoundingRectangle(MyRoute.Geometry);
-                this.MyMap.SetView(locationRectangle, new Thickness(10));
+                this.MyMap.SetView(locationRectangle, new Thickness(MAP_RECTANGLE_THICKNESS));
             }
         }
 
@@ -497,7 +537,7 @@ namespace GPSWithFriends
 
             LocationRectangle locationRectangle = LocationRectangle.CreateBoundingRectangle(from Friend in temp select Friend.Geocoordinate);
 
-            this.MyMap.SetView(locationRectangle, new Thickness(20));
+            this.MyMap.SetView(locationRectangle, new Thickness(MAP_RECTANGLE_THICKNESS));
         }
 
         /// <summary>
@@ -508,9 +548,9 @@ namespace GPSWithFriends
         private void Add_Image_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {   
             //make sure zoomlevel <=19
-            if (MyMap.ZoomLevel <=18)
+            if (MyMap.ZoomLevel + 1 <= MAP_MAX_ZOOMLEVEL)
                 MyMap.ZoomLevel += 1;
-            MyMap.SetView(MyMap.Center, MyMap.ZoomLevel, MapAnimationKind.Linear);
+            MyMap.SetView(MyMap.Center, MyMap.ZoomLevel, MapAnimationKind.Parabolic);
         }
 
         /// <summary>
@@ -521,9 +561,9 @@ namespace GPSWithFriends
         private void Minus_Image_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             //make sure zoomlevel >=1
-            if (MyMap.ZoomLevel >= 2)
+            if (MyMap.ZoomLevel - 1 >= MAP_MIN_ZOOMLEVEL)
                 MyMap.ZoomLevel -= 1;
-            MyMap.SetView(MyMap.Center, MyMap.ZoomLevel, MapAnimationKind.Linear);
+            MyMap.SetView(MyMap.Center, MyMap.ZoomLevel, MapAnimationKind.Parabolic);
         }
 
         /// <summary>
@@ -569,17 +609,39 @@ namespace GPSWithFriends
 
         private void ApplicationBarIconAllAcceptButton_Click(object sender, EventArgs e)
         {
+            List<Request> tempRequests = new List<Request>();
+            foreach (var item in RequestsListBox.ItemsSource)
+            {
+                Request request = item as Request;
+                if (request != null)
+                    tempRequests.Add(request);
+            }
 
+            foreach (var item in tempRequests)
+            {
+                RequestDone(item, true);
+            }
         }
 
         private void ApplicationBarIconAllRejectButton_Click(object sender, EventArgs e)
         {
+            List<Request> tempRequests = new List<Request>();
+            foreach (var item in RequestsListBox.ItemsSource)
+            {
+                Request request = item as Request;
+                if (request != null)
+                    tempRequests.Add(request);
+            }
 
+            foreach (var item in tempRequests)
+            {
+                RequestDone(item, false);
+            }
         }
 
         private void ApplicationBarIconFriendManageRefreshButton_Click(object sender, EventArgs e)
         {
-
+           
         }
 
         private void Pivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -700,13 +762,13 @@ namespace GPSWithFriends
                 }
             };
 
-            messageBox.Dismissing += (s1, e2) =>
-            {
-                if (groupListPicker.ListPickerMode == ListPickerMode.Full)
-                {
-                    e2.Cancel = true;
-                }
-            };
+            //messageBox.Dismissing += (s1, e2) =>
+            //{
+            //    if (groupListPicker.ListPickerMode == ListPickerMode.Full)
+            //    {
+            //        e2.Cancel = true;
+            //    }
+            //};
 
             messageBox.Dismissed += (s1, e3) =>
             {
@@ -714,7 +776,7 @@ namespace GPSWithFriends
                 {
                     case CustomMessageBoxResult.LeftButton:
                         //upgrouped can not be removed
-                        if (App.ViewModel.Groups[groupListPicker.SelectedIndex].Title.Equals("My Friends"))
+                        if (App.ViewModel.Groups[groupListPicker.SelectedIndex].Title.Equals(DEFAULT_GROUP_NAME))
                         {
                             MessageBox.Show("This group cannot be removed.");
                         }
@@ -729,7 +791,7 @@ namespace GPSWithFriends
                                 //remove all members toMy Friends
                                 foreach (var friend in App.ViewModel.Groups[groupListPicker.SelectedIndex])
                                 {
-                                    friend.Group = "My Friends";
+                                    friend.Group = DEFAULT_GROUP_NAME;
                                 }
                                 //find the groupinfo to be removed
                                 GroupInfo toBeRemovedGroupInfo = null;
@@ -761,6 +823,11 @@ namespace GPSWithFriends
             };
 
             messageBox.Show();
+        }
+
+        private void Pushpin_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            
         }
 
         //void proxy_removeMemberCompleted(object sender, Server.removeMemberCompletedEventArgs e)

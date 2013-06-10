@@ -283,7 +283,6 @@ namespace GPSWithFriends.ViewModels
         }
 
         private GeoCoordinate geocoordinate;
-        [TypeConverter(typeof(GeoCoordinateConverter))]
         public GeoCoordinate Geocoordinate
         {
             get

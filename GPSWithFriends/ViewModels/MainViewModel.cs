@@ -9,13 +9,16 @@ namespace GPSWithFriends.ViewModels
 {
     public class MainViewModel : INotifyPropertyChanged
     {
+        const string ME = "Me";
+        const string DEFAULT_GROUP_NAME = "My Friends";
+
         public MainViewModel()
         {
             this.Friends = new ObservableCollection<Friend>();
             this.Requests = new ObservableCollection<Request>();
             this.GroupInfos = new ObservableCollection<GroupInfo>();
             this.Groups = new ObservableCollection<Group<Friend>>();
-            Me = new Friend() { Latitude = 181, Longitude = 181, NickName = "Me" };
+            Me = new Friend() { Latitude = 181, Longitude = 181, NickName = ME };
         }
 
         /// <summary>
@@ -110,7 +113,7 @@ namespace GPSWithFriends.ViewModels
             this.Requests.Add(new Request() { Content = "Kevin wants to friend you", Time = "7/5/2013 10:21", SenderName = "Kevin", SenderEmail = "Kevin@163.com" });
 
             //get group info from web
-            GroupInfos.Add(new GroupInfo("My Friends", new int[] { 1, 2 }));
+            GroupInfos.Add(new GroupInfo(DEFAULT_GROUP_NAME, new int[] { 1, 2 }));
             GroupInfos.Add(new GroupInfo("Classmates", new int[] { 3 }));
             GroupInfos.Add(new GroupInfo("Other", new int[] { 4 }));
             GroupInfos.Add(new GroupInfo("Test", null));
@@ -152,49 +155,6 @@ namespace GPSWithFriends.ViewModels
             catch (Exception)
             {
             }
-        }
-
-        private void SyncGroupAndGroupInfo()
-        {
-            foreach (var groupInfo in GroupInfos)
-            {
-                groupInfo.FriendUids = null;
-                foreach (var group in Groups)
-                {
-                    if (groupInfo.Title.Equals(group.Title))
-                    {
-                        groupInfo.FriendUids = new int[group.Count];
-                        for (int i = 0; i < group.Count; i++)
-                        {
-                            groupInfo.FriendUids[i] = group[i].Uid;
-                        }
-                    }
-                }
-            }
-
-            //check GroupInfos contains "My Friends"
-            bool isContainedUngrouped = false;
-            foreach (var item in GroupInfos)
-            {
-                if (item.Title.Equals("My Friends"))
-                    isContainedUngrouped = true;
-            }
-            if (!isContainedUngrouped)
-                GroupInfos.Add(new GroupInfo("My Friends", null));
-
-            //Add empty froups
-            foreach (var groupInfo in GroupInfos)
-            {
-                bool isContained = false;
-                foreach (var group in Groups)
-                {
-                    if (group.Title.Equals(groupInfo.Title))
-                        isContained = true;
-                }
-                if (!isContained)
-                    Groups.Add(new Group<Friend>(groupInfo.Title, null));
-            }
-
         }
 
         //void proxy_getUserCompleted(object sender, Server.getUserCompletedEventArgs e)
@@ -312,6 +272,61 @@ namespace GPSWithFriends.ViewModels
 
             //synchronize group and groupinfo
             SyncGroupAndGroupInfo();
+        }
+
+        private void SyncGroupAndGroupInfo()
+        {
+            foreach (var groupInfo in GroupInfos)
+            {
+                groupInfo.FriendUids = null;
+                foreach (var group in Groups)
+                {
+                    if (groupInfo.Title.Equals(group.Title))
+                    {
+                        groupInfo.FriendUids = new int[group.Count];
+                        for (int i = 0; i < group.Count; i++)
+                        {
+                            groupInfo.FriendUids[i] = group[i].Uid;
+                        }
+                    }
+                }
+            }
+
+            //check GroupInfos contains DEFAULT_GROUP_NAME:"My Friends"
+            bool isContainedUngrouped = false;
+            foreach (var item in GroupInfos)
+            {
+                if (item.Title.Equals(DEFAULT_GROUP_NAME))
+                    isContainedUngrouped = true;
+            }
+            if (!isContainedUngrouped)
+                GroupInfos.Add(new GroupInfo(DEFAULT_GROUP_NAME, null));
+
+            //Add empty froups
+            foreach (var groupInfo in GroupInfos)
+            {
+                bool isContained = false;
+                foreach (var group in Groups)
+                {
+                    if (group.Title.Equals(groupInfo.Title))
+                        isContained = true;
+                }
+                if (!isContained)
+                    Groups.Add(new Group<Friend>(groupInfo.Title, null));
+            }
+
+            //Put My Friend First!
+            Group<Friend> temp = null;
+            foreach (var group in Groups)
+            {
+                if (group.Title.Equals(DEFAULT_GROUP_NAME))
+                    temp = group;
+            }
+            if (temp != null)
+            {
+                Groups.Remove(temp);
+                Groups.Insert(0, temp);
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
