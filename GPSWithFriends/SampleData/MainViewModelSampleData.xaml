@@ -7,8 +7,9 @@
     <vm:MainViewModel.Friends>
         <vm:Friend NickName = "JEEoshua" Status = "UO, 30 seconds ago" Distance = "7287 km" ImagePath="/Assets/fakePor.png" Email="Jushua@gmail.com" />
         <vm:Friend NickName = "Kate" Status = "Beijing, 20 minutes ago" Distance = "1 km" ImagePath="/Assets/fakePor.png" Email="Kate@gmail.com"/>
-        <vm:Friend NickName="Bao" Status = "Unreachable" Distance = "???" ImagePath="/Assets/fakePor.png" Email="Bao@gmail.com"/>
-    </vm:MainViewModel.Friends>
+        <vm:Friend NickName="Bao" Status = "Unreachable" Distance = "???" ImagePath="/Assets/fakePor.png" Email="Bao@gmail.com" Group="TEST"/>
+    </vm:MainViewModel.Friends>    
+
     <vm:MainViewModel.Requests>
         <vm:Request Content="Yu wants to add you as friend." Time="8/5/2013 13:04"></vm:Request>
     </vm:MainViewModel.Requests>

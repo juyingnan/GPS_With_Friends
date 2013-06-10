@@ -24,6 +24,7 @@ namespace GPSWithFriends.ViewModels
             imagePath = "";
             latitude = 181;
             longitude = 181;
+            group = " Ungrouped";
             if (this.isLocated())
             {
                 CalculteGeoCoordinate();
@@ -118,6 +119,23 @@ namespace GPSWithFriends.ViewModels
             }
         }
 
+        private DateTime lastUpdateTime;
+        public DateTime LastUpdateTime
+        {
+            get
+            {
+                return lastUpdateTime;
+            }
+            set
+            {
+                if (value != lastUpdateTime)
+                {
+                    lastUpdateTime = value;
+                    NotifyPropertyChanged("LastUpdateTime");
+                }
+            }
+        }
+
         private string distance;
         public string Distance
         {
@@ -152,6 +170,23 @@ namespace GPSWithFriends.ViewModels
             }
         }
 
+        private string group;
+        public string Group
+        {
+            get
+            {
+                return group;
+            }
+            set
+            {
+                if (value != group)
+                {
+                    group = value;
+                    NotifyPropertyChanged("Group");
+                }
+            }
+        }
+
         private bool isFriend;
         public bool IsFriend
         {
@@ -165,6 +200,23 @@ namespace GPSWithFriends.ViewModels
                 {
                     isFriend = value;
                     NotifyPropertyChanged("IsFriend");
+                }
+            }
+        }
+
+        private bool isHidden;
+        public bool IsHidden
+        {
+            get
+            {
+                return isHidden;
+            }
+            set
+            {
+                if (value != isHidden)
+                {
+                    isHidden = value;
+                    NotifyPropertyChanged("IsHidden");
                 }
             }
         }

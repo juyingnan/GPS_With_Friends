@@ -15,7 +15,7 @@ namespace GPSWithFriends
     {
         private IsolatedStorageSettings _appSettings = IsolatedStorageSettings.ApplicationSettings;
 
-        Server.GPSwfriendsClient proxy = new Server.GPSwfriendsClient();
+        //Server.GPSwfriendsClient proxy = new Server.GPSwfriendsClient();
 
         public RegisterPage()
         {
@@ -24,12 +24,12 @@ namespace GPSWithFriends
 
         private void Submit_Button_Click(object sender, RoutedEventArgs e)
         {
-            proxy.registerCompleted += proxy_registerCompleted;
+            //proxy.registerCompleted += proxy_registerCompleted;
             if (ContentCheck())
             {
                 try
                 {
-                    proxy.registerAsync(RegisterEmailTextBox.Text, RegisterPasswordBox.Password, RegisterNickNameTextBox.Text, RegisterNickNameTextBox.Text);
+                    //proxy.registerAsync(RegisterEmailTextBox.Text, RegisterPasswordBox.Password, RegisterNickNameTextBox.Text, RegisterNickNameTextBox.Text);
                     SUBMITBUTTON.IsEnabled = false;
                     progressBar.Visibility = System.Windows.Visibility.Visible;
                 }
@@ -44,20 +44,20 @@ namespace GPSWithFriends
                 MessageBox.Show("Input incomplete or password not match. Please try again.");
         }
 
-        void proxy_registerCompleted(object sender, Server.registerCompletedEventArgs e)
-        {
-            if (e.Result.success)
-            {
-                SaveLastLoginUser(RegisterEmailTextBox.Text);
-                this.NavigationService.Navigate(new Uri("/LoginPage.xaml", UriKind.Relative));
-            }
-            else
-            {
-                MessageBox.Show("Register failed. Please try again.");
-            }
-            SUBMITBUTTON.IsEnabled = true;
-            progressBar.Visibility = System.Windows.Visibility.Collapsed;
-        }
+        //void proxy_registerCompleted(object sender, Server.registerCompletedEventArgs e)
+        //{
+        //    if (e.Result.success)
+        //    {
+        //        SaveLastLoginUser(RegisterEmailTextBox.Text);
+        //        this.NavigationService.Navigate(new Uri("/LoginPage.xaml", UriKind.Relative));
+        //    }
+        //    else
+        //    {
+        //        MessageBox.Show("Register failed. Please try again.");
+        //    }
+        //    SUBMITBUTTON.IsEnabled = true;
+        //    progressBar.Visibility = System.Windows.Visibility.Collapsed;
+        //}
 
         private void SaveLastLoginUser(string lastLoginUser)
         {

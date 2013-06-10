@@ -13,7 +13,7 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d"
-    shell:SystemTray.IsVisible="True">
+    shell:SystemTray.IsVisible="False">
 
     <toolkit:TransitionService.NavigationInTransition>
         <toolkit:NavigationInTransition>
@@ -35,6 +35,24 @@
             </toolkit:NavigationOutTransition.Forward>
         </toolkit:NavigationOutTransition>
     </toolkit:TransitionService.NavigationOutTransition>
+    
+    <phone:PhoneApplicationPage.Resources>
+        <DataTemplate x:Key="groupHeaderTemplate">
+            <Border Height="60"
+                        HorizontalAlignment="Left"
+                        Margin="6" 
+                        Background="{StaticResource PhoneAccentBrush}" 
+                        CornerRadius="3">
+                <TextBlock Text="{Binding Title}"  
+                           FontSize="32" 
+                           Padding="15,3" 
+                           VerticalAlignment="Center" 
+                           HorizontalAlignment="Center" 
+                           Foreground="White" />
+            </Border>
+        </DataTemplate>
+
+    </phone:PhoneApplicationPage.Resources>
 
     <!--<phone:PhoneApplicationPage.Resources>
         <local:InverseBooleanConverter x:Key="converter"/>
@@ -69,16 +87,27 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <Image Source="{Binding Path=ImagePath}"></Image>
-                <Button Grid.Column="1" Grid.Row="0" Height="150" FontSize="48" FontFamily="Segoe WP SemiLight" Padding="0" BorderThickness="0" Content="ADD&#13;FRIEND" IsEnabled="{Binding Path=IsFriend, Converter={StaticResource converter}}" Name="AddFriendButton" Click="AddFriendButton_Click"></Button>
+                <StackPanel  Grid.Column="1" Grid.Row="0" >
+                    <Button Height="150" FontSize="36" FontFamily="Segoe WP SemiLight" Padding="0" BorderThickness="0" Content="ADD&#13;FRIEND" IsEnabled="{Binding Path=IsFriend, Converter={StaticResource converter}}" Name="AddFriendButton" Click="AddFriendButton_Click"></Button>
+                    <Button Height="150" FontSize="36" FontFamily="Segoe WP SemiLight" Padding="0" BorderThickness="0" Content="REMOVE&#13;FRIEND" IsEnabled="{Binding Path=IsFriend}" Name="RemoveFriendButton" Click="RemoveFriendButton_Click"></Button>
+                </StackPanel>
                 <StackPanel Grid.Row="1" Grid.ColumnSpan="2">
                     <TextBlock TextWrapping="Wrap" Text="{Binding Path=Status}"></TextBlock>
                     <TextBlock TextWrapping="Wrap" Text="{Binding Path=Distance}"></TextBlock>
                     <TextBlock TextWrapping="Wrap" Text="{Binding Path=Email}"></TextBlock>
-                </StackPanel>                
-                <toolkit:ToggleSwitch Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Header="Alarm Switch"></toolkit:ToggleSwitch>
+                </StackPanel>
+                <toolkit:ListPicker Name="GroupListPicker" Grid.Row="2" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2" 
+                                    SelectionMode="Single"
+                                    Header="Group"
+                                    FullModeHeader="Select a group" 
+                                    CacheMode="BitmapCache" 
+                                    IsEnabled="{Binding Path=IsFriend}"
+                                    SelectionChanged="GroupListPicker_SelectionChanged"
+                                    FullModeItemTemplate="{StaticResource groupHeaderTemplate}"/>
+                <!--<toolkit:ToggleSwitch Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Header="Alarm Switch"></toolkit:ToggleSwitch>
                 <toolkit:TimePicker Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Header="Alarm Me"></toolkit:TimePicker>
                 <toolkit:ToggleSwitch Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Header="OPTION 1"></toolkit:ToggleSwitch>
-                <toolkit:ToggleSwitch Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Header="OPTION 1"></toolkit:ToggleSwitch>
+                <toolkit:ToggleSwitch Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Header="OPTION 1"></toolkit:ToggleSwitch>-->
             </Grid>
         </ScrollViewer>
     </Grid>

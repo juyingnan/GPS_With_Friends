@@ -15,7 +15,7 @@ namespace GPSWithFriends
     {
         private IsolatedStorageSettings _appSettings = IsolatedStorageSettings.ApplicationSettings;
 
-        Server.GPSwfriendsClient proxy = new Server.GPSwfriendsClient();
+        //Server.GPSwfriendsClient proxy = new Server.GPSwfriendsClient();
 
         public LoginPage()
         {
@@ -24,8 +24,11 @@ namespace GPSWithFriends
         }
        
         protected override void OnNavigatedTo(NavigationEventArgs e)
-        {            
-            this.NavigationService.RemoveBackEntry();
+        {
+            while (this.NavigationService.CanGoBack)
+            {
+                this.NavigationService.RemoveBackEntry();
+            }
             ReadLastLoginUser();
         }
 
@@ -34,8 +37,8 @@ namespace GPSWithFriends
         {
             try
             {
-                proxy.authenticateCompleted += proxy_authenticateCompleted;
-                proxy.authenticateAsync(LoginUsernameTextBox.Text, LoginPasswordBox.Password);
+                //proxy.authenticateCompleted += proxy_authenticateCompleted;
+                //proxy.authenticateAsync(LoginUsernameTextBox.Text, LoginPasswordBox.Password);
                 LOGINBUTTON.IsEnabled = false;
                 REGISTERBUTTON.IsEnabled = false;
                 progressBar.Visibility = System.Windows.Visibility.Visible;
@@ -49,27 +52,27 @@ namespace GPSWithFriends
             }
         }
 
-        private void proxy_authenticateCompleted(object sender, Server.authenticateCompletedEventArgs e)
-        {
-            if (e.Error == null)
-            {
-                if (e.Result.success)
-                {
-                    SaveLastLoginUser(LoginUsernameTextBox.Text);
-                    App.ViewModel.Me.Email = LoginUsernameTextBox.Text;
-                    this.NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.Relative));
-                }
-                else
-                {
-                    MessageBox.Show("Login Failed. Please try again.");
-                    LoginPasswordBox.Password = "";
-                    LoginPasswordBox.Focus();
-                }
-            }
-            LOGINBUTTON.IsEnabled = true;
-            REGISTERBUTTON.IsEnabled = true;
-            progressBar.Visibility = System.Windows.Visibility.Collapsed;
-        }
+        //private void proxy_authenticateCompleted(object sender, Server.authenticateCompletedEventArgs e)
+        //{
+        //    if (e.Error == null)
+        //    {
+        //        if (e.Result.success)
+        //        {
+        //            SaveLastLoginUser(LoginUsernameTextBox.Text);
+        //            App.ViewModel.Me.Email = LoginUsernameTextBox.Text;
+        //            this.NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.Relative));
+        //        }
+        //        else
+        //        {
+        //            MessageBox.Show("Login Failed. Please try again.");
+        //            LoginPasswordBox.Password = "";
+        //            LoginPasswordBox.Focus();
+        //        }
+        //    }
+        //    LOGINBUTTON.IsEnabled = true;
+        //    REGISTERBUTTON.IsEnabled = true;
+        //    progressBar.Visibility = System.Windows.Visibility.Collapsed;
+        //}
 
 
         private void ReadLastLoginUser()

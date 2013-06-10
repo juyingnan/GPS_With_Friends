@@ -116,11 +116,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AppResources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Service References\Server\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="ViewModels\Group.cs" />
     <Compile Include="ViewModels\Friend.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
@@ -162,69 +157,22 @@
     <None Include="Properties\WMAppManifest.xml">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\Server\configuration91.svcinfo" />
-    <None Include="Service References\Server\configuration.svcinfo" />
-    <None Include="Service References\Server\GPSWithFriends.Server.addMemberResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\Server\GPSWithFriends.Server.authenticateResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\Server\GPSWithFriends.Server.createGroupResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\Server\GPSWithFriends.Server.getGroupResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\Server\GPSWithFriends.Server.getGroupsResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\Server\GPSWithFriends.Server.getHistoryResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\Server\GPSWithFriends.Server.getLocationResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\Server\GPSWithFriends.Server.getMembersResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\Server\GPSWithFriends.Server.getUserByIDResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\Server\GPSWithFriends.Server.getUserResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\Server\GPSWithFriends.Server.registerResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\Server\GPSWithFriends.Server.removeMemberResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\Server\GPSWithFriends.Server.setLocationResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\Server\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <Content Include="Assets\add.png" />
+    <Content Include="Assets\AppBar\add.png" />
+    <Content Include="Assets\AppBar\check.png" />
     <Content Include="Assets\Circle&amp;Arrow.png" />
+    <Content Include="Assets\AppBar\close.png" />
     <Content Include="Assets\logo_300_trans.png" />
-    <Content Include="Assets\minus.png" />
-    <Content Include="Assets\refresh.png" />
-    <Content Include="Assets\showall.png" />
+    <Content Include="Assets\AppBar\minus.png" />
+    <Content Include="Assets\AppBar\refresh.png" />
+    <Content Include="Assets\AppBar\showall.png" />
     <Content Include="Assets\logo_1044.png" />
     <Content Include="Assets\logo_300.png" />
     <Content Include="Assets\logo_500.png" />
-    <Content Include="Assets\switch.png" />
+    <Content Include="Assets\AppBar\switch.png" />
     <Content Include="logo_159_trans.png" />
     <Content Include="logo_300_trans.png" />
     <Content Include="logo_336_trans.png" />
     <Content Include="ServiceReferences.ClientConfig" />
-    <None Include="Service References\Server\GPSwfriends.wsdl" />
-    <None Include="Service References\Server\GPSwfriends.xsd">
-      <SubType>Designer</SubType>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\AlignmentGrid.png" />
@@ -233,7 +181,7 @@
     </Content>
     <Content Include="Assets\fakeLOGO.png" />
     <Content Include="Assets\fakePor.png" />
-    <Content Include="Assets\locate.png" />
+    <Content Include="Assets\AppBar\locate.png" />
     <Content Include="Assets\Tiles\FlipCycleTileLarge.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -270,9 +218,6 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadataStorage Include="Service References\Server\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />

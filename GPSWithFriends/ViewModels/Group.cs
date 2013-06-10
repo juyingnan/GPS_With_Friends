@@ -1,5 +1,7 @@
 ﻿using Microsoft.Phone.Maps.Controls;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Net;
@@ -11,76 +13,96 @@ using System.Windows.Media.Animation;
 
 namespace GPSWithFriends.ViewModels
 {
-    public class Group : INotifyPropertyChanged
+    public class Group<T> : ObservableCollection<T>
     {
-       public Group()
+        public Group(string name, IEnumerable<T> items)
         {
-        }
-
-        private int gid;
-        public int Gid
-        {
-            get
+            this.Title = name;
+            if (items != null)
             {
-                return gid;
-            }
-            set
-            {
-                if (value != gid)
+                foreach (T item in items)
                 {
-                    gid = value;
-                    NotifyPropertyChanged("Gid");
+                    this.Add(item);
                 }
             }
         }
 
-        private string name;
-        public string Name
+        //public override bool Equals(object obj)
+        //{
+        //    Group<T> that = obj as Group<T>;
+
+        //    return (that != null) && (this.Title.Equals(that.Title));
+        //}
+
+        public string Title
+        {
+            get;
+            set;
+        }
+
+        public override string ToString()
+        {
+            return Title;
+        }
+    }
+
+    public static class EnumerableExtensions
+    {
+        public static ObservableCollection<T> ToObservableCollection<T>(this IEnumerable<T> collection)
+        {
+            ObservableCollection<T> observableCollection = new ObservableCollection<T>();
+            foreach (T item in collection)
+            {
+                observableCollection.Add(item);
+            }
+
+            return observableCollection;
+        }
+    }
+
+    public class GroupInfo:INotifyPropertyChanged
+    {
+        public GroupInfo(string t)
+        {
+            Title = t;
+        }
+        public GroupInfo(string t, int[] uids)
+        {
+            Title = t;
+            FriendUids = uids;
+        }
+
+
+        private string title;
+        public string Title
         {
             get
             {
-                return name;
+                return title;
             }
             set
             {
-                if (value != name)
+                if (value != title)
                 {
-                    name = value;
-                    NotifyPropertyChanged("Name");
+                    title = value;
+                    NotifyPropertyChanged("Title");
                 }
             }
         }
 
-        private int owner;
-        public int Owner
+        private int[] friendUids;
+        public int[] FriendUids
         {
             get
             {
-                return owner;
+                return friendUids;
             }
             set
             {
-                if (value != owner)
+                if (value != friendUids)
                 {
-                    owner = value;
-                    NotifyPropertyChanged("Owner");
-                }
-            }
-        }
-
-        private Friend[] friends;
-        public Friend[] Friends
-        {
-            get
-            {
-                return friends;
-            }
-            set
-            {
-                if (value != friends)
-                {
-                    friends = value;
-                    NotifyPropertyChanged("Friends");
+                    friendUids = value;
+                    NotifyPropertyChanged("FriendUids");
                 }
             }
         }
@@ -94,5 +116,7 @@ namespace GPSWithFriends.ViewModels
                 handler(this, new PropertyChangedEventArgs(propertyName));
             }
         }
+
+
     }
 }

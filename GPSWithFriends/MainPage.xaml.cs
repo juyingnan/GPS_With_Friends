@@ -22,7 +22,8 @@ using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Threading.Tasks;
 using Windows.Foundation;
-
+using System.Collections;
+using System.Windows.Threading;
 
 namespace GPSWithFriends
 {
@@ -34,8 +35,9 @@ namespace GPSWithFriends
         //for Route Query
         RouteQuery MyQuery = null;
         MapRoute MyMapRoute = null;
+        DispatcherTimer testTimer = new DispatcherTimer();
 
-        Server.GPSwfriendsClient proxy = new Server.GPSwfriendsClient();
+        //Server.GPSwfriendsClient proxy = new Server.GPSwfriendsClient();
         
         // Constructor
         public MainPage()
@@ -56,7 +58,24 @@ namespace GPSWithFriends
 
             //map extension controls data binding
             this.FriendsLocationMarkerList.ItemsSource = App.ViewModel.Friends;
-            MyLocationMarker.DataContext = this.Me; 
+            MyLocationMarker.DataContext = this.Me;
+
+            TimerInitiate();
+        }
+
+        private void TimerInitiate()
+        {
+            testTimer.Tick += testTimer_Tick;
+            testTimer.Interval = TimeSpan.FromSeconds(3);
+        }
+
+        void testTimer_Tick(object sender, EventArgs e)
+        {
+            App.ViewModel.CurrentFriend = new Friend() { NickName = "Wei Hongye", Status = "updated in 16:20", ImagePath = "/Assets/fakePor.png", Email = "Jushua@gmail.com", Latitude = 39.7677, Longitude = 116.3602, Uid=5 };
+            this.NavigationService.Navigate(new Uri("/DetailPage.xaml", UriKind.Relative));
+            testTimer.Stop();
+            InviteButton.IsEnabled = true;
+            InviteProgressBar.Visibility = System.Windows.Visibility.Collapsed;
         }
 
         //Necessary codes to initiate the toolkit map control
@@ -139,8 +158,8 @@ namespace GPSWithFriends
                     {
                         try
                         {
-                            //proxy.setLocationCompleted += proxy_setLocationCompleted;
-                            proxy.setLocationAsync(Me.Uid, Me.Latitude, Me.Longitude);
+                            ////proxy.setLocationCompleted += proxy_setLocationCompleted;
+                            //proxy.setLocationAsync(Me.Uid, Me.Latitude, Me.Longitude);
                         }
                         catch (TimeoutException e)
                         {
@@ -166,15 +185,17 @@ namespace GPSWithFriends
         private void FriendsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //get index
-            ListBox listbox = sender as ListBox;
-            int index = listbox.SelectedIndex;
-            if (index > -1 && index < App.ViewModel.Friends.Count)
+            IList addedItems = e.AddedItems;
+            if (addedItems == null || addedItems.Count < 1)
             {
-                Friend friend = App.ViewModel.Friends[index];
-                if (friend.isLocated())
-                {
-                    MyMap.SetView(new GeoCoordinate(friend.Latitude, friend.Longitude), MyMap.ZoomLevel, MapAnimationKind.Parabolic);
-                }
+                return;
+            }
+
+            Friend friend = addedItems[0] as Friend;
+            if (friend.isLocated())
+            {
+                GPSLocationTextblock.Text = "Location: " + string.Format("Lat: {0:0.0000}, Long: {1:0.0000}",friend.Latitude, friend.Longitude);
+                MyMap.SetView(new GeoCoordinate(friend.Latitude, friend.Longitude), MyMap.ZoomLevel, MapAnimationKind.Parabolic);
             }
         }
 
@@ -208,7 +229,7 @@ namespace GPSWithFriends
                 Caption = "Please input Email Address:",
                 Message = "Please input email address of the friend that you want to add.",
                 Content = emailInputBox,
-                LeftButtonContent = "Add",
+                LeftButtonContent = "View",
                 RightButtonContent = "Cancel",
                 IsFullScreen = false,
             };
@@ -221,7 +242,13 @@ namespace GPSWithFriends
                         string result = "";
                         result = emailInputBox.Text;
                         if (result.Length > 0 && !result.Equals(Me.Email))  //make sure there is input and the address doesn't belong to ME
-                            SendFriendRequest(result);
+                        //Request a friend
+                        //if!=null
+                        {
+                            testTimer.Start();
+                            InviteButton.IsEnabled = false;
+                            InviteProgressBar.Visibility = System.Windows.Visibility.Visible;
+                        }
                         break;
                     case CustomMessageBoxResult.RightButton:
                         // Do something.
@@ -247,45 +274,45 @@ namespace GPSWithFriends
             // 2. add the friend into group
 
             // 1. get uid
-            proxy.getUserCompleted += proxy_getUserCompleted;
+            //proxy.getUserCompleted += proxy_getUserCompleted;
             try
             {
-                proxy.getUserAsync(email);
+                //proxy.getUserAsync(email);
             }
             catch (Exception)
             {
             }
         }
 
-        void proxy_getUserCompleted(object sender, Server.getUserCompletedEventArgs e)
-        {
-            // 1 continued
-            if (e.Error == null)
-            {
-                proxy.addMemberCompleted += proxy_addMemberCompleted;
-                try
-                {
-                    // 2. add the friend into group
-                    proxy.addMemberAsync(e.Result.uid, App.ViewModel.CurrentGroup.Gid);
-                }
-                catch (Exception)
-                {
-                }
-            }
-        }
+        //void proxy_getUserCompleted(object sender, Server.getUserCompletedEventArgs e)
+        //{
+        //    // 1 continued
+        //    if (e.Error == null)
+        //    {
+        //        proxy.addMemberCompleted += proxy_addMemberCompleted;
+        //        try
+        //        {
+        //            // 2. add the friend into group
+        //            proxy.addMemberAsync(e.Result.uid, App.ViewModel.CurrentGroup.Gid);
+        //        }
+        //        catch (Exception)
+        //        {
+        //        }
+        //    }
+        //}
 
-        void proxy_addMemberCompleted(object sender, Server.addMemberCompletedEventArgs e)
-        {
-            // 2 continued
-            if (e.Error == null)
-            {
-                if (e.Result.success == true)
-                {
-                    //refresh to get the latest data
-                    App.ViewModel.RefreshData();
-                }
-            }
-        }
+        //void proxy_addMemberCompleted(object sender, Server.addMemberCompletedEventArgs e)
+        //{
+        //    // 2 continued
+        //    if (e.Error == null)
+        //    {
+        //        if (e.Result.success == true)
+        //        {
+        //            //refresh to get the latest data
+        //            App.ViewModel.RefreshData();
+        //        }
+        //    }
+        //}
 
         /// <summary>
         /// Select a request to handle
@@ -365,14 +392,15 @@ namespace GPSWithFriends
         private void FriendsManageListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //get index
-            ListBox listbox = sender as ListBox;
-            int index = listbox.SelectedIndex;
-            if (index > -1 && index < App.ViewModel.Friends.Count)
+            IList addedItems = e.AddedItems;
+            if (addedItems == null || addedItems.Count < 1)
             {
-                App.ViewModel.CurrentFriend = App.ViewModel.AllGroup.Friends[index];
-                this.NavigationService.Navigate(new Uri("/DetailPage.xaml", UriKind.Relative));
+                return;
             }
-        }
+
+            App.ViewModel.CurrentFriend = addedItems[0] as Friend;
+            this.NavigationService.Navigate(new Uri("/DetailPage.xaml", UriKind.Relative));
+        }    
 
         /// <summary>
         /// Get the route from me to a friend
@@ -499,36 +527,6 @@ namespace GPSWithFriends
         }
 
         /// <summary>
-        /// Switch group to next
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ApplicationBarIconSwitchGroupButton_Click(object sender, EventArgs e)
-        {
-            //get index
-            int index = App.ViewModel.Groups.IndexOf(App.ViewModel.CurrentGroup);
-            //make sure the index++ is within the bound
-            if (index + 1 < App.ViewModel.Groups.Count)
-            {
-                index++;                
-            }
-            //last group -> 0
-            else if (index + 1 == App.ViewModel.Groups.Count)
-            {
-                index = 0;
-            }
-
-            //group switch
-            App.ViewModel.CurrentGroup = App.ViewModel.Groups[index];
-            App.ViewModel.Friends.Clear();
-            foreach (var item in App.ViewModel.CurrentGroup.Friends)
-            {
-                if (item != null)
-                    App.ViewModel.Friends.Add(item);
-            }
-        }
-
-        /// <summary>
         /// refresh the friend list data
         /// </summary>
         /// <param name="sender"></param>
@@ -538,37 +536,152 @@ namespace GPSWithFriends
             App.ViewModel.RefreshData();
         }
 
-        /// <summary>
-        /// remove a friend from the group
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void RemoveFromGroupItem_Click(object sender, RoutedEventArgs e)
+        ///// <summary>
+        ///// remove a friend from the group
+        ///// </summary>
+        ///// <param name="sender"></param>
+        ///// <param name="e"></param>
+        //private void RemoveFromGroupItem_Click(object sender, RoutedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        //get index
+        //        int selectedIndex = App.ViewModel.Friends.IndexOf((sender as MenuItem).DataContext as Friend);
+                
+        //        //test
+        //        App.ViewModel.Friends.Remove(App.ViewModel.Friends[selectedIndex]);
+        //        App.ViewModel.RefreshGroup();
+
+        //        //remove via uid and gid
+        //        //proxy.removeMemberCompleted += proxy_removeMemberCompleted;
+        //        //proxy.removeMemberAsync(App.ViewModel.Friends[selectedIndex].Uid, App.ViewModel.CurrentGroup.Gid);
+        //    }
+        //    catch (Exception)
+        //    {
+        //        MessageBox.Show("Something gotta wrong.");
+        //    }
+        //}
+
+        private void ApplicationBarIconRequestRefreshButton_Click(object sender, EventArgs e)
         {
-            try
+
+        }
+
+        private void ApplicationBarIconAllAcceptButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ApplicationBarIconAllRejectButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ApplicationBarIconFriendManageRefreshButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Pivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            switch ((sender as Pivot).SelectedIndex)
             {
-                //get index
-                int selectedIndex = App.ViewModel.Friends.IndexOf((sender as MenuItem).DataContext as Friend);
-                proxy.removeMemberCompleted += proxy_removeMemberCompleted;
-                //remove via uid and gid
-                proxy.removeMemberAsync(App.ViewModel.Friends[selectedIndex].Uid, App.ViewModel.CurrentGroup.Gid);
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Something gotta wrong.");
+                case 0:
+                    this.ApplicationBar = this.Resources["AppBar_Home"] as ApplicationBar;
+                    break;
+                case 1:
+                    this.ApplicationBar = this.Resources["AppBar_Invite"] as ApplicationBar;
+                    break;
+                case 2:
+                    this.ApplicationBar = this.Resources["AppBar_Me"] as ApplicationBar;
+                    break;
+                default:
+                    break;
             }
         }
 
-        void proxy_removeMemberCompleted(object sender, Server.removeMemberCompletedEventArgs e)
+        private void LogOutButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            if (e.Error == null)
+            //Double check
+            MessageBoxResult result =MessageBox.Show("Would you like to Log out?","Log Out", MessageBoxButton.OKCancel);
+
+            if (result == MessageBoxResult.OK)
             {
-                if (e.Result.success == true)
-                {
-                    App.ViewModel.RefreshData();
-                }
+                //UPLOAD my status
+
+                this.NavigationService.Navigate(new Uri("/LoginPage.xaml", UriKind.Relative));
             }
         }
+
+        private void ApplicationBarIconFriendManageAddButton_Click(object sender, EventArgs e)
+        {
+            //get group name
+            TextBox groupInputBox = new TextBox();
+            TiltEffect.SetIsTiltEnabled(groupInputBox, true);
+            CustomMessageBox messageBox = new CustomMessageBox()
+            {
+                Caption = "Group Name:",
+                Message = "Please input the new group name.",
+                Content = groupInputBox,
+                LeftButtonContent = "Add",
+                RightButtonContent = "Cancel",
+                IsFullScreen = false,
+            };
+
+            messageBox.Dismissed += (s1, e1) =>
+            {
+                switch (e1.Result)
+                {
+                    case CustomMessageBoxResult.LeftButton:
+                        string result = "";
+                        result = groupInputBox.Text;
+                        bool isExisted = false;
+                        foreach (var groupinfo in App.ViewModel.GroupInfos)
+                        {
+                            if (groupinfo.Title.Equals(result))
+                                isExisted = true;
+                        }
+                        if (result.Length > 0 && !isExisted)  //make sure there is input and the no repeated name
+                        //if!=null
+                        {
+                            //add group
+                            App.ViewModel.GroupInfos.Add(new GroupInfo(result, null));
+                            //group refresh
+                            App.ViewModel.RefreshGroup();
+                            //upload group info
+                        }
+                        else
+                            MessageBox.Show("Input is empty or there has already been a group with that name.");
+                        break;
+                    case CustomMessageBoxResult.RightButton:
+                        // Do something.
+                        break;
+                    case CustomMessageBoxResult.None:
+                        // Do something.
+                        break;
+                    default:
+                        break;
+                }
+            };
+
+            messageBox.Show();
+        }
+
+        private void ApplicationBarIconFriendManageRemoveButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        //void proxy_removeMemberCompleted(object sender, Server.removeMemberCompletedEventArgs e)
+        //{
+        //    if (e.Error == null)
+        //    {
+        //        if (e.Result.success == true)
+        //        {
+        //            App.ViewModel.RefreshData();
+        //        }
+        //    }
+        //}
         
         // Sample code for building a localized ApplicationBar
         //private void BuildLocalizedApplicationBar()

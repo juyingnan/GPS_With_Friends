@@ -1,17 +1,6 @@
 ﻿<configuration>
     <system.serviceModel>
-        <bindings>
-            <basicHttpBinding>
-                <binding name="GPSwfriendsPortBinding" maxBufferSize="2147483647"
-                    maxReceivedMessageSize="2147483647">
-                    <security mode="None" />
-                </binding>
-            </basicHttpBinding>
-        </bindings>
-        <client>
-            <endpoint address="http://ec2-54-244-86-37.us-west-2.compute.amazonaws.com:80/GPSwfriends/GPSwfriends"
-                binding="basicHttpBinding" bindingConfiguration="GPSwfriendsPortBinding"
-                contract="Server.GPSwfriends" name="GPSwfriendsPort" />
-        </client>
+        <bindings />
+        <client />
     </system.serviceModel>
 </configuration>
