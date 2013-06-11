@@ -46,7 +46,9 @@ namespace GPSWithFriends
 
         //Server.GPSwfriendsClient proxy = new Server.GPSwfriendsClient();
         
-        // Constructor
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public MainPage()
         {
             InitializeComponent();
@@ -184,11 +186,7 @@ namespace GPSWithFriends
             Friend friend = ((sender as LongListSelector).SelectedItem as Friend);
             if (friend != null)
             {
-                if (friend.isLocated())
-                {
-                    GPSLocationTextblock.Text = "Location of " + friend.NickName + ": " + string.Format("Lat: {0:0.00}, Long: {1:0.00}", friend.Latitude, friend.Longitude);
-                    MyMap.SetView(new GeoCoordinate(friend.Latitude, friend.Longitude), MyMap.ZoomLevel, MapAnimationKind.Parabolic);
-                }
+                LocateFriend(friend);
             }
 
             //void proxy_setLocationCompleted(object sender, Server.setLocationCompletedEventArgs e)
@@ -218,6 +216,173 @@ namespace GPSWithFriends
             //    }
             //}
 
+        }
+
+        private void Pushpin_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            Friend friend = ((sender as Pushpin).DataContext as Friend);
+            if (friend != null)
+            {
+                LocateFriend(friend);
+            }
+        }
+
+        private void LocateFriend(Friend friend)
+        {
+            if (friend.isLocated())
+            {
+                GPSLocationTextblock.Text = "Location of " + friend.NickName + ": " + string.Format("Lat: {0:0.00}, Long: {1:0.00}", friend.Latitude, friend.Longitude);
+                MyMap.SetView(new GeoCoordinate(friend.Latitude, friend.Longitude), MyMap.ZoomLevel, MapAnimationKind.Parabolic);
+            }
+        }
+
+        private void PushpinMessage_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            try
+            {
+                Friend friend = ((sender as StackPanel).DataContext as Friend);
+                if (friend != null)
+                {
+                    //send message
+                    InputMessageToFriend(friend);
+                }
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        private void FriendList_ClearMessage(object sender, RoutedEventArgs e)
+        {
+            //get index
+            int selectedIndex = App.ViewModel.Friends.IndexOf((sender as MenuItem).DataContext as Friend);
+            Friend friend = App.ViewModel.Friends[selectedIndex];
+
+            //clear old message
+            ClearMessage(friend);
+        }
+
+        public void ClearMessage(Friend friend)
+        {
+            friend.ClearMessage();
+
+            //update to web
+        }
+
+        private void FriendList_SendMessage(object sender, RoutedEventArgs e)
+        {
+            //get index
+            int selectedIndex = App.ViewModel.Friends.IndexOf((sender as MenuItem).DataContext as Friend);
+            Friend friend = App.ViewModel.Friends[selectedIndex];
+
+            //send message
+            InputMessageToFriend(friend);
+            LocateFriend(friend);
+        }
+
+        private void InputMessageToFriend(Friend friend)
+        {
+            //get group name
+            TextBox messageInputBox = new TextBox();
+            TiltEffect.SetIsTiltEnabled(messageInputBox, true);
+            CustomMessageBox messageBox = new CustomMessageBox()
+            {
+                Caption = "Send Message:",
+                Message = "Please input the message.",
+                Content = messageInputBox,
+                LeftButtonContent = "Send",
+                RightButtonContent = "Cancel",
+                IsFullScreen = false,
+            };
+
+            messageBox.Dismissed += (s1, e1) =>
+            {
+                switch (e1.Result)
+                {
+                    case CustomMessageBoxResult.LeftButton:
+                        string result = messageInputBox.Text;
+                        if (result.Length != 0)
+                        {
+                            //send message
+                            SendFriendMessage(friend, result);
+
+                            //clear old message
+                            ClearMessage(friend);
+                        }
+                        break;
+                    case CustomMessageBoxResult.RightButton:
+                        // Do something.
+                        break;
+                    case CustomMessageBoxResult.None:
+                        // Do something.
+                        break;
+                    default:
+                        break;
+                }
+            };
+
+            messageBox.Show();
+        }
+
+        private void SendFriendMessage(Friend friend, string result)
+        {
+            //
+        }
+
+        /// <summary>
+        /// Get the route from me to a friend
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void FriendList_Route(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                //get index
+                int selectedIndex = App.ViewModel.Friends.IndexOf((sender as MenuItem).DataContext as Friend);
+                Friend friend = App.ViewModel.Friends[selectedIndex];
+
+                //Add start and end points
+                List<GeoCoordinate> MyCoordinates = new List<GeoCoordinate>();
+                MyCoordinates.Add(new GeoCoordinate(Me.Latitude, Me.Longitude));
+                MyCoordinates.Add(new GeoCoordinate(friend.Latitude, friend.Longitude));
+
+                //send the query
+                MyQuery = new RouteQuery();
+                MyQuery.Waypoints = MyCoordinates;
+                MyQuery.QueryCompleted += MyQuery_QueryCompleted;
+                try
+                {
+                    MyQuery.QueryAsync();
+                }
+                catch (Exception)
+                {
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Something gotta wrong.");
+            }
+        }
+
+        private void MyQuery_QueryCompleted(object sender, QueryCompletedEventArgs<Route> e)
+        {
+            if (e.Error == null)
+            {
+                Route MyRoute = e.Result;
+                if (MyMapRoute != null)
+                {
+                    //clear last route
+                    MyMap.RemoveRoute(MyMapRoute);
+                }
+                MyMapRoute = new MapRoute(MyRoute);
+                MyMap.AddRoute(MyMapRoute);
+                MyQuery.Dispose();
+
+                //set the map view to fit the route
+                LocationRectangle locationRectangle = LocationRectangle.CreateBoundingRectangle(MyRoute.Geometry);
+                this.MyMap.SetView(locationRectangle, new Thickness(MAP_RECTANGLE_THICKNESS));
+            }
         }
 
         /// <summary>
@@ -443,62 +608,6 @@ namespace GPSWithFriends
         }
 
         /// <summary>
-        /// Get the route from me to a friend
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        public void FriendList_Route(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                //get index
-                int selectedIndex = App.ViewModel.Friends.IndexOf((sender as MenuItem).DataContext as Friend);
-                Friend friend = App.ViewModel.Friends[selectedIndex];                
-
-                //Add start and end points
-                List<GeoCoordinate> MyCoordinates = new List<GeoCoordinate>();
-                MyCoordinates.Add(new GeoCoordinate(Me.Latitude, Me.Longitude));
-                MyCoordinates.Add(new GeoCoordinate(friend.Latitude, friend.Longitude));
-
-                //send the query
-                MyQuery = new RouteQuery();
-                MyQuery.Waypoints = MyCoordinates;
-                MyQuery.QueryCompleted += MyQuery_QueryCompleted;
-                try
-                {
-                    MyQuery.QueryAsync();
-                }
-                catch (Exception)
-                {
-                }
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Something gotta wrong.");
-            }
-        }
-
-        private void MyQuery_QueryCompleted(object sender, QueryCompletedEventArgs<Route> e)
-        {
-            if (e.Error == null)
-            {                
-                Route MyRoute = e.Result;
-                if (MyMapRoute != null)
-                {
-                    //clear last route
-                    MyMap.RemoveRoute(MyMapRoute);
-                }
-                MyMapRoute = new MapRoute(MyRoute);
-                MyMap.AddRoute(MyMapRoute);                
-                MyQuery.Dispose();
-
-                //set the map view to fit the route
-                LocationRectangle locationRectangle = LocationRectangle.CreateBoundingRectangle(MyRoute.Geometry);
-                this.MyMap.SetView(locationRectangle, new Thickness(MAP_RECTANGLE_THICKNESS));
-            }
-        }
-
-        /// <summary>
         /// Locate me
         /// </summary>
         /// <param name="sender"></param>
@@ -609,34 +718,44 @@ namespace GPSWithFriends
 
         private void ApplicationBarIconAllAcceptButton_Click(object sender, EventArgs e)
         {
-            List<Request> tempRequests = new List<Request>();
-            foreach (var item in RequestsListBox.ItemsSource)
-            {
-                Request request = item as Request;
-                if (request != null)
-                    tempRequests.Add(request);
-            }
+            MessageBoxResult result = MessageBox.Show("Would you really like to accept all requests?", "Accept all", MessageBoxButton.OKCancel);
 
-            foreach (var item in tempRequests)
+            if (result == MessageBoxResult.OK)
             {
-                RequestDone(item, true);
-            }
+                List<Request> tempRequests = new List<Request>();
+                foreach (var item in RequestsListBox.ItemsSource)
+                {
+                    Request request = item as Request;
+                    if (request != null)
+                        tempRequests.Add(request);
+                }
+
+                foreach (var item in tempRequests)
+                {
+                    RequestDone(item, true);
+                }
+            }          
         }
 
         private void ApplicationBarIconAllRejectButton_Click(object sender, EventArgs e)
         {
-            List<Request> tempRequests = new List<Request>();
-            foreach (var item in RequestsListBox.ItemsSource)
-            {
-                Request request = item as Request;
-                if (request != null)
-                    tempRequests.Add(request);
-            }
+            MessageBoxResult result = MessageBox.Show("Would you really like to reject all requests?", "Reject all", MessageBoxButton.OKCancel);
 
-            foreach (var item in tempRequests)
+            if (result == MessageBoxResult.OK)
             {
-                RequestDone(item, false);
-            }
+                List<Request> tempRequests = new List<Request>();
+                foreach (var item in RequestsListBox.ItemsSource)
+                {
+                    Request request = item as Request;
+                    if (request != null)
+                        tempRequests.Add(request);
+                }
+
+                foreach (var item in tempRequests)
+                {
+                    RequestDone(item, false);
+                }
+            }  
         }
 
         private void ApplicationBarIconFriendManageRefreshButton_Click(object sender, EventArgs e)
@@ -823,11 +942,6 @@ namespace GPSWithFriends
             };
 
             messageBox.Show();
-        }
-
-        private void Pushpin_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            
         }
 
         //void proxy_removeMemberCompleted(object sender, Server.removeMemberCompletedEventArgs e)

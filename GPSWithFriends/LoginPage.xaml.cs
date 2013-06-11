@@ -13,6 +13,8 @@ namespace GPSWithFriends
 {
     public partial class LoginPage : PhoneApplicationPage
     {
+        const int INPUT_MAX_LENGTH_WITH_TIPS = 10;
+
         private IsolatedStorageSettings _appSettings = IsolatedStorageSettings.ApplicationSettings;
 
         //Server.GPSwfriendsClient proxy = new Server.GPSwfriendsClient();
@@ -101,6 +103,20 @@ namespace GPSWithFriends
         private void REGISTERBUTTON_Click(object sender, RoutedEventArgs e)
         {
             this.NavigationService.Navigate(new Uri("/RegisterPage.xaml", UriKind.Relative));
+        }
+
+        private void LoginUsernameTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if ((sender as TextBox).Text.Length < INPUT_MAX_LENGTH_WITH_TIPS)
+                EmailInputTooltipTextBlock.Visibility = System.Windows.Visibility.Visible;
+            else EmailInputTooltipTextBlock.Visibility = System.Windows.Visibility.Collapsed;
+        }
+
+        private void LoginPasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if ((sender as PasswordBox).Password.Length < INPUT_MAX_LENGTH_WITH_TIPS)
+                PasswordInputTooltipTextBlock.Visibility = System.Windows.Visibility.Visible;
+            else PasswordInputTooltipTextBlock.Visibility = System.Windows.Visibility.Collapsed;
         }
     }
 }

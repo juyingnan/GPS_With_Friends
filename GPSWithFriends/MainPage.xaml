@@ -98,6 +98,8 @@
                 <toolkit:ContextMenuService.ContextMenu>
                     <toolkit:ContextMenu toolkit:TiltEffect.IsTiltEnabled="True">
                         <toolkit:MenuItem Header="Get Route" Foreground="Black" Click="FriendList_Route"/>
+                        <toolkit:MenuItem Header="Send Message" Foreground="Black" Click="FriendList_SendMessage"/>
+                        <toolkit:MenuItem Header="Clear Message" Foreground="Black" Click="FriendList_ClearMessage"/>
                         <!--<toolkit:MenuItem Header="Remove from Group" Foreground="Black" Click="RemoveFromGroupItem_Click"/>-->
                     </toolkit:ContextMenu>
                 </toolkit:ContextMenuService.ContextMenu>
@@ -165,6 +167,24 @@
             </Grid>
         </DataTemplate>
 
+        <DataTemplate  x:Key="MapPushpinDateTemplate">
+            <maptk:Pushpin Visibility="{Binding Geocoordinate, Converter={StaticResource geo2visConverter}}"
+                           GeoCoordinate="{Binding Geocoordinate}"
+                           Background="{StaticResource PhoneAccentBrush}" 
+                           Tap="Pushpin_Tap">
+                <maptk:Pushpin.Content>
+                    <StackPanel>
+                        <TextBlock Text="{Binding NickName}"></TextBlock>
+                        <StackPanel Orientation="Horizontal" Visibility="{Binding Path=LastMessage.IsCleared,Converter={StaticResource Bool2VisInvConverter}}"
+                                    Tap="PushpinMessage_Tap">
+                            <Image Height="20" Width="20" Source="/Assets/message.png" Margin="5,0"></Image>
+                            <TextBlock  Text="{Binding Path=LastMessage.Content}"></TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+                </maptk:Pushpin.Content>
+            </maptk:Pushpin>
+        </DataTemplate>
+
         <shell:ApplicationBar x:Key="AppBar_Home" Mode="Default" Opacity="1.0" IsMenuEnabled="True" IsVisible="True" BackgroundColor="{StaticResource PhoneAccentColor}">
             <shell:ApplicationBarIconButton IconUri="/Assets/AppBar/locate.png" Text="Me" Click="ApplicationBarIconLocateMeButton_Click"/>
             <shell:ApplicationBarIconButton IconUri="/Assets/AppBar/showall.png" Text="Set View" Click="ApplicationBarIconShowAllButton_Click"/>
@@ -216,17 +236,9 @@
                     </StackPanel>
                     <maps:Map Grid.Row="0" x:Name="MyMap" Center="39, 116"  ZoomLevel="14" Pitch="45" >
                         <maptk:MapExtensions.Children>
-                            <maptk:MapItemsControl  ItemsSource="{Binding Friends}" Name="FriendsLocationMarkerList">
-                                <maptk:MapItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <maptk:Pushpin Visibility="{Binding Geocoordinate, Converter={StaticResource geo2visConverter}}"
-                                                       GeoCoordinate="{Binding Geocoordinate}" 
-                                                       Content="{Binding NickName}" 
-                                                       Background="{StaticResource PhoneAccentBrush}" 
-                                                       Tap="Pushpin_Tap"/>
-                                    </DataTemplate>
-                                </maptk:MapItemsControl.ItemTemplate>
-                            </maptk:MapItemsControl>
+                            <maptk:MapItemsControl  Name="FriendsLocationMarkerList"                                
+                                ItemsSource="{Binding Friends}" 
+                                ItemTemplate="{StaticResource MapPushpinDateTemplate}"/>
                             <maptk:UserLocationMarker DataContext="Me" GeoCoordinate="{Binding Geocoordinate}" Name="MyLocationMarker" Visibility="Collapsed"></maptk:UserLocationMarker>
                         </maptk:MapExtensions.Children>
                     </maps:Map>

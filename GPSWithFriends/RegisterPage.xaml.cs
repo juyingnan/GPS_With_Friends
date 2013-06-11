@@ -13,6 +13,8 @@ namespace GPSWithFriends
 {
     public partial class RegisterPage : PhoneApplicationPage
     {
+        const int INPUT_MAX_LENGTH_WITH_TIPS = 10;
+
         private IsolatedStorageSettings _appSettings = IsolatedStorageSettings.ApplicationSettings;
 
         //Server.GPSwfriendsClient proxy = new Server.GPSwfriendsClient();
@@ -81,6 +83,34 @@ namespace GPSWithFriends
                 return true;
             else
                 return false;
+        }
+
+        private void RegisterEmailTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if ((sender as TextBox).Text.Length < INPUT_MAX_LENGTH_WITH_TIPS)
+                RegisterEmailTextBlock.Visibility = System.Windows.Visibility.Visible;
+            else RegisterEmailTextBlock.Visibility = System.Windows.Visibility.Collapsed;
+        }
+
+        private void RegisterPasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if ((sender as PasswordBox).Password.Length < INPUT_MAX_LENGTH_WITH_TIPS)
+                RegisterPasswordBlock.Visibility = System.Windows.Visibility.Visible;
+            else RegisterPasswordBlock.Visibility = System.Windows.Visibility.Collapsed;
+        }
+
+        private void RegisterPasswordAgainBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if ((sender as PasswordBox).Password.Length < INPUT_MAX_LENGTH_WITH_TIPS)
+                RegisterPasswordAgainBlock.Visibility = System.Windows.Visibility.Visible;
+            else RegisterPasswordAgainBlock.Visibility = System.Windows.Visibility.Collapsed;
+        }
+
+        private void RegisterNickNameTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if ((sender as TextBox).Text.Length < INPUT_MAX_LENGTH_WITH_TIPS)
+                RegisterNickNameTextBlock.Visibility = System.Windows.Visibility.Visible;
+            else RegisterNickNameTextBlock.Visibility = System.Windows.Visibility.Collapsed;
         }
     }
 }

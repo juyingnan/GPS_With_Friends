@@ -59,14 +59,14 @@
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center"  Opacity="0.5">EMAIL</TextBlock>
-            <TextBox Grid.Row="0" Name="RegisterEmailTextBox" VerticalAlignment="Center" InputScope="EmailSmtpAddress" Canvas.ZIndex="1" ></TextBox>
-            <TextBlock Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center"  Opacity="0.5">Password</TextBlock>
-            <PasswordBox Grid.Row="1" Name="RegisterPasswordBox" VerticalAlignment="Center" Canvas.ZIndex="1" ></PasswordBox>
-            <TextBlock Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center"  Opacity="0.5">Password Again</TextBlock>
-            <PasswordBox Grid.Row="2" Name="RegisterPasswordAgainBox" VerticalAlignment="Center" Canvas.ZIndex="1" ></PasswordBox>
-            <TextBlock Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center"  Opacity="0.5">Nick Name</TextBlock>
-            <TextBox Grid.Row="3" Name="RegisterNickNameTextBox" VerticalAlignment="Center" Canvas.ZIndex="1" ></TextBox>
+            <TextBlock Grid.Row="0" Name="RegisterEmailTextBlock" VerticalAlignment="Center" HorizontalAlignment="Center"  Opacity="0.5">EMAIL</TextBlock>
+            <TextBox Grid.Row="0" Name="RegisterEmailTextBox" VerticalAlignment="Center" InputScope="EmailSmtpAddress" Canvas.ZIndex="1" TextChanged="RegisterEmailTextBox_TextChanged" ></TextBox>
+            <TextBlock Grid.Row="1" Name="RegisterPasswordBlock" VerticalAlignment="Center" HorizontalAlignment="Center"  Opacity="0.5">Password</TextBlock>
+            <PasswordBox Grid.Row="1" Name="RegisterPasswordBox" VerticalAlignment="Center" Canvas.ZIndex="1" PasswordChanged="RegisterPasswordBox_PasswordChanged" ></PasswordBox>
+            <TextBlock Grid.Row="2" Name="RegisterPasswordAgainBlock" VerticalAlignment="Center" HorizontalAlignment="Center"  Opacity="0.5">Password Again</TextBlock>
+            <PasswordBox Grid.Row="2" Name="RegisterPasswordAgainBox" VerticalAlignment="Center" Canvas.ZIndex="1" PasswordChanged="RegisterPasswordAgainBox_PasswordChanged" ></PasswordBox>
+            <TextBlock Grid.Row="3" Name="RegisterNickNameTextBlock" VerticalAlignment="Center" HorizontalAlignment="Center"  Opacity="0.5">Nick Name</TextBlock>
+            <TextBox Grid.Row="3" Name="RegisterNickNameTextBox" VerticalAlignment="Center" Canvas.ZIndex="1" TextChanged="RegisterNickNameTextBox_TextChanged" ></TextBox>
             <Button Name="SUBMITBUTTON" Grid.Row="4" Click="Submit_Button_Click" HorizontalAlignment="Center" VerticalAlignment="Center">Submit</Button>
             <ProgressBar Name="progressBar" Grid.Row="5" Visibility="Collapsed" IsIndeterminate="True"></ProgressBar>
         </Grid>

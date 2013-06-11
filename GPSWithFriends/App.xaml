@@ -12,6 +12,7 @@
         <local:LocalizedStrings xmlns:local="clr-namespace:GPSWithFriends" x:Key="LocalizedStrings"/>
         <con:InverseBooleanConverter x:Key="converter"/>
         <con:GeoToVisibilityConverter x:Key="geo2visConverter"/>
+        <con:BooleanToVisibilityInverseConverter x:Key="Bool2VisInvConverter"/>
     </Application.Resources>
 
     <Application.ApplicationLifetimeObjects>

@@ -63,10 +63,10 @@
             </Grid.ColumnDefinitions>
             <Image Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Source="/Assets/logo_300.png"></Image>
             <!--<TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Bottom">Log in as bunny_gg@hotmail.com</TextBlock>-->
-            <TextBlock VerticalAlignment="Center" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Opacity="0.5">EMAIL</TextBlock>
-            <TextBlock VerticalAlignment="Center" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Opacity="0.5">PASSWORD</TextBlock>
-            <TextBox VerticalAlignment="Center" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"  Canvas.ZIndex="1" Name="LoginUsernameTextBox" InputScope="EmailSmtpAddress" ToolTipService.ToolTip="&quot;EMAIL&quot;" ></TextBox>
-            <PasswordBox  VerticalAlignment="Center" Grid.Row="3" Grid.Column="0"  Grid.ColumnSpan="2"  Canvas.ZIndex="1" Name="LoginPasswordBox"></PasswordBox>
+            <TextBlock VerticalAlignment="Center" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Opacity="0.5" Name="EmailInputTooltipTextBlock">EMAIL</TextBlock>
+            <TextBlock VerticalAlignment="Center" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Opacity="0.5" Name="PasswordInputTooltipTextBlock">PASSWORD</TextBlock>
+            <TextBox VerticalAlignment="Center" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"  Canvas.ZIndex="1" Name="LoginUsernameTextBox" InputScope="EmailSmtpAddress" TextChanged="LoginUsernameTextBox_TextChanged"></TextBox>
+            <PasswordBox  VerticalAlignment="Center" Grid.Row="3" Grid.Column="0"  Grid.ColumnSpan="2"  Canvas.ZIndex="1" Name="LoginPasswordBox" PasswordChanged="LoginPasswordBox_PasswordChanged"></PasswordBox>
             <Button VerticalAlignment="Center" Grid.Row="4" Grid.Column="0"  Grid.ColumnSpan="2" Width="200" Name="LOGINBUTTON" Click="LOGINBUTTON_Click">Login</Button>
             <ProgressBar Name="progressBar" Grid.Row="4" Grid.ColumnSpan="2" VerticalAlignment="Top" Visibility="Collapsed" IsIndeterminate="True"></ProgressBar>
             <HyperlinkButton VerticalAlignment="Center" Grid.Row="5" Grid.Column="0"  Grid.ColumnSpan="2" Width="200" Name="REGISTERBUTTON" Click="REGISTERBUTTON_Click">Register</HyperlinkButton>

@@ -30,6 +30,7 @@ namespace GPSWithFriends.ViewModels
                 CalculteGeoCoordinate();
                 CalculateDistance();
             }
+            lastMessage = null;
         }
 
         public void CalculateDistance()
@@ -40,6 +41,11 @@ namespace GPSWithFriends.ViewModels
                 temp = this.Geocoordinate.GetDistanceTo(App.ViewModel.Me.Geocoordinate);
                 this.distance = ConvertDoubleToDistance(temp);
             }
+        }
+
+        public void ClearMessage()
+        {
+            this.lastMessage.IsCleared = true;
         }
 
         private string ConvertDoubleToDistance(double temp)
@@ -278,6 +284,23 @@ namespace GPSWithFriends.ViewModels
                         CalculteGeoCoordinate();
                         CalculateDistance();
                     }
+                }
+            }
+        }
+
+        private Message lastMessage;
+        public Message LastMessage
+        {
+            get
+            {
+                return lastMessage;
+            }
+            set
+            {
+                if (value != lastMessage)
+                {
+                    lastMessage = value;
+                    NotifyPropertyChanged("LastMessage");
                 }
             }
         }

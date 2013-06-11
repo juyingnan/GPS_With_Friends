@@ -93,6 +93,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BooleanToVisibilityConverter.cs" />
     <Compile Include="GeoToVisibilityConverter.cs" />
     <Compile Include="DetailPage.xaml.cs">
       <DependentUpon>DetailPage.xaml</DependentUpon>
@@ -117,6 +118,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AppResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\Message.cs" />
     <Compile Include="ViewModels\Group.cs" />
     <Compile Include="ViewModels\Friend.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
@@ -170,6 +172,7 @@
     <Content Include="Assets\logo_300.png" />
     <Content Include="Assets\logo_500.png" />
     <Content Include="Assets\AppBar\switch.png" />
+    <Content Include="Assets\message.png" />
     <Content Include="logo_159_trans.png" />
     <Content Include="logo_300_trans.png" />
     <Content Include="logo_336_trans.png" />
