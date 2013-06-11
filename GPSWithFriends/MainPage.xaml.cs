@@ -190,6 +190,9 @@ namespace GPSWithFriends
                 LocateFriend(friend);
             }
 
+            //to avoid bug when list is empty
+            (sender as LongListSelector).SelectedItem = null;
+
             //void proxy_setLocationCompleted(object sender, Server.setLocationCompletedEventArgs e)
             //{
             //    //throw new NotImplementedException();
@@ -592,6 +595,7 @@ namespace GPSWithFriends
                 this.NavigationService.Navigate(new Uri("/DetailPage.xaml", UriKind.Relative));
             }
 
+            (sender as LongListSelector).SelectedItem = null;
             ///// <summary>
             ///// Select a friend to see detail page
             ///// </summary>
