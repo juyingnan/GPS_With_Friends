@@ -8,6 +8,7 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using System.IO.IsolatedStorage;
+using System.Text;
 
 namespace GPSWithFriends
 {
@@ -39,6 +40,8 @@ namespace GPSWithFriends
         {
             try
             {
+                string md5String = MD5Core.GetHashString(LoginPasswordBox.Password);
+
                 //proxy.authenticateCompleted += proxy_authenticateCompleted;
                 //proxy.authenticateAsync(LoginUsernameTextBox.Text, LoginPasswordBox.Password);
                 LOGINBUTTON.IsEnabled = false;

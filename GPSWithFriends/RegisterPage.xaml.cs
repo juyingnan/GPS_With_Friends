@@ -31,6 +31,7 @@ namespace GPSWithFriends
             {
                 try
                 {
+                    string md5String = MD5Core.GetHashString(RegisterPasswordBox.Password);
                     //proxy.registerAsync(RegisterEmailTextBox.Text, RegisterPasswordBox.Password, RegisterNickNameTextBox.Text, RegisterNickNameTextBox.Text);
                     SUBMITBUTTON.IsEnabled = false;
                     progressBar.Visibility = System.Windows.Visibility.Visible;

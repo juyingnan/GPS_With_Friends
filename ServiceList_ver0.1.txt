@@ -1,0 +1,24 @@
+Open app:
+
+1. Register
+2. Log in
+----------After login------
+3. Get My UID: String EmailAddress -> int UID
+4. Get My Group Info: int -> GroupInfo[]
+5. Get My Friends List: int -> int[]
+6. Get All my Friends: foreach( int -> Friend )
+7. Get All my Message: uid -> Message[]
+8. Get All my Request: uid -> Request[]
+----------Above is fix, following is optional-----
+9. Update my location to server: uid, lat, lon
+10. Accept/Reject a request: Ruid, bool
+11. Send a request: fromUID, toUID
+12. Send a message: fromUID, toUID, content
+13. Clear a message: Muid
+14. Update a friend(same as 5): int -> Friend
+15. Update my Group Info: int, GroupInfo[] //before that, check whether the friend lists on client and on server are same. if not, update client friend list and update group
+16. delete a friend: myUID, friendUID
+17. Update my isHideMe status: uid, bool (whether can be merged with 8?)
+18. Change my nickname: uid, string
+19. Log out: uid
+20. [Change my pic]
