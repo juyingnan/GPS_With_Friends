@@ -103,7 +103,7 @@ namespace GPSWithFriends.ViewModels
         public void LoadData()
         {
             // Sample data; replace with real data
-            this.Friends.Add(new Friend() { NickName = "Wang Cong", Status = "updated in 16:20", Distance = "1.5 km", ImagePath = "/Assets/fakePor.png", Email = "Jushua@gmail.com", Latitude = 39.7677, Longitude = 116.3602,IsFriend=true,Uid=1, LastMessage=new Message(1,0,"Hi, I'm here",DateTime.Now,false)});
+            this.Friends.Add(new Friend() { NickName = "Wang Cong", Status = "updated in 16:20", Distance = "1.5 km", ImagePath = "/Assets/fakePor.png", Email = "Jushua@gmail.com", Latitude = 39.7677, Longitude = 116.3602,IsFriend=true,Uid=1, LastMessage=new Message(1,0,"Hi, I'm here. 我今天倒是tmd要试试消息究竟可以发多长是吧超超",DateTime.Now,false)});
             this.Friends.Add(new Friend() { NickName = "Yu Zhe", Status = "updated in 16:22", Distance = "1 km", ImagePath = "/Assets/fakePor.png", Email = "Kate@gmail.com", Latitude = 39.7588, Longitude = 116.3510, IsFriend = true, Uid = 2, LastMessage = new Message(1, 0, "Hi, I'm here", DateTime.Now, true) });
             this.Friends.Add(new Friend() { NickName = "Kate.Xu", Status = "updated in 15:30", Distance = "1.3 km", ImagePath = "/Assets/fakePor.png", Email = "Bao@gmail.com", Latitude = 39.7532, Longitude = 116.3452, IsFriend = true, Uid = 3, LastMessage= new Message(1, 0, "Hi, I'm here", DateTime.Now, false) });
             this.Friends.Add(new Friend() { NickName = "Rye", Status = "updated in 16:12", Distance = "3 km", ImagePath = "/Assets/fakePor.png", Email = "Stranger@gmail.com", Latitude = 39.7532, Longitude = 116.3602, IsFriend = true, Uid = 4, LastMessage = new Message(1, 0, "Hi, I'm here", DateTime.Now, true) });

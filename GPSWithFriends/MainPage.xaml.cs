@@ -34,6 +34,7 @@ namespace GPSWithFriends
         const int MAP_RECTANGLE_THICKNESS = 10;
         const int MAP_MAX_ZOOMLEVEL = 19;
         const int MAP_MIN_ZOOMLEVEL = 1;
+        const double MAP_MIN_LOCATE_ZOOMLEVEL = 15;
         const string DEFAULT_GROUP_NAME = "My Friends";
 
         //GPS
@@ -146,7 +147,7 @@ namespace GPSWithFriends
             try
             {
                 Geoposition position = await myGeoLocator.GetGeopositionAsync(maximumAge: TimeSpan.FromMinutes(1), timeout: TimeSpan.FromSeconds(30));
-                GPSLocationTextblock.Text = "Location of Me: " + string.Format("Lat: {0:0.0000}, Long: {1:0.0000}",
+                GPSLocationTextblock.Text = "Location of Me: " + string.Format("Lat: {0:0.0000}, Lon: {1:0.0000}",
                  position.Coordinate.Latitude, position.Coordinate.Longitude);
                 Me.Latitude = position.Coordinate.Latitude;
                 Me.Longitude = position.Coordinate.Longitude;
@@ -176,7 +177,7 @@ namespace GPSWithFriends
                         }
                     }
                     MyLocationMarker.Visibility = System.Windows.Visibility.Visible;
-                    MyMap.SetView(new GeoCoordinate(Me.Latitude, Me.Longitude), MyMap.ZoomLevel, MapAnimationKind.Parabolic);
+                    LocateFriend(Me);
                 }
             }
         }
@@ -232,7 +233,10 @@ namespace GPSWithFriends
             if (friend.isLocated())
             {
                 GPSLocationTextblock.Text = "Location of " + friend.NickName + ": " + string.Format("Lat: {0:0.00}, Long: {1:0.00}", friend.Latitude, friend.Longitude);
-                MyMap.SetView(new GeoCoordinate(friend.Latitude, friend.Longitude), MyMap.ZoomLevel, MapAnimationKind.Parabolic);
+                double zoomLevel = MyMap.ZoomLevel;
+                if (zoomLevel < MAP_MIN_LOCATE_ZOOMLEVEL)
+                    zoomLevel = MAP_MIN_LOCATE_ZOOMLEVEL;
+                MyMap.SetView(new GeoCoordinate(friend.Latitude, friend.Longitude), zoomLevel, MapAnimationKind.Parabolic);
             }
         }
 
