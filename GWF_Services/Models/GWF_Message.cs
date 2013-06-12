@@ -21,6 +21,7 @@ namespace GWF_WebServices.Models
         public System.DateTime timestamp { get; set; }
         public string is_processed { get; set; }
         public string from_uid { get; set; }
+    
         public virtual GWF_User_Feed GWF_User_Feed { get; set; }
     }
 }

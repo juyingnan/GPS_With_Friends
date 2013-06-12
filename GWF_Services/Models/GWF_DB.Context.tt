@@ -183,11 +183,7 @@ public class CodeStringGenerator
             CultureInfo.InvariantCulture,
             "{0} {1} {2} {{ {3}get; {4}set; }}",
             AccessibilityAndVirtual(Accessibility.ForProperty(navigationProperty)),
-<<<<<<< HEAD:GWF_Services/Models/GWF_DB.Context.tt
             navigationProperty.ToEndMember.RelationshipMultiplicity == RelationshipMultiplicity.Many ? ("HashSet<" + endType + ">") : endType,
-=======
-            navigationProperty.ToEndMember.RelationshipMultiplicity == RelationshipMultiplicity.Many ? ("ICollection<" + endType + ">") : endType,
->>>>>>> 40b8671987faa250f97d648567786278098522dc:GWF_Services/Models/GWF_DB.Context.tt
             _code.Escape(navigationProperty),
             _code.SpaceAfter(Accessibility.ForGetter(navigationProperty)),
             _code.SpaceAfter(Accessibility.ForSetter(navigationProperty)));
