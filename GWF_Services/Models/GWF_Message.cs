@@ -20,11 +20,7 @@ namespace GWF_WebServices.Models
         public string content { get; set; }
         public System.DateTime timestamp { get; set; }
         public string is_processed { get; set; }
-<<<<<<< HEAD
         public string from_uid { get; set; }
-=======
->>>>>>> 40b8671987faa250f97d648567786278098522dc
-    
         public virtual GWF_User_Feed GWF_User_Feed { get; set; }
     }
 }

@@ -17,10 +17,7 @@ namespace GWF_WebServices.Models
         public int ID { get; set; }
         public double latitude { get; set; }
         public double longitude { get; set; }
-<<<<<<< HEAD
         public string user_id { get; set; }
         public System.DateTime timestamp { get; set; }
-=======
->>>>>>> 40b8671987faa250f97d648567786278098522dc
     }
 }
