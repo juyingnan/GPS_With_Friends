@@ -11,15 +11,25 @@ namespace GWF_WebServices.Models
 {
     public partial class GWF_User
     {
-        public GWF_User()
-        {
-            currentState = new OfflineState();
-        }
+        private UserState default_state = new OfflineState();
 
         public UserState currentState
         {
-            get;
-            set;
+            get
+            {
+                if (currentState == null)
+                {
+                    return this.default_state;
+                }
+                else
+                {
+                    return currentState;
+                }
+            }
+            set
+            {
+                currentState = value;
+            }
         }
     }
 }

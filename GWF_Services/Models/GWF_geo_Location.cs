@@ -12,17 +12,10 @@ namespace GWF_WebServices.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class GWF_Profile
+    public partial class GWF_geo_Location
     {
         public int ID { get; set; }
-        public string Firstname { get; set; }
-        public string Lastname { get; set; }
-        public string PictureURL { get; set; }
-        public string PictureBigURL { get; set; }
-        public string PictureSmallURL { get; set; }
-        public Nullable<int> Birthday { get; set; }
-        public string user_id { get; set; }
-    
-        public virtual GWF_User GWF_User { get; set; }
+        public double latitude { get; set; }
+        public double longitude { get; set; }
     }
 }

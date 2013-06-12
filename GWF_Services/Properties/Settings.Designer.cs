@@ -32,5 +32,14 @@ namespace GWF_WebServices.Properties {
                 return ((string)(this["StorageConnectionString"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        public string GWF_DBContext {
+            get {
+                return ((string)(this["GWF_DBEntities"]));
+            }
+        }
     }
 }

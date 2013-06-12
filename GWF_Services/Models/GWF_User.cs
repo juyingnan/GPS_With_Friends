@@ -14,13 +14,27 @@ namespace GWF_WebServices.Models
     
     public partial class GWF_User
     {
-        public long id { get; set; }
+        public GWF_User()
+        {
+            this.GWF_FriendRelation = new HashSet<GWF_FriendRelation>();
+            this.GWF_FriendRelation1 = new HashSet<GWF_FriendRelation>();
+            this.GWF_Group = new HashSet<GWF_Group>();
+            this.GWF_Profile = new HashSet<GWF_Profile>();
+            this.GWF_User_Feed = new HashSet<GWF_User_Feed>();
+            this.GWF_User_Group = new HashSet<GWF_User_Group>();
+        }
+    
+        public int ID { get; set; }
         public string user_id { get; set; }
         public string user_name { get; set; }
         public string user_email { get; set; }
         public string user_passwordMD5 { get; set; }
-        public Nullable<int> user_property_id { get; set; }
     
-        public virtual GWF_Profile GWF_Profile { get; set; }
+        public virtual HashSet<GWF_FriendRelation> GWF_FriendRelation { get; set; }
+        public virtual HashSet<GWF_FriendRelation> GWF_FriendRelation1 { get; set; }
+        public virtual HashSet<GWF_Group> GWF_Group { get; set; }
+        public virtual HashSet<GWF_Profile> GWF_Profile { get; set; }
+        public virtual HashSet<GWF_User_Feed> GWF_User_Feed { get; set; }
+        public virtual HashSet<GWF_User_Group> GWF_User_Group { get; set; }
     }
 }

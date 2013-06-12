@@ -26,8 +26,8 @@ namespace GWF_WebServices.Utils.ValidationUtils
         public static bool IsRegistered(this GWF_User user)
         {
             bool isRegistered = false;
-            GWF_DBContext ctx = new GWF_DBContext();
-            int uc = (from s in ctx.GWF_User where s.user_email == user.user_email select s).Count();
+            GWF_DBEntities ctx = new GWF_DBEntities();
+            int uc = (from s in ctx.GWF_Users where s.user_email == user.user_email select s).Count();
             isRegistered = uc > 0;
 
             return isRegistered;
@@ -36,8 +36,8 @@ namespace GWF_WebServices.Utils.ValidationUtils
         public static bool IsValidPassword(this GWF_User user)
         {
             bool isValid = false;
-            GWF_DBContext ctx = new GWF_DBContext();
-            int uc = (from s in ctx.GWF_User where (s.user_email == user.user_email && s.user_passwordMD5 == user.user_passwordMD5) select s).Count();
+            GWF_DBEntities ctx = new GWF_DBEntities();
+            int uc = (from s in ctx.GWF_Users where (s.user_email == user.user_email && s.user_passwordMD5 == user.user_passwordMD5) select s).Count();
             isValid = uc > 0;
 
             return isValid;

@@ -12,17 +12,18 @@ namespace GWF_WebServices.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class GWF_Profile
+    public partial class GWF_User_Feed
     {
-        public int ID { get; set; }
-        public string Firstname { get; set; }
-        public string Lastname { get; set; }
-        public string PictureURL { get; set; }
-        public string PictureBigURL { get; set; }
-        public string PictureSmallURL { get; set; }
-        public Nullable<int> Birthday { get; set; }
-        public string user_id { get; set; }
+        public GWF_User_Feed()
+        {
+            this.GWF_Message = new HashSet<GWF_Message>();
+        }
     
+        public int ID { get; set; }
+        public string user_id { get; set; }
+        public string feed_id { get; set; }
+    
+        public virtual HashSet<GWF_Message> GWF_Message { get; set; }
         public virtual GWF_User GWF_User { get; set; }
     }
 }
