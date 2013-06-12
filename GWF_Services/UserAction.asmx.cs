@@ -306,7 +306,8 @@ namespace GWF_WebServices
                 message.feed_id = fid;
                 message.content_type = (int)GWFMessageType.LOC_UPDATE;
                 message.from_uid = uid;
-                message.content = "(" + lati.ToString() + "," + longi.ToString() + ")";
+                GWF_User u = ctx.GWF_Users.SingleOrDefault(usr => usr.user_id == uid);
+                message.content = "(" + u.user_email + "," + lati.ToString() + "," + longi.ToString() + ")";
                 message.is_processed = "N";
                 ctx.GWF_Messages.Add(message);
             }
