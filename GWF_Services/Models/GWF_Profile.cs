@@ -14,11 +14,6 @@ namespace GWF_WebServices.Models
     
     public partial class GWF_Profile
     {
-        public GWF_Profile()
-        {
-            this.GWF_User = new HashSet<GWF_User>();
-        }
-    
         public int ID { get; set; }
         public string Firstname { get; set; }
         public string Lastname { get; set; }
@@ -26,7 +21,8 @@ namespace GWF_WebServices.Models
         public string PictureBigURL { get; set; }
         public string PictureSmallURL { get; set; }
         public Nullable<int> Birthday { get; set; }
+        public string user_id { get; set; }
     
-        public virtual ICollection<GWF_User> GWF_User { get; set; }
+        public virtual GWF_User GWF_User { get; set; }
     }
 }

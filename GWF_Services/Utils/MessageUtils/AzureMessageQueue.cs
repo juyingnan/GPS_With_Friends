@@ -25,21 +25,22 @@ namespace GWF_WebServices.Utils.MessageUtils
 
         public GWFMessage getMessage()
         {
-            CloudQueueMessage peekedMessage = queue.GetMessage();
-            GWFMessage gwf_msg = GWFMessage.deSerializeiFromString(peekedMessage.AsString);
-            return gwf_msg;
+            //CloudQueueMessage peekedMessage = queue.GetMessage();
+            //GWFMessage gwf_msg = GWFMessage.deSerializeiFromString(peekedMessage.AsString);
+            //return gwf_msg;
+            return new GWFMessage();
         }
 
         public void deleteMessage(GWFMessage gwf_msg)
         {
-            CloudQueueMessage message = new CloudQueueMessage(gwf_msg.serialize());
-            queue.DeleteMessage(message);
+            //CloudQueueMessage message = new CloudQueueMessage(gwf_msg.serialize());
+            //queue.DeleteMessage(message);
         }
 
         public void addMessage(GWFMessage gwf_msg)
         {
-            CloudQueueMessage message = new CloudQueueMessage(gwf_msg.serialize());
-            queue.AddMessage(message);
+            //CloudQueueMessage message = new CloudQueueMessage(gwf_msg.serialize());
+            //queue.AddMessage(message);
         }
 
         public void putMessage(string msg_id, GWFMessage gwf_msg)

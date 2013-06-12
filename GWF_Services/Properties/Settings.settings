@@ -1,5 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="GWF_Services.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="GWF_WebServices.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
     <Setting Name="StorageConnectionString" Type="(Connection string)" Scope="Application">
@@ -8,6 +8,10 @@
   &lt;ConnectionString&gt;UseDevelopmentStorage=true&lt;/ConnectionString&gt;
 &lt;/SerializableConnectionString&gt;</DesignTimeValue>
       <Value Profile="(Default)">UseDevelopmentStorage=true</Value>
+    </Setting>
+    <Setting Name="GWF_DBContext" Type="(Connection string)" Scope="Application">
+      <DesignTimeValue Profile="(Default)" />
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

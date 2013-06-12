@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Deployment xmlns="http://schemas.microsoft.com/windowsphone/2009/deployment" AppPlatformVersion="7.1">
+  <App xmlns="" ProductID="{070dbd4d-002a-4153-9488-8b65c7a0672f}" Title="ContosoContactsApp" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="ContosoContactsApp author" Description="Sample description" Publisher="ContosoContactsApp">
+    <IconPath IsRelative="true" IsResource="false">ContactIcon.png</IconPath>
+    <Capabilities>
+      <Capability Name="ID_CAP_NETWORKING" />
+      <Capability Name="ID_CAP_WEBBROWSERCOMPONENT" />
+    </Capabilities>
+    <Tasks>
+      <DefaultTask Name="_default" NavigationPage="MainPage.xaml" />
+    </Tasks>
+    <Tokens>
+      <PrimaryToken TokenID="ContosoContactsAppToken" TaskName="_default">
+        <TemplateType5>
+          <BackgroundImageURI IsRelative="true" IsResource="false">ContactIcon.png</BackgroundImageURI>
+          <Count>0</Count>
+          <Title>Contoso Contacts</Title>
+        </TemplateType5>
+      </PrimaryToken>
+    </Tokens>
+  </App>
+</Deployment>

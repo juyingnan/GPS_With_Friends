@@ -7,7 +7,7 @@ namespace GWF_WebServices.Entities.UserEntities
 {
     public class OfflineState: UserState
     {
-        public void handle()
+        public override void handle()
         {
         }
     }

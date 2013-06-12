@@ -106,38 +106,58 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="UserAction.asmx" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\GWF_DBEntities.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>GWF_DBEntities.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\GWF_DBEntities.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>GWF_DBEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\GWF_DBEntities.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>GWF_DBEntities.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Models\GWF_Device.cs">
-      <DependentUpon>GWF_DBEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\GWF_Profile.cs">
-      <DependentUpon>GWF_DBEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\GWF_User.cs">
-      <DependentUpon>GWF_DBEntities.tt</DependentUpon>
-    </Compile>
     <Compile Include="Entities\UserEntities\HideState.cs" />
     <Compile Include="Entities\UserEntities\OfflineState.cs" />
     <Compile Include="Entities\UserEntities\OnlineState.cs" />
     <Compile Include="Entities\UserEntities\UserState.cs" />
+    <Compile Include="Models\GWF_DB.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GWF_DB.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GWF_DB.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GWF_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GWF_DB.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GWF_DB.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GWF_Device.cs">
+      <DependentUpon>GWF_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GWF_FriendRelation.cs">
+      <DependentUpon>GWF_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GWF_geo_Location.cs">
+      <DependentUpon>GWF_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GWF_Group.cs">
+      <DependentUpon>GWF_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GWF_Message.cs">
+      <DependentUpon>GWF_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GWF_Profile.cs">
+      <DependentUpon>GWF_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GWF_User.cs">
+      <DependentUpon>GWF_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GWF_User_Feed.cs">
+      <DependentUpon>GWF_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GWF_User_Group.cs">
+      <DependentUpon>GWF_DB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Types\Constants\GWFMessageCode.cs" />
     <Compile Include="Utils\MessageUtils\AzureMessageQueue.cs" />
     <Compile Include="Utils\UserUtils\UserManager.cs" />
@@ -167,23 +187,22 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </Content>
     <Content Include="packages.config" />
-    <Content Include="ClassDiagram1.cd" />
-    <EntityDeploy Include="Models\GWF_DBEntities.edmx">
+    <EntityDeploy Include="Models\GWF_DB.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>GWF_DBEntities.Designer.cs</LastGenOutput>
+      <LastGenOutput>GWF_DB.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Models\GWF_DBEntities.Context.tt">
+    <Content Include="Models\GWF_DB.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>GWF_DBEntities.edmx</DependentUpon>
-      <LastGenOutput>GWF_DBEntities.Context.cs</LastGenOutput>
+      <DependentUpon>GWF_DB.edmx</DependentUpon>
+      <LastGenOutput>GWF_DB.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\GWF_DBEntities.edmx.diagram">
-      <DependentUpon>GWF_DBEntities.edmx</DependentUpon>
+    <Content Include="Models\GWF_DB.edmx.diagram">
+      <DependentUpon>GWF_DB.edmx</DependentUpon>
     </Content>
-    <Content Include="Models\GWF_DBEntities.tt">
+    <Content Include="Models\GWF_DB.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>GWF_DBEntities.edmx</DependentUpon>
-      <LastGenOutput>GWF_DBEntities.cs</LastGenOutput>
+      <DependentUpon>GWF_DB.edmx</DependentUpon>
+      <LastGenOutput>GWF_DB.cs</LastGenOutput>
     </Content>
     <None Include="Properties\PublishProfiles\GWF - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\GWF - Web Deploy.pubxml">
