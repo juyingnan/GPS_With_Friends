@@ -73,8 +73,11 @@
           <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="latitude" Type="float" Nullable="false" />
           <Property Name="longitude" Type="float" Nullable="false" />
+<<<<<<< HEAD
           <Property Name="user_id" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="timestamp" Type="datetime" Nullable="false" />
+=======
+>>>>>>> 40b8671987faa250f97d648567786278098522dc
         </EntityType>
         <EntityType Name="GWF_Group">
           <Key>
@@ -94,7 +97,10 @@
           <Property Name="content" Type="text" />
           <Property Name="timestamp" Type="datetime" Nullable="false" />
           <Property Name="is_processed" Type="char" MaxLength="1" />
+<<<<<<< HEAD
           <Property Name="from_uid" Type="nvarchar" Nullable="false" MaxLength="50" />
+=======
+>>>>>>> 40b8671987faa250f97d648567786278098522dc
         </EntityType>
         <EntityType Name="GWF_Profile">
           <Key>
@@ -315,8 +321,11 @@
           <Property Name="ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
           <Property Name="latitude" Type="Double" Nullable="false" />
           <Property Name="longitude" Type="Double" Nullable="false" />
+<<<<<<< HEAD
           <Property Name="user_id" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
           <Property Name="timestamp" Type="DateTime" Nullable="false" Precision="3" />
+=======
+>>>>>>> 40b8671987faa250f97d648567786278098522dc
         </EntityType>
         <EntityType Name="GWF_Group">
           <Key>
@@ -338,7 +347,10 @@
           <Property Name="content" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
           <Property Name="timestamp" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="is_processed" Type="String" MaxLength="1" Unicode="false" FixedLength="true" />
+<<<<<<< HEAD
           <Property Name="from_uid" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+=======
+>>>>>>> 40b8671987faa250f97d648567786278098522dc
           <NavigationProperty Name="GWF_User_Feed" Relationship="GWF_DBModel.FK_GWF_Message_0" FromRole="GWF_Message" ToRole="GWF_User_Feed" />
         </EntityType>
         <EntityType Name="GWF_Profile">
@@ -527,8 +539,11 @@
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="latitude" ColumnName="latitude" />
                 <ScalarProperty Name="longitude" ColumnName="longitude" />
+<<<<<<< HEAD
                 <ScalarProperty Name="user_id" ColumnName="user_id" />
                 <ScalarProperty Name="timestamp" ColumnName="timestamp" />
+=======
+>>>>>>> 40b8671987faa250f97d648567786278098522dc
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -550,7 +565,10 @@
                 <ScalarProperty Name="content" ColumnName="content" />
                 <ScalarProperty Name="timestamp" ColumnName="timestamp" />
                 <ScalarProperty Name="is_processed" ColumnName="is_processed" />
+<<<<<<< HEAD
                 <ScalarProperty Name="from_uid" ColumnName="from_uid" />
+=======
+>>>>>>> 40b8671987faa250f97d648567786278098522dc
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

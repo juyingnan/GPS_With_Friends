@@ -133,6 +133,7 @@ namespace GWF_WebServices
             // FIXME: only if we support multiple feed for each user2
             string feed_id = ctx.GWF_User_Feeds.SingleOrDefault(uf => uf.user_id == uid).feed_id;
             List<GWF_Message> messages = ctx.GWF_Messages.Where(m => m.feed_id == feed_id && m.is_processed == "N").ToList();
+<<<<<<< HEAD
 
             foreach (GWF_Message msg in messages)
             {
@@ -156,6 +157,29 @@ namespace GWF_WebServices
             }
             ctx.SaveChanges();
 
+=======
+
+            foreach (GWF_Message msg in messages)
+            {
+                switch ((GWFMessageType)msg.content_type)
+                {
+                    case GWFMessageType.DEFAULT_TYPE:
+                        break;
+                    case GWFMessageType.IM_MESSAGE:
+                        break;
+                    case GWFMessageType.NOTIFICATION:
+                        break;
+                    case GWFMessageType.REQUEST:
+                        // if accepted
+                        break;
+                    default:
+                        break;
+                }
+                msg.is_processed = "Y";
+            }
+           ctx.SaveChanges();
+
+>>>>>>> 40b8671987faa250f97d648567786278098522dc
             return messages;
         }
 
@@ -172,8 +196,11 @@ namespace GWF_WebServices
             message.content_type = (int)GWFMessageType.IM_MESSAGE;
             message.content = content;
             message.is_processed = "N";
+<<<<<<< HEAD
             message.from_uid = from_uid;
 
+=======
+>>>>>>> 40b8671987faa250f97d648567786278098522dc
             ctx.GWF_Messages.Add(message);
             ctx.SaveChanges();
 
@@ -207,7 +234,10 @@ namespace GWF_WebServices
             message.content = "Add friend request from user2:[\"" + user2.user_name + "\", \"" + user2.user_email + "\"]";
             message.content_type = (int)GWFMessageType.REQUEST;
             message.is_processed = "N";
+<<<<<<< HEAD
             message.from_uid = uid1;
+=======
+>>>>>>> 40b8671987faa250f97d648567786278098522dc
 
             ctx.GWF_Messages.Add(message);
 
@@ -241,7 +271,10 @@ namespace GWF_WebServices
             message.content_type = (int)GWFMessageType.NOTIFICATION;
             message.timestamp = DateTime.Now;
             message.is_processed = "N";
+<<<<<<< HEAD
             message.from_uid = uid1;
+=======
+>>>>>>> 40b8671987faa250f97d648567786278098522dc
 
             if (accept)
             {
@@ -261,6 +294,7 @@ namespace GWF_WebServices
         }
 
         [WebMethod]
+<<<<<<< HEAD
         public string UpdateLocation(string uid, double lati, double longi)
         {
             GWF_DBEntities ctx = new GWF_DBEntities();
@@ -298,6 +332,8 @@ namespace GWF_WebServices
         }
 
         [WebMethod]
+=======
+>>>>>>> 40b8671987faa250f97d648567786278098522dc
         public string DeleteFriend(string uid1, string email2)
         {
             GWF_DBEntities ctx = new GWF_DBEntities();
@@ -373,6 +409,7 @@ namespace GWF_WebServices
             user_group.user_id = uid;
             user_group.group_id = Guid.NewGuid().ToString();
             user_group.group_name = group_name;
+<<<<<<< HEAD
 
             ctx.GWF_User_Groups.Add(user_group);
             ctx.SaveChanges();
@@ -394,6 +431,29 @@ namespace GWF_WebServices
             
         }
 
+=======
+
+            ctx.GWF_User_Groups.Add(user_group);
+            ctx.SaveChanges();
+
+            return GWFInfoCode.GWF_I_CREATE_GROUP_SUCCESS.ToString();
+        }
+
+        [WebMethod]
+        public string UpdateGroup(string uid, string group_name, List<GWF_Group> group)
+        {
+            GWF_DBEntities ctx = new GWF_DBEntities();
+            foreach (GWF_Group g in group) 
+            {
+                ctx.GWF_Groups.Add(g);
+            }
+
+            ctx.SaveChanges();
+            return GWFInfoCode.GWF_I_UPDATE_GROUP_SUCCESS.ToString();
+            
+        }
+
+>>>>>>> 40b8671987faa250f97d648567786278098522dc
         [WebMethod]
         public string DeleteGroup(string uid, string group_name)
         {
