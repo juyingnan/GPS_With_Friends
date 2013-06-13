@@ -14,4 +14,17 @@
       <Certificate name="Microsoft.WindowsAzure.Plugins.RemoteAccess.PasswordEncryption" thumbprint="3B7C89A011183DB79F03163BA1C4DC7E937E1854" thumbprintAlgorithm="sha1" />
     </Certificates>
   </Role>
+  <Role name="GWF_WCFServices">
+    <Instances count="1" />
+    <ConfigurationSettings>
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="UseDevelopmentStorage=true" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.Enabled" value="true" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountUsername" value="bunny" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountEncryptedPassword" value="MIIBnQYJKoZIhvcNAQcDoIIBjjCCAYoCAQAxggFOMIIBSgIBADAyMB4xHDAaBgNVBAMME1dpbmRvd3MgQXp1cmUgVG9vbHMCEChUm+TC9w28QU8JEsvsghQwDQYJKoZIhvcNAQEBBQAEggEAtbk6DHY7Hub0T0PHsxW5hsdGaydtqhRnybXJHj6217Rv7G/GqQjAjot6vApzaoGtzTpUGaxtvKXod9Xy5u75HvvGnFhpgp42nyd3r+4xgvoua7ENauaK/DtVgjFxi/ZfvDLF1swKUEEJS91Fsx03vX+5meFOTL/9nqdXZ+LFbB4aUUsfJKOUWeWRCl3brN0gZTDN/x6aHCu2O0IEIZ/oY9pDUbiHuTZ4H0X5zTJK3b7cxxaPm3kBM1V2zz1walAQxswVfEgHp/alOi/WEqSLIzcEgGt1K8VH2EA2b83Id/ZrO9VBsxh7Rmp2cAyjxfgEn1qWAjXg0hYOdrp3pl01njAzBgkqhkiG9w0BBwEwFAYIKoZIhvcNAwcECPjGol1VktzOgBAuzqhj74MeHv/Bo4rHEZqj" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountExpiration" value="2014-07-31T23:59:59.0000000+08:00" />
+    </ConfigurationSettings>
+    <Certificates>
+      <Certificate name="Microsoft.WindowsAzure.Plugins.RemoteAccess.PasswordEncryption" thumbprint="3B7C89A011183DB79F03163BA1C4DC7E937E1854" thumbprintAlgorithm="sha1" />
+    </Certificates>
+  </Role>
 </ServiceConfiguration>

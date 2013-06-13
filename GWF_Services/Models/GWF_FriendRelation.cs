@@ -19,6 +19,5 @@ namespace GWF_WebServices.Models
         public string user_id2 { get; set; }
     
         public virtual GWF_User GWF_User { get; set; }
-        public virtual GWF_User GWF_User1 { get; set; }
     }
 }

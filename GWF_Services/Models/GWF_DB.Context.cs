@@ -13,10 +13,10 @@ namespace GWF_WebServices.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class GWF_DBEntities : DbContext
+    public partial class GWF_DBContext : DbContext
     {
-        public GWF_DBEntities()
-            : base("name=GWF_DBEntities")
+        public GWF_DBContext()
+            : base("name=GWF_DBContext")
         {
         }
     

@@ -38,8 +38,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework">
-      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.0.0-beta1\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.0.0-beta1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="FluentNHibernate">
       <HintPath>..\packages\FluentNHibernate.1.3.0.733\lib\FluentNHibernate.dll</HintPath>
@@ -112,6 +116,14 @@
     <Content Include="UserAction.asmx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contracts\Data\CGroup.cs" />
+    <Compile Include="Contracts\Data\CLocation.cs" />
+    <Compile Include="Contracts\Data\CMessage.cs" />
+    <Compile Include="Contracts\Data\CProfile.cs" />
+    <Compile Include="Contracts\Data\CUser.cs" />
+    <Compile Include="Contracts\Data\Enums\CMessageType.cs" />
+    <Compile Include="Contracts\Data\Enums\CUserState.cs" />
+    <Compile Include="Entities\GWF_Message.cs" />
     <Compile Include="Entities\UserEntities\HideState.cs" />
     <Compile Include="Entities\UserEntities\OfflineState.cs" />
     <Compile Include="Entities\UserEntities\OnlineState.cs" />
@@ -160,6 +172,8 @@
     </Compile>
     <Compile Include="Types\Constants\GWFMessageCode.cs" />
     <Compile Include="Utils\MessageUtils\AzureMessageQueue.cs" />
+    <Compile Include="Utils\UserUtils\EntityUtils.cs" />
+    <Compile Include="Utils\UserUtils\SerializingExtensions.cs" />
     <Compile Include="Utils\UserUtils\UserManager.cs" />
     <Compile Include="Utils\UserUtils\ValidationExtensions.cs" />
     <Compile Include="Types\GWFMessageType.cs" />
@@ -239,8 +253,7 @@
           <IISUrl>http://localhost:49951/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
+          <CustomServerUrl>http://192.168.13.117:8080/</CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>

@@ -45,12 +45,23 @@
       <RoleName>GWF_WebServices</RoleName>
       <UpdateDiagnosticsConnectionStringOnPublish>True</UpdateDiagnosticsConnectionStringOnPublish>
     </ProjectReference>
+    <ProjectReference Include="..\GWF_WCF_WebRole\GWF_WCFServices.csproj">
+      <Name>GWF_WCFServices</Name>
+      <Project>{ab316be2-6bd9-40f8-bd3d-b768e54420e4}</Project>
+      <Private>True</Private>
+      <RoleType>Web</RoleType>
+      <RoleName>GWF_WCFServices</RoleName>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="GWF_WCFServicesContent" />
     <Folder Include="GWF_WebServicesContent\" />
     <Folder Include="Profiles" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="GWF_WCFServicesContent\diagnostics.wadcfg">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="GWF_WebServicesContent\diagnostics.wadcfg">
       <SubType>Content</SubType>
     </Content>

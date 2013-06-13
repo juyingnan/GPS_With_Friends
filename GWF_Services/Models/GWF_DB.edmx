@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="GWF_DBModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="GWF_DBModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityContainer Name="GWF_DBModelStoreContainer">
           <EntitySet Name="GWF_Device" EntityType="GWF_DBModel.Store.GWF_Device" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="GWF_FriendRelation" EntityType="GWF_DBModel.Store.GWF_FriendRelation" store:Type="Tables" Schema="dbo" />
@@ -19,9 +19,9 @@
             <End Role="GWF_User" EntitySet="GWF_User" />
             <End Role="GWF_FriendRelation" EntitySet="GWF_FriendRelation" />
           </AssociationSet>
-          <AssociationSet Name="FK_GWF_FriendRelation_1" Association="GWF_DBModel.Store.FK_GWF_FriendRelation_1">
+          <AssociationSet Name="FK_GWF_geo_Location_0" Association="GWF_DBModel.Store.FK_GWF_geo_Location_0">
             <End Role="GWF_User" EntitySet="GWF_User" />
-            <End Role="GWF_FriendRelation" EntitySet="GWF_FriendRelation" />
+            <End Role="GWF_geo_Location" EntitySet="GWF_geo_Location" />
           </AssociationSet>
           <AssociationSet Name="FK_GWF_Group_0" Association="GWF_DBModel.Store.FK_GWF_Group_0">
             <End Role="GWF_User_Group" EntitySet="GWF_User_Group" />
@@ -62,7 +62,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="user_id" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="user_id2" Type="nvarchar" Nullable="false" MaxLength="50" />
         </EntityType>
@@ -74,7 +74,7 @@
           <Property Name="latitude" Type="float" Nullable="false" />
           <Property Name="longitude" Type="float" Nullable="false" />
           <Property Name="user_id" Type="nvarchar" Nullable="false" MaxLength="50" />
-          <Property Name="timestamp" Type="datetime" Nullable="false" />
+          <Property Name="timestamp" Type="datetime2" Nullable="false" />
         </EntityType>
         <EntityType Name="GWF_Group">
           <Key>
@@ -92,7 +92,7 @@
           <Property Name="feed_id" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="content_type" Type="int" Nullable="false" />
           <Property Name="content" Type="text" />
-          <Property Name="timestamp" Type="datetime" Nullable="false" />
+          <Property Name="timestamp" Type="datetime2" Nullable="false" />
           <Property Name="is_processed" Type="char" MaxLength="1" />
           <Property Name="from_uid" Type="nvarchar" Nullable="false" MaxLength="50" />
         </EntityType>
@@ -150,15 +150,17 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_GWF_FriendRelation_1">
-          <End Role="GWF_User" Type="GWF_DBModel.Store.GWF_User" Multiplicity="1" />
-          <End Role="GWF_FriendRelation" Type="GWF_DBModel.Store.GWF_FriendRelation" Multiplicity="*" />
+        <Association Name="FK_GWF_geo_Location_0">
+          <End Role="GWF_User" Type="GWF_DBModel.Store.GWF_User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="GWF_geo_Location" Type="GWF_DBModel.Store.GWF_geo_Location" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="GWF_User">
               <PropertyRef Name="user_id" />
             </Principal>
-            <Dependent Role="GWF_FriendRelation">
-              <PropertyRef Name="user_id2" />
+            <Dependent Role="GWF_geo_Location">
+              <PropertyRef Name="user_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -240,8 +242,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="GWF_DBModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -256,10 +257,6 @@
           <EntitySet Name="GWF_User_Feed" EntityType="GWF_DBModel.GWF_User_Feed" />
           <EntitySet Name="GWF_User_Group" EntityType="GWF_DBModel.GWF_User_Group" />
           <AssociationSet Name="FK_GWF_FriendRelation_0" Association="GWF_DBModel.FK_GWF_FriendRelation_0">
-            <End Role="GWF_User" EntitySet="GWF_User" />
-            <End Role="GWF_FriendRelation" EntitySet="GWF_FriendRelation" />
-          </AssociationSet>
-          <AssociationSet Name="FK_GWF_FriendRelation_1" Association="GWF_DBModel.FK_GWF_FriendRelation_1">
             <End Role="GWF_User" EntitySet="GWF_User" />
             <End Role="GWF_FriendRelation" EntitySet="GWF_FriendRelation" />
           </AssociationSet>
@@ -287,6 +284,10 @@
             <End Role="GWF_User" EntitySet="GWF_User" />
             <End Role="GWF_User_Group" EntitySet="GWF_User_Group" />
           </AssociationSet>
+          <AssociationSet Name="FK_GWF_geo_Location_0" Association="GWF_DBModel.FK_GWF_geo_Location_0">
+            <End Role="GWF_User" EntitySet="GWF_User" />
+            <End Role="GWF_geo_Location" EntitySet="GWF_geo_Location" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="GWF_Device">
           <Key>
@@ -302,11 +303,10 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
           <Property Name="user_id" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
           <Property Name="user_id2" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="GWF_User" Relationship="GWF_DBModel.FK_GWF_FriendRelation_0" FromRole="GWF_FriendRelation" ToRole="GWF_User" />
-          <NavigationProperty Name="GWF_User1" Relationship="GWF_DBModel.FK_GWF_FriendRelation_1" FromRole="GWF_FriendRelation" ToRole="GWF_User" />
         </EntityType>
         <EntityType Name="GWF_geo_Location">
           <Key>
@@ -316,7 +316,8 @@
           <Property Name="latitude" Type="Double" Nullable="false" />
           <Property Name="longitude" Type="Double" Nullable="false" />
           <Property Name="user_id" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="timestamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="timestamp" Type="DateTime" Nullable="false" Precision="7" />
+          <NavigationProperty Name="GWF_User" Relationship="GWF_DBModel.FK_GWF_geo_Location_0" FromRole="GWF_geo_Location" ToRole="GWF_User" />
         </EntityType>
         <EntityType Name="GWF_Group">
           <Key>
@@ -336,7 +337,7 @@
           <Property Name="feed_id" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
           <Property Name="content_type" Type="Int32" Nullable="false" />
           <Property Name="content" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
-          <Property Name="timestamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="timestamp" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="is_processed" Type="String" MaxLength="1" Unicode="false" FixedLength="true" />
           <Property Name="from_uid" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="GWF_User_Feed" Relationship="GWF_DBModel.FK_GWF_Message_0" FromRole="GWF_Message" ToRole="GWF_User_Feed" />
@@ -365,11 +366,11 @@
           <Property Name="user_email" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
           <Property Name="user_passwordMD5" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="GWF_FriendRelation" Relationship="GWF_DBModel.FK_GWF_FriendRelation_0" FromRole="GWF_User" ToRole="GWF_FriendRelation" />
-          <NavigationProperty Name="GWF_FriendRelation1" Relationship="GWF_DBModel.FK_GWF_FriendRelation_1" FromRole="GWF_User" ToRole="GWF_FriendRelation" />
           <NavigationProperty Name="GWF_Group" Relationship="GWF_DBModel.FK_GWF_Group_1" FromRole="GWF_User" ToRole="GWF_Group" />
           <NavigationProperty Name="GWF_Profile" Relationship="GWF_DBModel.FK_GWF_Profile_0" FromRole="GWF_User" ToRole="GWF_Profile" />
           <NavigationProperty Name="GWF_User_Feed" Relationship="GWF_DBModel.FK_GWF_User_Feed_0" FromRole="GWF_User" ToRole="GWF_User_Feed" />
           <NavigationProperty Name="GWF_User_Group" Relationship="GWF_DBModel.FK_GWF_User_Group_0" FromRole="GWF_User" ToRole="GWF_User_Group" />
+          <NavigationProperty Name="GWF_geo_Location" Relationship="GWF_DBModel.FK_GWF_geo_Location_0" FromRole="GWF_User" ToRole="GWF_geo_Location" />
         </EntityType>
         <EntityType Name="GWF_User_Feed">
           <Key>
@@ -403,18 +404,6 @@
             </Principal>
             <Dependent Role="GWF_FriendRelation">
               <PropertyRef Name="user_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_GWF_FriendRelation_1">
-          <End Role="GWF_User" Type="GWF_DBModel.GWF_User" Multiplicity="1" />
-          <End Role="GWF_FriendRelation" Type="GWF_DBModel.GWF_FriendRelation" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="GWF_User">
-              <PropertyRef Name="user_id" />
-            </Principal>
-            <Dependent Role="GWF_FriendRelation">
-              <PropertyRef Name="user_id2" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -492,6 +481,20 @@
               <PropertyRef Name="user_id" />
             </Principal>
             <Dependent Role="GWF_User_Group">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GWF_geo_Location_0">
+          <End Type="GWF_DBModel.GWF_User" Role="GWF_User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="GWF_DBModel.GWF_geo_Location" Role="GWF_geo_Location" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GWF_User">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="GWF_geo_Location">
               <PropertyRef Name="user_id" />
             </Dependent>
           </ReferentialConstraint>

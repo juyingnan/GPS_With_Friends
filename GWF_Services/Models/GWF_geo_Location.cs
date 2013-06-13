@@ -19,5 +19,7 @@ namespace GWF_WebServices.Models
         public double longitude { get; set; }
         public string user_id { get; set; }
         public System.DateTime timestamp { get; set; }
+    
+        public virtual GWF_User GWF_User { get; set; }
     }
 }

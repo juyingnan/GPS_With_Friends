@@ -4,24 +4,24 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="f7d34d96a64d482b910b4bb3ea48fe38" Name="Diagram1">
+      <Diagram DiagramId="5018661f2a19455e9db812a4a743b11b" Name="Diagram1">
         <EntityTypeShape EntityType="GWF_DBModel.GWF_Device" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="GWF_DBModel.GWF_FriendRelation" Width="1.5" PointX="3" PointY="2.875" IsExpanded="true" />
         <EntityTypeShape EntityType="GWF_DBModel.GWF_geo_Location" Width="1.5" PointX="5.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GWF_DBModel.GWF_Group" Width="1.5" PointX="5.25" PointY="8.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="GWF_DBModel.GWF_Message" Width="1.5" PointX="5.25" PointY="11.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="GWF_DBModel.GWF_Profile" Width="1.5" PointX="3" PointY="8.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="GWF_DBModel.GWF_Group" Width="1.5" PointX="5.25" PointY="8.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="GWF_DBModel.GWF_Message" Width="1.5" PointX="5.25" PointY="11.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="GWF_DBModel.GWF_Profile" Width="1.5" PointX="3" PointY="8.125" IsExpanded="true" />
         <EntityTypeShape EntityType="GWF_DBModel.GWF_User" Width="1.5" PointX="0.75" PointY="7.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="GWF_DBModel.GWF_User_Feed" Width="1.5" PointX="3" PointY="12.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="GWF_DBModel.GWF_User_Group" Width="1.5" PointX="3" PointY="15.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="GWF_DBModel.GWF_User_Feed" Width="1.5" PointX="3" PointY="12" IsExpanded="true" />
+        <EntityTypeShape EntityType="GWF_DBModel.GWF_User_Group" Width="1.5" PointX="3" PointY="15" IsExpanded="true" />
         <AssociationConnector Association="GWF_DBModel.FK_GWF_FriendRelation_0" ManuallyRouted="false" />
-        <AssociationConnector Association="GWF_DBModel.FK_GWF_FriendRelation_1" ManuallyRouted="false" />
         <AssociationConnector Association="GWF_DBModel.FK_GWF_Group_0" ManuallyRouted="false" />
         <AssociationConnector Association="GWF_DBModel.FK_GWF_Group_1" ManuallyRouted="false" />
         <AssociationConnector Association="GWF_DBModel.FK_GWF_Message_0" ManuallyRouted="false" />
         <AssociationConnector Association="GWF_DBModel.FK_GWF_Profile_0" ManuallyRouted="false" />
         <AssociationConnector Association="GWF_DBModel.FK_GWF_User_Feed_0" ManuallyRouted="false" />
         <AssociationConnector Association="GWF_DBModel.FK_GWF_User_Group_0" ManuallyRouted="false" />
+        <AssociationConnector Association="GWF_DBModel.FK_GWF_geo_Location_0" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

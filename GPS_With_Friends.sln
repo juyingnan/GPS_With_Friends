@@ -7,6 +7,8 @@ Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "GWF_CloudServices", "GWF_We
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestProject1", "UnitTestProject1\UnitTestProject1.csproj", "{0D2DC6B1-2DE6-4789-9741-BC63CAB8002A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GWF_WCFServices", "GWF_WCF_WebRole\GWF_WCFServices.csproj", "{AB316BE2-6BD9-40F8-BD3D-B768E54420E4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{0D2DC6B1-2DE6-4789-9741-BC63CAB8002A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D2DC6B1-2DE6-4789-9741-BC63CAB8002A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D2DC6B1-2DE6-4789-9741-BC63CAB8002A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB316BE2-6BD9-40F8-BD3D-B768E54420E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB316BE2-6BD9-40F8-BD3D-B768E54420E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB316BE2-6BD9-40F8-BD3D-B768E54420E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB316BE2-6BD9-40F8-BD3D-B768E54420E4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

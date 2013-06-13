@@ -26,7 +26,7 @@ namespace UnitTestProject1
             this.TestSignUp(GWFInfoCode.GWF_I_SIGNUP_SUCCESS.ToString(), email1, "1", "1");
             this.TestSignUp(GWFInfoCode.GWF_I_SIGNUP_SUCCESS.ToString(), email2, "2", "2");
 
-            GWF_DBEntities ctx = new GWF_DBEntities();
+            GWF_DBContext ctx = new GWF_DBContext();
             var query = from u in ctx.GWF_Users where u.user_email == email1 select u;
             GWF_User user1 = query.First();
             query = from u in ctx.GWF_Users where u.user_email == email2 select u;

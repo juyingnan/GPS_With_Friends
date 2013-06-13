@@ -17,18 +17,11 @@ namespace GWF_WebServices.Models
         {
             get
             {
-                if (currentState == null)
-                {
-                    return this.default_state;
-                }
-                else
-                {
-                    return currentState;
-                }
+                return this.default_state;
             }
             set
             {
-                currentState = value;
+                this.default_state = value;
             }
         }
     }

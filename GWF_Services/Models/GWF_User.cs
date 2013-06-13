@@ -17,11 +17,11 @@ namespace GWF_WebServices.Models
         public GWF_User()
         {
             this.GWF_FriendRelation = new HashSet<GWF_FriendRelation>();
-            this.GWF_FriendRelation1 = new HashSet<GWF_FriendRelation>();
             this.GWF_Group = new HashSet<GWF_Group>();
             this.GWF_Profile = new HashSet<GWF_Profile>();
             this.GWF_User_Feed = new HashSet<GWF_User_Feed>();
             this.GWF_User_Group = new HashSet<GWF_User_Group>();
+            this.GWF_geo_Location = new HashSet<GWF_geo_Location>();
         }
     
         public int ID { get; set; }
@@ -31,10 +31,10 @@ namespace GWF_WebServices.Models
         public string user_passwordMD5 { get; set; }
     
         public virtual HashSet<GWF_FriendRelation> GWF_FriendRelation { get; set; }
-        public virtual HashSet<GWF_FriendRelation> GWF_FriendRelation1 { get; set; }
         public virtual HashSet<GWF_Group> GWF_Group { get; set; }
         public virtual HashSet<GWF_Profile> GWF_Profile { get; set; }
         public virtual HashSet<GWF_User_Feed> GWF_User_Feed { get; set; }
         public virtual HashSet<GWF_User_Group> GWF_User_Group { get; set; }
+        public virtual HashSet<GWF_geo_Location> GWF_geo_Location { get; set; }
     }
 }

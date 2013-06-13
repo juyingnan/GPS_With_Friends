@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using System.Web;
 using System.Web.Services;
@@ -9,11 +10,13 @@ using GWF_WebServices.Types.Constants;
 using GWF_WebServices.Entities.UserEntities;
 using GWF_WebServices.Utils.ValidationUtils;
 using GWF_WebServices.Models;
+using GWF_WCF_WebRole.Contracts;
 
 //Databasse
 using System.Data.SqlClient;
 using System.Data.OleDb;
 using System.Collections.Concurrent;
+using GWF_WebServices.Utils.UserUtils;
 
 namespace GWF_WebServices
 {
@@ -28,6 +31,7 @@ namespace GWF_WebServices
     /// FKUBunny
     public class UserAction : System.Web.Services.WebService
     {
+        private static string default_group_name = "My Friends";
         private static ConcurrentDictionary<String, GWF_User> allUserList = new ConcurrentDictionary<String, GWF_User>();
 
         [WebMethod]
@@ -57,12 +61,16 @@ namespace GWF_WebServices
             user.currentState = new OnlineState();
 
             // Get user_id from database
-            GWF_DBEntities ctx = new GWF_DBEntities();
+            GWF_DBContext ctx = new GWF_DBContext();
             var query = from u in ctx.GWF_Users where u.user_email == user.user_email select u.user_id;
             string user_id = query.First();
-            allUserList.AddOrUpdate(user_id, user, null);
+            allUserList[user_id] = user;
+            if (user_id == null)
+            {
+                return "FuckingError";
+            }
 
-            return user_id;
+            return "uid:" + user_id;
         }
 
         [WebMethod]
@@ -77,7 +85,7 @@ namespace GWF_WebServices
                 return GWFInfoCode.GWF_E_INVALID_EMAIL_FORMAT.ToString();
             }
 
-            user.user_email= email;
+            user.user_email = email;
             // TODO Add name validation
             user.user_name = nickName;
             user.user_passwordMD5 = password;
@@ -89,7 +97,7 @@ namespace GWF_WebServices
 
             user.user_id = Guid.NewGuid().ToString();
 
-            GWF_DBEntities ctx = new GWF_DBEntities();
+            GWF_DBContext ctx = new GWF_DBContext();
 
             ctx.GWF_Users.Add(user);
 
@@ -100,6 +108,8 @@ namespace GWF_WebServices
             ctx.GWF_User_Feeds.Add(uf);
 
             ctx.SaveChanges();
+            // Create default group
+            this.CreateGroup(user.user_id, default_group_name);
 
             return GWFInfoCode.GWF_I_SIGNUP_SUCCESS.ToString();
         }
@@ -126,62 +136,58 @@ namespace GWF_WebServices
          */
 
         [WebMethod]
-        public List<GWF_Message> GetMessages(string uid)
+        //public List<GWF_Message> GetMessages(string uid)
+        public CMessages GetMessages(string uid)
         {
-            GWF_DBEntities ctx = new GWF_DBEntities();
+            GWF_DBContext ctx = new GWF_DBContext();
             // First check the IM_MESSAGE
             // FIXME: only if we support multiple feed for each user2
             string feed_id = ctx.GWF_User_Feeds.SingleOrDefault(uf => uf.user_id == uid).feed_id;
-            List<GWF_Message> messages = ctx.GWF_Messages.Where(m => m.feed_id == feed_id && m.is_processed == "N").ToList();
 
-            foreach (GWF_Message msg in messages)
-            {
-                switch ((GWFMessageType)msg.content_type)
-                {
-                    case GWFMessageType.DEFAULT_TYPE:
-                        break;
-                    case GWFMessageType.IM_MESSAGE:
-                        break;
-                    case GWFMessageType.NOTIFICATION:
-                        break;
-                    case GWFMessageType.REQUEST:
-                        // if accepted
-                        break;
-                    case GWFMessageType.LOC_UPDATE:
-                        break;
-                    default:
-                        break;
-                }
-                msg.is_processed = "Y";
-            }
-            ctx.SaveChanges();
+            int loop_count = 0;
 
-            foreach (GWF_Message msg in messages)
+            //while (loop_count < 15)
             {
-                switch ((GWFMessageType)msg.content_type)
+                List<GWF_Message> messages = ctx.GWF_Messages.Where(m => m.feed_id == feed_id && m.is_processed == "N").ToList();
+                //GWF_Message messages = ctx.GWF_Messages.Where(m => m.feed_id == feed_id && m.is_processed == "N").SingleOrDefault();
+                if (messages != null)
                 {
-                    case GWFMessageType.DEFAULT_TYPE:
-                        break;
-                    case GWFMessageType.IM_MESSAGE:
-                        break;
-                    case GWFMessageType.NOTIFICATION:
-                        break;
-                    case GWFMessageType.REQUEST:
-                        // if accepted
-                        break;
-                    default:
-                        break;
+                    //GWF_Message msg = messages;
+                    foreach (GWF_Message msg in messages)
+                    {
+                        switch ((GWFMessageType)msg.content_type)
+                        {
+                            case GWFMessageType.DEFAULT_TYPE:
+                                break;
+                            case GWFMessageType.IM_MESSAGE:
+                                break;
+                            case GWFMessageType.NOTIFICATION:
+                                break;
+                            case GWFMessageType.REQUEST:
+                                // if accepted
+                                msg.from_email = ctx.GWF_Users.Where(u => u.user_id == msg.from_uid).SingleOrDefault().user_email;
+                                break;
+                            case GWFMessageType.LOC_UPDATE:
+                                break;
+                            default:
+                                break;
+                        }
+                        msg.is_processed = "Y";
+                    }
+                    ctx.SaveChanges();
+                    return EntityUtils.ToCMessages(messages);
+                    //return new List<GWF_Message>();
                 }
-                msg.is_processed = "Y";
+                loop_count++;
             }
-           ctx.SaveChanges();
-            return messages;
+
+            return new CMessages();
         }
 
         [WebMethod]
         public string SendMessage(string from_uid, string to_email2, string content)
         {
-            GWF_DBEntities ctx = new GWF_DBEntities();
+            GWF_DBContext ctx = new GWF_DBContext();
             // Get recipient's user_id
             GWF_User user2 = ctx.GWF_Users.Where(u => u.user_email == to_email2).SingleOrDefault();
             string user2_feed_id = ctx.GWF_User_Feeds.Where(uf => uf.user_id == user2.user_id).SingleOrDefault().feed_id;
@@ -213,25 +219,27 @@ namespace GWF_WebServices
             {
                 return GWFInfoCode.GWF_E_ADD_FRIEND_ERROR.ToString();
             }
-            
+
             // Get uid from email
-            GWF_DBEntities ctx = new GWF_DBEntities();
+            GWF_DBContext ctx = new GWF_DBContext();
             user2 = ctx.GWF_Users.Where(u => u.user_email == email2).SingleOrDefault();
+            GWF_User user = ctx.GWF_Users.Where(u => u.user_id == uid1).SingleOrDefault();
             // Firstly push message to user2's feed
             string user2_feed_id = ctx.GWF_User_Feeds.Where(uf => uf.user_id == user2.user_id).SingleOrDefault().feed_id;
 
             GWF_Message message = new GWF_Message();
             message.timestamp = DateTime.Now;
             message.feed_id = user2_feed_id;
-            message.content = "Add friend request from user2:[\"" + user2.user_name + "\", \"" + user2.user_email + "\"]";
+            message.content = "Add friend request from user:\"" + user.user_email + "\"";
             message.content_type = (int)GWFMessageType.REQUEST;
             message.is_processed = "N";
             message.from_uid = uid1;
+            message.from_email = user.user_email;
 
             ctx.GWF_Messages.Add(message);
 
             ctx.SaveChanges();
-            
+
             return GWFInfoCode.GWF_I_ADD_FRIEND_SUCCESS.ToString();
         }
 
@@ -251,7 +259,7 @@ namespace GWF_WebServices
                 return GWFInfoCode.GWF_E_ADD_FRIEND_ERROR.ToString();
             }
 
-            GWF_DBEntities ctx = new GWF_DBEntities();
+            GWF_DBContext ctx = new GWF_DBContext();
 
             GWF_User user1 = ctx.GWF_Users.Where(u => u.user_id == uid1).SingleOrDefault();
             user2 = ctx.GWF_Users.Where(u => u.user_email == email2).SingleOrDefault();
@@ -261,10 +269,11 @@ namespace GWF_WebServices
             message.timestamp = DateTime.Now;
             message.is_processed = "N";
             message.from_uid = uid1;
+            //message.from_email = user1.user_email;
 
             if (accept)
             {
-                message.content = "Add Friend Request Accepted by user:[\"" + user1.user_name + "\", \"" + user1.user_email + "\"]";
+                message.content = "Add Friend Request Accepted by user:\"" + user1.user_email + "\"";
                 this.AddFriend(uid1, user2.user_id);
                 ctx.GWF_Messages.Add(message);
                 ctx.SaveChanges();
@@ -282,11 +291,12 @@ namespace GWF_WebServices
         [WebMethod]
         public string UpdateLocation(string uid, double lati, double longi)
         {
-            GWF_DBEntities ctx = new GWF_DBEntities();
+            GWF_DBContext ctx = new GWF_DBContext();
             GWF_geo_Location loc = new GWF_geo_Location();
             loc.user_id = uid;
             loc.latitude = lati;
             loc.longitude = longi;
+            loc.timestamp = DateTime.Now;
 
             // Add locations to feed
             ctx.GWF_geo_Locations.Add(loc);
@@ -294,7 +304,8 @@ namespace GWF_WebServices
             List<string> friends_uid = ctx.GWF_FriendRelations.Where(uf => uf.user_id == uid).Select(u => u.user_id2).ToList();
             // Get friends' feed_id
             List<string> feed_ids = new List<string>();
-            foreach (string fuid in friends_uid) {
+            foreach (string fuid in friends_uid)
+            {
                 feed_ids.Add(ctx.GWF_User_Feeds.Where(uf => uf.user_id == fuid).SingleOrDefault().feed_id);
             }
 
@@ -318,9 +329,9 @@ namespace GWF_WebServices
         }
 
         [WebMethod]
-        public string DeleteFriend(string uid1, string email2)
+        public string DeleteFriend(string uid1, string email2, string group_name)
         {
-            GWF_DBEntities ctx = new GWF_DBEntities();
+            GWF_DBContext ctx = new GWF_DBContext();
             // Get friend uid
             GWF_User user2 = ctx.GWF_Users.Where(f => f.user_email == email2).SingleOrDefault();
 
@@ -329,25 +340,34 @@ namespace GWF_WebServices
                 return GWFInfoCode.GWF_E_DELETE_FRIEND_ERROR.ToString();
             }
 
-            GWF_FriendRelation relation = ctx.GWF_FriendRelations.Where(fr => fr.user_id == uid1 && fr.user_id2 == user2.user_id).SingleOrDefault();
-            ctx.GWF_FriendRelations.Remove(relation);
+            GWF_FriendRelation relation1 = ctx.GWF_FriendRelations.Where(fr => fr.user_id == uid1 && fr.user_id2 == user2.user_id).SingleOrDefault();
+            GWF_FriendRelation relation2 = ctx.GWF_FriendRelations.Where(fr => fr.user_id == user2.user_id && fr.user_id2 == uid1).SingleOrDefault();
+            ctx.GWF_FriendRelations.Remove(relation1);
+            ctx.GWF_FriendRelations.Remove(relation2);
+            // TODO Delete friend from group
+            string gid = ctx.GWF_User_Groups.Where(ug => ug.user_id == uid1 && ug.group_name == group_name).SingleOrDefault().group_id;
+            GWF_Group g = ctx.GWF_Groups.Where(gi => gi.group_id == gid && gi.member_user_id == user2.user_id).SingleOrDefault();
+            ctx.GWF_Groups.Remove(g);
+
             ctx.SaveChanges();
 
             return GWFInfoCode.GWF_I_DELETE_FRIEND_SUCCESS.ToString();
         }
 
         [WebMethod]
-        public List<GWF_User> GetFriends(string uid)
+        public CUsers GetFriends(string uid)
         {
-            GWF_DBEntities ctx = new GWF_DBEntities();
+            GWF_DBContext ctx = new GWF_DBContext();
             IEnumerable<string> friend_uids = ctx.GWF_FriendRelations.Where(uf => uf.user_id == uid).Select(uf => uf.user_id2);
 
-            List<GWF_User> friends = new List<GWF_User>();
+            CUsers friends = new CUsers();
             foreach (string uid2 in friend_uids)
             {
                 GWF_User user = ctx.GWF_Users.SingleOrDefault(u => u.user_id == uid2);
-                user.user_passwordMD5 = "";
-                friends.Add(user);
+                CUser cu = EntityUtils.ToCUser(user);
+                cu.last_location = this.GetLatestLocation(cu.id);
+
+                friends.Add(cu);
             }
 
             return friends;
@@ -356,7 +376,7 @@ namespace GWF_WebServices
         [WebMethod]
         public List<string> GetGroupNames(string uid)
         {
-            GWF_DBEntities ctx = new GWF_DBEntities();
+            GWF_DBContext ctx = new GWF_DBContext();
             List<string> group_names = ctx.GWF_User_Groups.Where(ug => ug.user_id == uid).Select(un => un.group_name).ToList();
 
             return group_names;
@@ -364,27 +384,31 @@ namespace GWF_WebServices
         }
 
         [WebMethod]
-        public List<GWF_User> GetGroupInfoFromName(string uid, string name)
+        public CUsers GetGroupInfoFromName(string uid, string name)
         {
-            GWF_DBEntities ctx = new GWF_DBEntities();
+            GWF_DBContext ctx = new GWF_DBContext();
             GWF_User_Group user_group = ctx.GWF_User_Groups.Where(ug => ug.user_id == uid && ug.group_name == name).SingleOrDefault();
-                List<string> members = ctx.GWF_Groups.Where(gi => gi.group_id == user_group.group_id).Select(m => m.member_user_id).ToList();
-                List<GWF_User> member_users = new List<GWF_User>();
-                foreach (string m in members)
-                {
-                    GWF_User user = ctx.GWF_Users.Where(u => u.user_id == uid).SingleOrDefault();
-                    user.user_passwordMD5 = "";
-                    member_users.Add(user);
-                }
-            return member_users;
+            List<string> members = ctx.GWF_Groups.Where(gi => gi.group_id == user_group.group_id).Select(m => m.member_user_id).ToList();
+            List<GWF_User> member_users = new List<GWF_User>();
+            CUsers m_users = new CUsers();
+            foreach (string m in members)
+            {
+                GWF_User user = ctx.GWF_Users.Where(u => u.user_id == uid).SingleOrDefault();
+                user.user_passwordMD5 = "";
+                CUser cu = EntityUtils.ToCUser(user);
+                cu.group_name = name;
+                cu.last_location = this.GetLatestLocation(cu.id);
+                m_users.Add(cu);
+            }
+            return m_users;
         }
 
         [WebMethod]
         public string CreateGroup(string uid, string group_name)
         {
-            GWF_DBEntities ctx = new GWF_DBEntities();
+            GWF_DBContext ctx = new GWF_DBContext();
 
-            if (ctx.GWF_User_Groups.Where(ug => ug.user_id == uid && ug.group_name == group_name).Count() > 0) 
+            if (ctx.GWF_User_Groups.Where(ug => ug.user_id == uid && ug.group_name == group_name).Count() > 0)
             {
                 return GWFInfoCode.GWF_E_GROUP_NAME_EXISTS.ToString();
             }
@@ -400,24 +424,42 @@ namespace GWF_WebServices
         }
 
         [WebMethod]
-        public string UpdateGroup(string uid, string group_name, List<GWF_Group> group)
+        public string ChangeUserGroup(string uid, string old_group_name, string new_group_name, string uid2)
         {
-            GWF_DBEntities ctx = new GWF_DBEntities();
-            foreach (GWF_Group g in group) 
-            {
-                ctx.GWF_Groups.Add(g);
-            }
+            GWF_DBContext ctx = new GWF_DBContext();
+            string new_group_id = ctx.GWF_User_Groups.Where(g => g.user_id == uid && g.group_name == new_group_name).SingleOrDefault().group_id;
+            string old_group_id = ctx.GWF_User_Groups.Where(g => g.user_id == uid && g.group_name == old_group_name).SingleOrDefault().group_id;
+            // Delete from old
+            GWF_Group old_g_group = ctx.GWF_Groups.Where(g => g.group_id == old_group_id && g.member_user_id == uid2).SingleOrDefault();
+            ctx.GWF_Groups.Remove(old_g_group);
+
+            // Add to new
+            GWF_Group new_g_group = new GWF_Group();
+            new_g_group.group_id = new_group_id;
+            new_g_group.member_user_id = uid2;
+            ctx.GWF_Groups.Add(new_g_group);
 
             ctx.SaveChanges();
-            return GWFInfoCode.GWF_I_UPDATE_GROUP_SUCCESS.ToString();
-            
+            return GWFInfoCode.GWF_I_CHANGE_GROUP_SUCCESS.ToString();
+
         }
 
         [WebMethod]
         public string DeleteGroup(string uid, string group_name)
         {
-            GWF_DBEntities ctx = new GWF_DBEntities();
+            if (group_name == default_group_name)
+            {
+                return GWFInfoCode.GWF_E_DELETE_GROUP_ERROR.ToString();
+            }
+            GWF_DBContext ctx = new GWF_DBContext();
             GWF_User_Group u_group = ctx.GWF_User_Groups.Where(ug => ug.user_id == uid && ug.group_name == group_name).SingleOrDefault();
+
+            // TODO Change all member to default group
+            List<GWF_Group> members = ctx.GWF_Groups.Where(ug => ug.group_id == u_group.group_id).ToList();
+            foreach (GWF_Group m in members)
+            {
+                this.ChangeUserGroup(uid, group_name, default_group_name, m.member_user_id);
+            }
 
             ctx.GWF_User_Groups.Remove(u_group);
             ctx.SaveChanges();
@@ -435,19 +477,52 @@ namespace GWF_WebServices
                 return GWFInfoCode.GWF_I_ADD_FRIEND_SUCCESS.ToString();
             }
 
-            GWF_DBEntities ctx = new GWF_DBEntities();
-            ctx.GWF_FriendRelations.Add(new GWF_FriendRelation { user_id = uid1, user_id2 = uid2 });
+            GWF_DBContext ctx = new GWF_DBContext();
+
+            // Add to default group
+            GWF_Group default_group1 = new GWF_Group();
+            GWF_User_Group ug1 = ctx.GWF_User_Groups.Where(g => g.user_id == uid1 && g.group_name == default_group_name).SingleOrDefault();
+            string dg1_id = ug1.group_id;
+            default_group1.member_user_id = uid2;
+            default_group1.group_id = dg1_id;
+            ctx.GWF_Groups.Add(default_group1);
+
+            GWF_Group default_group2 = new GWF_Group();
+            GWF_User_Group ug2 = ctx.GWF_User_Groups.Where(g => g.user_id == uid2 && g.group_name == default_group_name).SingleOrDefault();
+            string dg2_id = ug2.group_id;
+            default_group2.member_user_id = uid1;
+            default_group2.group_id = dg2_id;
+            ctx.GWF_Groups.Add(default_group2);
+
+
+            GWF_FriendRelation fr1 = new GWF_FriendRelation();
+            fr1.user_id = uid1;
+            fr1.user_id2 = uid2;
+
+            ctx.GWF_FriendRelations.Add(fr1);
+            GWF_FriendRelation fr2 = new GWF_FriendRelation();
+            fr2.user_id = uid2;
+            fr2.user_id2 = uid1;
+            ctx.GWF_FriendRelations.Add(fr2);
             ctx.SaveChanges();
 
             return GWFInfoCode.GWF_I_ADD_FRIEND_SUCCESS.ToString();
         }
-        
+
         public bool AreFriends(string uid1, string uid2)
         {
-            GWF_DBEntities ctx = new GWF_DBEntities();
+            GWF_DBContext ctx = new GWF_DBContext();
             var query = from uf in ctx.GWF_FriendRelations where uf.user_id == uid1 && uf.user_id2 == uid2 select uf;
             int c = query.Count();
             return c > 0;
+        }
+
+        public CLocation GetLatestLocation(string uid)
+        {
+            GWF_DBContext ctx = new GWF_DBContext();
+            GWF_geo_Location g_loc = ctx.GWF_geo_Locations.Where(gl => gl.user_id == uid).OrderByDescending(s => s.timestamp).First();
+
+            return EntityUtils.ToCLocation(g_loc);
         }
     }
 }

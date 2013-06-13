@@ -38,7 +38,7 @@ namespace GWF_WebServices.Properties {
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
         public string GWF_DBContext {
             get {
-                return ((string)(this["GWF_DBEntities"]));
+                return ((string)(this["GWF_DBContext"]));
             }
         }
     }
