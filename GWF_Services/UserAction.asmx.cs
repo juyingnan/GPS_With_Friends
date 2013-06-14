@@ -67,7 +67,7 @@ namespace GWF_WebServices
             allUserList[user_id] = user;
             if (user_id == null)
             {
-                return "FuckingError";
+                return "uid is null";
             }
 
             return "uid:" + user_id;
@@ -165,13 +165,14 @@ namespace GWF_WebServices
                                 break;
                             case GWFMessageType.REQUEST:
                                 // if accepted
-                                msg.from_email = ctx.GWF_Users.Where(u => u.user_id == msg.from_uid).SingleOrDefault().user_email;
+                                //msg.from_email = ctx.GWF_Users.Where(u => u.user_id == msg.from_uid).SingleOrDefault().user_email;
                                 break;
                             case GWFMessageType.LOC_UPDATE:
                                 break;
                             default:
                                 break;
                         }
+                        msg.from_email = ctx.GWF_Users.Where(u => u.user_id == msg.from_uid).SingleOrDefault().user_email;
                         msg.is_processed = "Y";
                     }
                     ctx.SaveChanges();
@@ -190,6 +191,10 @@ namespace GWF_WebServices
             GWF_DBContext ctx = new GWF_DBContext();
             // Get recipient's user_id
             GWF_User user2 = ctx.GWF_Users.Where(u => u.user_email == to_email2).SingleOrDefault();
+            if (user2 == null)
+            {
+                return GWFInfoCode.GWF_E_SEND_MESSAGE_ERROR.ToString();
+            }
             string user2_feed_id = ctx.GWF_User_Feeds.Where(uf => uf.user_id == user2.user_id).SingleOrDefault().feed_id;
             GWF_Message message = new GWF_Message();
             message.timestamp = DateTime.Now;
@@ -273,7 +278,7 @@ namespace GWF_WebServices
 
             if (accept)
             {
-                message.content = "Add Friend Request Accepted by user:\"" + user1.user_email + "\"";
+                message.content = "[*ANS_ADDF*]Add Friend Request Accepted by user:\"" + user1.user_email + "\"";
                 this.AddFriend(uid1, user2.user_id);
                 ctx.GWF_Messages.Add(message);
                 ctx.SaveChanges();
@@ -335,7 +340,7 @@ namespace GWF_WebServices
             // Get friend uid
             GWF_User user2 = ctx.GWF_Users.Where(f => f.user_email == email2).SingleOrDefault();
 
-            if (!this.AreFriends(uid1, user2.user_id))
+            if (user2 == null || !this.AreFriends(uid1, user2.user_id))
             {
                 return GWFInfoCode.GWF_E_DELETE_FRIEND_ERROR.ToString();
             }
@@ -344,11 +349,52 @@ namespace GWF_WebServices
             GWF_FriendRelation relation2 = ctx.GWF_FriendRelations.Where(fr => fr.user_id == user2.user_id && fr.user_id2 == uid1).SingleOrDefault();
             ctx.GWF_FriendRelations.Remove(relation1);
             ctx.GWF_FriendRelations.Remove(relation2);
-            // TODO Delete friend from group
-            string gid = ctx.GWF_User_Groups.Where(ug => ug.user_id == uid1 && ug.group_name == group_name).SingleOrDefault().group_id;
-            GWF_Group g = ctx.GWF_Groups.Where(gi => gi.group_id == gid && gi.member_user_id == user2.user_id).SingleOrDefault();
+            // TODO Delete friend from my group
+            // Check if group exists
+            GWF_User_Group my_user_group = ctx.GWF_User_Groups.Where(ug => ug.user_id == uid1 && ug.group_name == group_name).SingleOrDefault();
+            if (my_user_group == null) {
+                return "user does not has group " + group_name;
+            }
+            string my_gid = my_user_group.group_id;
+
+            GWF_Group g = ctx.GWF_Groups.Where(gi => gi.group_id == my_gid && gi.member_user_id == user2.user_id).SingleOrDefault();
+            if (g == null)
+            {
+                return "friend not in group " + group_name;
+            }
+
             ctx.GWF_Groups.Remove(g);
 
+            // Delete friend from friend's group
+            // 1. find all groups' id this user belongs 
+            List<string> ingids = ctx.GWF_Groups.Where(ig => ig.member_user_id == uid1).Select(igid => igid.group_id).ToList();
+            // 2. find all groups' id that friend has
+            List<string> fugids = ctx.GWF_User_Groups.Where(ug => ug.user_id == user2.user_id).Select(ugid => ugid.group_id).ToList();
+
+            string ingid = "0";
+            // 3. find the group id there must has one
+            foreach (string id in fugids)
+            {
+                if (ingids.Contains(id))
+                {
+                    ingid = id;
+                }
+            }
+
+            // 4. delete myself from friend's group
+            GWF_Group fg = ctx.GWF_Groups.Where(mfg => mfg.group_id == ingid && mfg.member_user_id == uid1).SingleOrDefault();
+            ctx.GWF_Groups.Remove(fg);
+            ctx.SaveChanges();
+            // 5. tell the client to refresh
+            GWF_Message message = new GWF_Message();
+            message.feed_id = ctx.GWF_User_Feeds.Where(uf => uf.user_id == user2.user_id).SingleOrDefault().feed_id;
+            message.content_type = (int)GWFMessageType.NOTIFICATION;
+            message.timestamp = DateTime.Now;
+            message.is_processed = "N";
+            message.from_uid = uid1;
+            //message.from_email = user1.user_email;
+            message.content = "[*DELF_INFO*]Friend deleted user:\"" + email2 + "\"";
+            ctx.GWF_Messages.Add(message);
             ctx.SaveChanges();
 
             return GWFInfoCode.GWF_I_DELETE_FRIEND_SUCCESS.ToString();
@@ -388,12 +434,16 @@ namespace GWF_WebServices
         {
             GWF_DBContext ctx = new GWF_DBContext();
             GWF_User_Group user_group = ctx.GWF_User_Groups.Where(ug => ug.user_id == uid && ug.group_name == name).SingleOrDefault();
+            if (user_group == null)
+            {
+                return null;
+            }
             List<string> members = ctx.GWF_Groups.Where(gi => gi.group_id == user_group.group_id).Select(m => m.member_user_id).ToList();
             List<GWF_User> member_users = new List<GWF_User>();
             CUsers m_users = new CUsers();
             foreach (string m in members)
             {
-                GWF_User user = ctx.GWF_Users.Where(u => u.user_id == uid).SingleOrDefault();
+                GWF_User user = ctx.GWF_Users.Where(u => u.user_id == m).SingleOrDefault();
                 user.user_passwordMD5 = "";
                 CUser cu = EntityUtils.ToCUser(user);
                 cu.group_name = name;
@@ -424,13 +474,29 @@ namespace GWF_WebServices
         }
 
         [WebMethod]
-        public string ChangeUserGroup(string uid, string old_group_name, string new_group_name, string uid2)
+        public string ChangeUserGroup(string uid, string old_group_name, string new_group_name, string email2)
         {
             GWF_DBContext ctx = new GWF_DBContext();
+            CUser c_u = this.GetUserFromEmail(uid, email2);
+            string uid2 = c_u.id;
+
             string new_group_id = ctx.GWF_User_Groups.Where(g => g.user_id == uid && g.group_name == new_group_name).SingleOrDefault().group_id;
             string old_group_id = ctx.GWF_User_Groups.Where(g => g.user_id == uid && g.group_name == old_group_name).SingleOrDefault().group_id;
+
+            if (new_group_id == null)
+            {
+                return new_group_name + "does not exist.";
+            }
+            if (old_group_id == null)
+            {
+                return old_group_name + "does not exist.";
+            }
             // Delete from old
             GWF_Group old_g_group = ctx.GWF_Groups.Where(g => g.group_id == old_group_id && g.member_user_id == uid2).SingleOrDefault();
+            if (old_g_group == null)
+            {
+                return "user " + email2 + " is not in group " + old_group_name;
+            }
             ctx.GWF_Groups.Remove(old_g_group);
 
             // Add to new
@@ -455,16 +521,49 @@ namespace GWF_WebServices
             GWF_User_Group u_group = ctx.GWF_User_Groups.Where(ug => ug.user_id == uid && ug.group_name == group_name).SingleOrDefault();
 
             // TODO Change all member to default group
-            List<GWF_Group> members = ctx.GWF_Groups.Where(ug => ug.group_id == u_group.group_id).ToList();
+            var res = ctx.GWF_Groups.Where(ug => ug.group_id == u_group.group_id);
+            if (res.Count() <= 0)
+            {
+                ctx.GWF_User_Groups.Remove(u_group);
+                ctx.SaveChanges();
+                return GWFInfoCode.GWF_I_DELETE_GROUP_SUCCESS.ToString();
+            }
+            List<GWF_Group> members = res.ToList();
             foreach (GWF_Group m in members)
             {
-                this.ChangeUserGroup(uid, group_name, default_group_name, m.member_user_id);
+                string email = ctx.GWF_Users.Where(u => u.user_id == m.member_user_id).SingleOrDefault().user_email;
+                this.ChangeUserGroup(uid, group_name, default_group_name, email);
             }
 
-            ctx.GWF_User_Groups.Remove(u_group);
+
+            ctx = new GWF_DBContext();
+            GWF_User_Group new_u_group = ctx.GWF_User_Groups.Where(ug => ug.user_id == uid && ug.group_name == group_name).SingleOrDefault();
+            ctx.GWF_User_Groups.Remove(new_u_group);
+
             ctx.SaveChanges();
 
             return GWFInfoCode.GWF_I_DELETE_GROUP_SUCCESS.ToString();
+        }
+
+        [WebMethod]
+        public CUser GetUserFromEmail(string uid, string email)
+        {
+            GWF_DBContext ctx = new GWF_DBContext();
+            GWF_User g_f = ctx.GWF_Users.Where(u => u.user_email == email).SingleOrDefault();
+            if (g_f == null)
+            {
+                return null;
+            }
+            CUser c_u = EntityUtils.ToCUser(g_f);
+            if (ctx.GWF_FriendRelations.Where(fr => fr.user_id == uid && fr.user_id2 == g_f.user_id).Count() <= 0)
+            {
+                c_u.IsFriendOfCaller = false;
+            }
+            else
+            {
+                c_u.IsFriendOfCaller = true;
+            }
+            return c_u;
         }
 
         public string AddFriend(string uid1, string uid2)
@@ -520,7 +619,12 @@ namespace GWF_WebServices
         public CLocation GetLatestLocation(string uid)
         {
             GWF_DBContext ctx = new GWF_DBContext();
-            GWF_geo_Location g_loc = ctx.GWF_geo_Locations.Where(gl => gl.user_id == uid).OrderByDescending(s => s.timestamp).First();
+            var locs = ctx.GWF_geo_Locations.Where(gl => gl.user_id == uid);
+            if (locs.Count() <= 0)
+            {
+                return null;
+            }
+            GWF_geo_Location g_loc = locs.OrderByDescending(s => s.timestamp).First();
 
             return EntityUtils.ToCLocation(g_loc);
         }

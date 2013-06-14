@@ -37,6 +37,8 @@ namespace GWF_WCF_WebRole.Contracts
 
         [DataMember]
         public string group_name;
+
+        public bool IsFriendOfCaller;
     }
 
     
