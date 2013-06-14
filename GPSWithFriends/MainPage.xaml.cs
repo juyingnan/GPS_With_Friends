@@ -29,6 +29,7 @@ namespace GPSWithFriends
 {
     public partial class MainPage : PhoneApplicationPage
     {
+        const int INTERVAL_BETWEEN_INQUERY_MESSAGE = 30;
         const int MOVEMENT_THRESHOLD = 50;
         const int TEST_TIMER_TIMERSPAN = 3;
         const int MAP_RECTANGLE_THICKNESS = 10;
@@ -43,9 +44,11 @@ namespace GPSWithFriends
         //for Route Query
         RouteQuery MyQuery = null;
         MapRoute MyMapRoute = null;
-        DispatcherTimer testTimer = new DispatcherTimer();
 
-        //Server.GPSwfriendsClient proxy = new Server.GPSwfriendsClient();
+        //Message Timer
+        DispatcherTimer TimerForMessage = new DispatcherTimer();
+
+        Server.UserActionSoapClient proxy = new Server.UserActionSoapClient();
         
         /// <summary>
         /// Constructor
@@ -70,22 +73,100 @@ namespace GPSWithFriends
             this.FriendsLocationMarkerList.ItemsSource = App.ViewModel.Friends;
             MyLocationMarker.DataContext = this.Me;
 
-            TimerInitiate();
+            //update message
+            TimerForMessage.Tick += TimerForMessage_Tick;
+            TimerForMessage.Interval = TimeSpan.FromSeconds(INTERVAL_BETWEEN_INQUERY_MESSAGE);
+            TimerForMessage.Start();
+            proxy.GetMessagesCompleted += proxy_GetMessagesCompleted;
+            proxy.GetMessagesAsync(Me.Uid);
+
+            proxy.SendMessageCompleted += proxy_SendMessageCompleted;
+            proxy.AnswerAddFriendCompleted += proxy_AnswerAddFriendCompleted;
+            proxy.CreateGroupCompleted += proxy_CreateGroupCompleted;
+            proxy.DeleteGroupCompleted += proxy_DeleteGroupCompleted;
+            proxy.GetUserFromEmailCompleted += proxy_GetUserFromEmailCompleted;
         }
 
-        private void TimerInitiate()
+        void TimerForMessage_Tick(object sender, EventArgs e)
         {
-            testTimer.Tick += testTimer_Tick;
-            testTimer.Interval = TimeSpan.FromSeconds(TEST_TIMER_TIMERSPAN);
+            //receive messages
+            proxy.GetMessagesAsync(Me.Uid);
         }
 
-        void testTimer_Tick(object sender, EventArgs e)
+        void proxy_GetMessagesCompleted(object sender, Server.GetMessagesCompletedEventArgs e)
         {
-            App.ViewModel.CurrentFriend = new Friend() { NickName = "Wei Hongye", Status = "updated in 16:20", ImagePath = "/Assets/fakePor.png", Email = "Jushua@gmail.com", Latitude = 39.7677, Longitude = 116.3602, Uid=5 };
-            this.NavigationService.Navigate(new Uri("/DetailPage.xaml", UriKind.Relative));
-            testTimer.Stop();
-            InviteButton.IsEnabled = true;
-            InviteProgressBar.Visibility = System.Windows.Visibility.Collapsed;
+            if (e.Error == null)
+            {
+                foreach (var item in e.Result)
+                {
+                    switch (item.content_type)
+                    {
+                        case Server.CMessageType.DEFAULT_TYPE:
+                            break;
+                        case Server.CMessageType.IM_MESSAGE:                            
+                            foreach (var friend in App.ViewModel.Friends)
+                            {
+                                if (friend.Email.Equals(item.from_email))
+                                {
+                                    friend.LastMessage = new Message()
+                                      {
+                                          Content = item.content,
+                                          IsCleared = false,
+                                          LastUpdateTime = item.timestamp,
+                                          FromEmail = item.from_email,
+                                          ToEmail = Me.Email
+                                      };
+                                    break;
+                                }
+                            }
+                            break;
+                        case Server.CMessageType.LOC_UPDATE:
+                            foreach (var friend in App.ViewModel.Friends)
+                            {
+                                if (friend.Email.Equals(item.from_email))
+                                {
+                                    string[] info = item.content.Trim(new char[]{'(',')'}).Split(',');
+                                    if (info != null && info.Length == 3)    //judge the format "(email,lat,lon)"
+                                    {
+                                        try
+                                        {
+                                            
+                                        friend.Latitude = Double.Parse(info[1]);//lat
+                                        friend.Longitude = Double.Parse(info[2]); //lon
+                                        }
+                                        catch (Exception)
+                                        {
+                                            
+                                        }
+                                    }
+                                    break;
+                                }
+                            } 
+                            break;
+                        case Server.CMessageType.NOTIFICATION:
+                            if (item.content.StartsWith("[*ANS_ADDF*]"))
+                            {
+                                App.ViewModel.RefreshData();
+                            }
+                            if (item.content.StartsWith("[*DELF_INFO*]"))
+                            {
+                                App.ViewModel.RefreshData();
+                            }
+                            break;
+                        case Server.CMessageType.REQUEST:
+                            App.ViewModel.Requests.Add(new Request()
+                            {
+                                Content = item.content,
+                                SenderEmail = item.from_email,
+                                IsAccepted = false,
+                                Time = item.timestamp.ToString()
+                            });
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
         }
 
         //Necessary codes to initiate the toolkit map control
@@ -134,6 +215,7 @@ namespace GPSWithFriends
 
         private async void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
         {
+            SetProperMapZoomLevel();
             await LocateMe();
             SetProperMapZoomLevel();
         }
@@ -151,6 +233,11 @@ namespace GPSWithFriends
                  position.Coordinate.Latitude, position.Coordinate.Longitude);
                 Me.Latitude = position.Coordinate.Latitude;
                 Me.Longitude = position.Coordinate.Longitude;
+                //refresh distance when I am located at first time
+                foreach (var item in App.ViewModel.Friends)
+                {
+                    item.CalculateDistance();
+                }
             }
             catch (UnauthorizedAccessException)
             {
@@ -165,19 +252,21 @@ namespace GPSWithFriends
                 if (Me.isLocated())
                 {
                     if (App.ViewModel.IsDataLoaded) //to ensure Me.uid has been set
-                    {
+                    {                        
                         try
                         {
-                            ////proxy.setLocationCompleted += proxy_setLocationCompleted;
-                            //proxy.setLocationAsync(Me.Uid, Me.Latitude, Me.Longitude);
+                            proxy.UpdateLocationAsync(Me.Uid, Me.Latitude, Me.Longitude);
                         }
                         catch (TimeoutException e)
                         {
                             MessageBox.Show(e.Message);
                         }
+                        finally
+                        {
+                            MyLocationMarker.Visibility = System.Windows.Visibility.Visible;
+                            LocateFriend(Me);
+                        }
                     }
-                    MyLocationMarker.Visibility = System.Windows.Visibility.Visible;
-                    LocateFriend(Me);
                 }
             }
         }
@@ -333,7 +422,19 @@ namespace GPSWithFriends
 
         private void SendFriendMessage(Friend friend, string result)
         {
-            //
+            proxy.SendMessageAsync(Me.Uid, friend.Email, result);
+        }
+
+        void proxy_SendMessageCompleted(object sender, Server.SendMessageCompletedEventArgs e)
+        {
+            if (e.Error == null)
+            {
+                if (e.Result.Contains("ERROR"))
+                    MessageBox.Show("Fail to send messag. Please try again.");
+            }
+            else
+                MessageBox.Show("Send Message Error.");
+
         }
 
         /// <summary>
@@ -435,13 +536,13 @@ namespace GPSWithFriends
                         string result = "";
                         result = emailInputBox.Text;
                         if (result.Length > 0 && !result.Equals(Me.Email))  //make sure there is input and the address doesn't belong to ME
-                        //Request a friend
-                        //if!=null
                         {
-                            testTimer.Start();
+                            proxy.GetUserFromEmailAsync(Me.Uid, result);
                             InviteButton.IsEnabled = false;
-                            InviteProgressBar.Visibility = System.Windows.Visibility.Visible;
+                            InviteProgressBar.IsEnabled = true;
                         }
+                        else
+                            MessageBox.Show("Please input a email address of a friend");
                         break;
                     case CustomMessageBoxResult.RightButton:
                         // Do something.
@@ -453,59 +554,37 @@ namespace GPSWithFriends
                         break;
                 }
             };
-
             messageBox.Show();
         }
 
-        /// <summary>
-        /// Send the email address of Add friend request
-        /// </summary>
-        /// <param name="email">email of the friend that you want to add</param>
-        public void SendFriendRequest(string email)
+        void proxy_GetUserFromEmailCompleted(object sender, Server.GetUserFromEmailCompletedEventArgs e)
         {
-            // 1. get uid
-            // 2. add the friend into group
+            InviteButton.IsEnabled = true;
+            InviteProgressBar.IsEnabled = false;
 
-            // 1. get uid
-            //proxy.getUserCompleted += proxy_getUserCompleted;
-            try
+            if (e.Error == null)
             {
-                //proxy.getUserAsync(email);
-            }
-            catch (Exception)
-            {
-            }
-        }
+                if (e.Result == null)
+                    MessageBox.Show("The email you input doesn't exist, please try again.");
+                else
+                {
+                    if (e.Result.IsFriendOfCaller)
+                        MessageBox.Show("He/She has already been your friend.");
+                    else
+                    {
+                        App.ViewModel.CurrentFriend = new Friend()
+                        {
+                            Email = e.Result.email,
+                            ImagePath = "/Assets/fakePor.png",
+                            NickName = e.Result.name,
+                            IsFriend = e.Result.IsFriendOfCaller
+                        };
 
-        //void proxy_getUserCompleted(object sender, Server.getUserCompletedEventArgs e)
-        //{
-        //    // 1 continued
-        //    if (e.Error == null)
-        //    {
-        //        proxy.addMemberCompleted += proxy_addMemberCompleted;
-        //        try
-        //        {
-        //            // 2. add the friend into group
-        //            proxy.addMemberAsync(e.Result.uid, App.ViewModel.CurrentGroup.Gid);
-        //        }
-        //        catch (Exception)
-        //        {
-        //        }
-        //    }
-        //}
-
-        //void proxy_addMemberCompleted(object sender, Server.addMemberCompletedEventArgs e)
-        //{
-        //    // 2 continued
-        //    if (e.Error == null)
-        //    {
-        //        if (e.Result.success == true)
-        //        {
-        //            //refresh to get the latest data
-        //            App.ViewModel.RefreshData();
-        //        }
-        //    }
-        //}
+                        this.NavigationService.Navigate(new Uri("/DetailPage.xaml", UriKind.Relative));
+                    }
+                }
+            }
+        }   
 
         private void RequestsListBox_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
@@ -569,22 +648,30 @@ namespace GPSWithFriends
             App.ViewModel.Requests.Remove(request);
             if (p)
             {
-                //2. get friend from cloud
-                //3. add friend
-
-                //temp
-                App.ViewModel.Friends.Add(new Friend
+                try
                 {
-                    IsFriend = true,
-                    Email = request.SenderEmail,
-                    NickName = request.SenderName,
-                    Distance="???",
-                    ImagePath = "/Assets/fakePor.png",
-                    Uid = App.ViewModel.Friends.Count+1
-                });
-                App.ViewModel.RefreshGroup();
-                //throw new NotImplementedException();
+                    proxy.AnswerAddFriendAsync(Me.Uid, request.SenderEmail, p);
+                }
+                catch (Exception)
+                {
+
+                }
+
+                //refresh friendlist
             }
+        }
+
+        void proxy_AnswerAddFriendCompleted(object sender, Server.AnswerAddFriendCompletedEventArgs e)
+        {
+            if (e.Error == null)
+            {
+                if (e.Result.Contains("ERROR"))
+                    MessageBox.Show("Fail to answer the request.");
+                else
+                    App.ViewModel.RefreshData();    //success, refresh to get new friends
+            }
+            else
+                MessageBox.Show("Answer request Error.");
         }
 
         private void FriendsManageListBox_Tap(object sender, System.Windows.Input.GestureEventArgs e)
@@ -650,11 +737,14 @@ namespace GPSWithFriends
             }
 
             //including Me
-            if (Me.isLocated()) temp.Add(Me);
+            if (Me.isLocated())
+                temp.Add(Me);
 
-            LocationRectangle locationRectangle = LocationRectangle.CreateBoundingRectangle(from Friend in temp select Friend.Geocoordinate);
-
-            this.MyMap.SetView(locationRectangle, new Thickness(MAP_RECTANGLE_THICKNESS));
+            if (temp.Count > 0)
+            {
+                LocationRectangle locationRectangle = LocationRectangle.CreateBoundingRectangle(from Friend in temp select Friend.Geocoordinate);
+                this.MyMap.SetView(locationRectangle, new Thickness(MAP_RECTANGLE_THICKNESS));
+            }
         }
 
         /// <summary>
@@ -721,7 +811,7 @@ namespace GPSWithFriends
 
         private void ApplicationBarIconRequestRefreshButton_Click(object sender, EventArgs e)
         {
-
+            proxy.GetMessagesAsync(Me.Uid);
         }
 
         private void ApplicationBarIconAllAcceptButton_Click(object sender, EventArgs e)
@@ -768,7 +858,7 @@ namespace GPSWithFriends
 
         private void ApplicationBarIconFriendManageRefreshButton_Click(object sender, EventArgs e)
         {
-           
+            App.ViewModel.RefreshData();
         }
 
         private void Pivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -796,8 +886,7 @@ namespace GPSWithFriends
 
             if (result == MessageBoxResult.OK)
             {
-                //UPLOAD my status
-
+                App.ViewModel.ClearData();
                 this.NavigationService.Navigate(new Uri("/LoginPage.xaml", UriKind.Relative));
             }
         }
@@ -841,11 +930,7 @@ namespace GPSWithFriends
                             if (result.Length > 0 && !isExisted)  //make sure there is input and the no repeated name
                             //if!=null
                             {
-                                //add group
-                                App.ViewModel.GroupInfos.Add(new GroupInfo(result, null));
-                                //group refresh
-                                App.ViewModel.RefreshGroup();
-                                //upload group info
+                                proxy.CreateGroupAsync(Me.Uid, result);                                
                             }
                             else
                                 MessageBox.Show("Input is empty or there has already been a group with that name.");
@@ -862,6 +947,18 @@ namespace GPSWithFriends
                 };
 
                 messageBox.Show();
+            }
+        }
+
+        void proxy_CreateGroupCompleted(object sender, Server.CreateGroupCompletedEventArgs e)
+        {
+            if (e.Error == null)
+            {
+                if (e.Result.Contains("ERROR"))
+                {
+                    MessageBox.Show("Failed to add group.");
+                }
+                App.ViewModel.RefreshData();
             }
         }
 
@@ -914,27 +1011,7 @@ namespace GPSWithFriends
 
                             if (result == MessageBoxResult.OK)
                             {
-                                //remove group
-                                //remove all members toMy Friends
-                                foreach (var friend in App.ViewModel.Groups[groupListPicker.SelectedIndex])
-                                {
-                                    friend.Group = DEFAULT_GROUP_NAME;
-                                }
-                                //find the groupinfo to be removed
-                                GroupInfo toBeRemovedGroupInfo = null;
-                                foreach (var groupinfo in App.ViewModel.GroupInfos)
-                                {
-                                    if (groupinfo.Title.Equals(App.ViewModel.Groups[groupListPicker.SelectedIndex].Title))
-                                    {
-                                        toBeRemovedGroupInfo = groupinfo;
-                                        break;
-                                    }
-                                }
-                                //remove groupinfo
-                                App.ViewModel.GroupInfos.Remove(toBeRemovedGroupInfo);
-                                //group refresh
-                                App.ViewModel.RefreshGroup();
-                                //upload group info
+                                proxy.DeleteGroupAsync(Me.Uid, App.ViewModel.Groups[groupListPicker.SelectedIndex].Title);
                             }                            
                         }
                         break;
@@ -950,6 +1027,19 @@ namespace GPSWithFriends
             };
 
             messageBox.Show();
+        }
+
+        void proxy_DeleteGroupCompleted(object sender, Server.DeleteGroupCompletedEventArgs e)
+        {
+            if (e.Error == null)
+            {
+                if (e.Result.Contains("ERROR"))
+                {
+                    MessageBox.Show("Failed to remove group.");
+                }
+                App.ViewModel.RefreshData();
+            }
+
         }
 
         //void proxy_removeMemberCompleted(object sender, Server.removeMemberCompletedEventArgs e)

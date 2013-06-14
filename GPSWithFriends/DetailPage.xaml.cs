@@ -13,6 +13,10 @@ namespace GPSWithFriends
 {
     public partial class DetailPage : PhoneApplicationPage
     {
+        Server.UserActionSoapClient proxy = new Server.UserActionSoapClient();
+
+        bool isStillFriend = false;
+
         public DetailPage()
         {
             InitializeComponent();
@@ -28,7 +32,12 @@ namespace GPSWithFriends
                     break;
                 }
             }
+            isStillFriend = App.ViewModel.CurrentFriend.IsFriend;
+            proxy.AddFriendRequestCompleted += proxy_AddFriendRequestCompleted;
+            proxy.DeleteFriendCompleted += proxy_DeleteFriendCompleted;
+            proxy.ChangeUserGroupCompleted += proxy_ChangeUserGroupCompleted;
         }
+
 
         private void AddFriendButton_Click(object sender, RoutedEventArgs e)
         {
@@ -36,14 +45,35 @@ namespace GPSWithFriends
             button.IsEnabled = false;
 
             //send the friend request
+            try
+            {
+                proxy.AddFriendRequestAsync(App.ViewModel.Me.Uid, App.ViewModel.CurrentFriend.Email);
+            }
+            catch (Exception)
+            {
 
-            //test
-            App.ViewModel.Friends.Add(App.ViewModel.CurrentFriend);
-            App.ViewModel.CurrentFriend.IsFriend = true;
-            App.ViewModel.RefreshGroup();
+            }
+        }
 
-            this.NavigationService.GoBack();
-            //MainPage.SendFriendRequest(App.ViewModel.CurrentFriend.Email);
+        void proxy_AddFriendRequestCompleted(object sender, Server.AddFriendRequestCompletedEventArgs e)
+        {
+            if (e.Error == null)
+            {
+                if (e.Result.Contains("ERROR"))
+                {
+                    MessageBox.Show("Add friend request failed. Please try again.");
+                }
+                else
+                {
+                    isStillFriend = false;
+                    this.NavigationService.GoBack();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Send Request Error.");
+            }
+            AddFriendButton.IsEnabled = true;
         }
 
         private void RemoveFriendButton_Click(object sender, RoutedEventArgs e)
@@ -55,16 +85,43 @@ namespace GPSWithFriends
             {
                 Button button = sender as Button;
                 button.IsEnabled = false;
-                //send unfriend request
 
-                //test
-                App.ViewModel.Friends.Remove(App.ViewModel.CurrentFriend);
-                App.ViewModel.CurrentFriend.IsFriend = false;
-                App.ViewModel.RefreshGroup();
+                //send the remove friend request
+                try
+                {
+                    proxy.DeleteFriendAsync(App.ViewModel.Me.Uid,
+                        App.ViewModel.CurrentFriend.Email,
+                        App.ViewModel.CurrentFriend.Group);
+                }
+                catch (Exception)
+                {
 
-                this.NavigationService.GoBack();
+                }
             }            
         }
+
+        void proxy_DeleteFriendCompleted(object sender, Server.DeleteFriendCompletedEventArgs e)
+        {
+            if (e.Error == null)
+            {
+                if (e.Result.Contains("ERROR"))
+                {
+                    MessageBox.Show("Remove friend request failed. Please try again.");
+                }
+                else
+                {
+                    App.ViewModel.RefreshData();
+                    isStillFriend = false;
+                    this.NavigationService.GoBack();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Send Request Error.");
+            }
+            RemoveFriendButton.IsEnabled = true;
+        }
+
 
         private void GroupListPicker_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -73,11 +130,22 @@ namespace GPSWithFriends
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
-           if (e.NavigationMode==NavigationMode.Back)
+            if (e.NavigationMode == NavigationMode.Back)
             {
-                App.ViewModel.CurrentFriend.Group = App.ViewModel.Groups[GroupListPicker.SelectedIndex].Title;
-                App.ViewModel.RefreshGroup();
+                if (isStillFriend)
+                {
+                    if(!App.ViewModel.CurrentFriend.Group.Equals(App.ViewModel.Groups[GroupListPicker.SelectedIndex].Title))
+                    proxy.ChangeUserGroupAsync(App.ViewModel.Me.Uid,
+                        App.ViewModel.CurrentFriend.Group,
+                        App.ViewModel.Groups[GroupListPicker.SelectedIndex].Title,
+                        App.ViewModel.CurrentFriend.Email);
+                }
             }
+        }
+
+        void proxy_ChangeUserGroupCompleted(object sender, Server.ChangeUserGroupCompletedEventArgs e)
+        {
+            App.ViewModel.RefreshData();
         }
     }
 }

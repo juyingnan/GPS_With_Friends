@@ -14,10 +14,10 @@ namespace GPSWithFriends.ViewModels
 {
     public class Message : INotifyPropertyChanged
     {
-        public Message(int fuid, int tuid, string content, DateTime time, bool iscleared)
+        public Message(string femail, string temail, string content, DateTime time, bool iscleared)
         {
-            FromUid = fuid;
-            ToUid = tuid;
+            FromEmail = femail;
+            ToEmail = temail;
             Content = content;
             LastUpdateTime = time;
             IsCleared = iscleared;
@@ -29,36 +29,36 @@ namespace GPSWithFriends.ViewModels
             IsCleared = true;
         }     
 
-        private int fromUid;
-        public int FromUid
+        private string fromEmail;
+        public string FromEmail
         {
             get
             {
-                return fromUid;
+                return fromEmail;
             }
             set
             {
-                if (value != fromUid)
+                if (value != fromEmail)
                 {
-                    fromUid = value;
-                    NotifyPropertyChanged("FromUid");
+                    fromEmail = value;
+                    NotifyPropertyChanged("FromEmail");
                 }
             }
         }
 
-        private int toUid;
-        public int ToUid
+        private string toEmail;
+        public string ToEmail
         {
             get
             {
-                return toUid;
+                return toEmail;
             }
             set
             {
-                if (value != toUid)
+                if (value != toEmail)
                 {
-                    toUid = value;
-                    NotifyPropertyChanged("ToUid");
+                    toEmail = value;
+                    NotifyPropertyChanged("ToEmail");
                 }
             }
         }

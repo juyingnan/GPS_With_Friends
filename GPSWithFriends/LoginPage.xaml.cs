@@ -18,7 +18,8 @@ namespace GPSWithFriends
 
         private IsolatedStorageSettings _appSettings = IsolatedStorageSettings.ApplicationSettings;
 
-        //Server.GPSwfriendsClient proxy = new Server.GPSwfriendsClient();
+        //Server.UserActionSoapClient proxy = new Server.UserActionSoapClient("UserActionSoap", "http://gpswithfriends.cloudapp.net:80/UserAction.asmx");
+        Server.UserActionSoapClient proxy = new Server.UserActionSoapClient();
 
         public LoginPage()
         {
@@ -42,8 +43,9 @@ namespace GPSWithFriends
             {
                 string md5String = MD5Core.GetHashString(LoginPasswordBox.Password);
 
-                //proxy.authenticateCompleted += proxy_authenticateCompleted;
-                //proxy.authenticateAsync(LoginUsernameTextBox.Text, LoginPasswordBox.Password);
+                proxy.LogInCompleted += proxy_LogInCompleted;
+                proxy.LogInAsync(LoginUsernameTextBox.Text, md5String);
+
                 LOGINBUTTON.IsEnabled = false;
                 REGISTERBUTTON.IsEnabled = false;
                 progressBar.Visibility = System.Windows.Visibility.Visible;
@@ -55,6 +57,36 @@ namespace GPSWithFriends
                 REGISTERBUTTON.IsEnabled = true;
                 progressBar.Visibility = System.Windows.Visibility.Collapsed;
             }
+        }
+
+        void proxy_LogInCompleted(object sender, Server.LogInCompletedEventArgs e)
+        {
+            if (e.Error == null)
+            {
+                if (e.Result.StartsWith("GWF_E")) //login failed
+                {
+                    MessageBox.Show("Login Failed. Please try again.");
+                    LoginPasswordBox.Password = "";
+                    LoginPasswordBox.Focus();
+                }
+                else
+                {
+                    SaveLastLoginUser(LoginUsernameTextBox.Text);
+                    App.ViewModel.Me.Email = LoginUsernameTextBox.Text;
+                    string uid = e.Result.Split(':')[1];
+                    if (uid != null)
+                    {
+                        App.ViewModel.Me.Uid = uid;
+                        this.NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.Relative));
+                    }
+                    else
+                        MessageBox.Show("UID error.");
+                }
+            }
+            LOGINBUTTON.IsEnabled = true;
+            REGISTERBUTTON.IsEnabled = true;
+            progressBar.Visibility = System.Windows.Visibility.Collapsed;
+            
         }
 
         //private void proxy_authenticateCompleted(object sender, Server.authenticateCompletedEventArgs e)

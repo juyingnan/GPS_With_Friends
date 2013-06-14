@@ -17,7 +17,8 @@ namespace GPSWithFriends
 
         private IsolatedStorageSettings _appSettings = IsolatedStorageSettings.ApplicationSettings;
 
-        //Server.GPSwfriendsClient proxy = new Server.GPSwfriendsClient();
+        //Server.UserActionSoapClient proxy = new Server.UserActionSoapClient("UserActionSoap", "http://gpswithfriends.cloudapp.net:80/UserAction.asmx");
+        Server.UserActionSoapClient proxy = new Server.UserActionSoapClient();
 
         public RegisterPage()
         {
@@ -26,13 +27,13 @@ namespace GPSWithFriends
 
         private void Submit_Button_Click(object sender, RoutedEventArgs e)
         {
-            //proxy.registerCompleted += proxy_registerCompleted;
+            proxy.FastSignUpCompleted += proxy_FastSignUpCompleted;
             if (ContentCheck())
             {
                 try
                 {
                     string md5String = MD5Core.GetHashString(RegisterPasswordBox.Password);
-                    //proxy.registerAsync(RegisterEmailTextBox.Text, RegisterPasswordBox.Password, RegisterNickNameTextBox.Text, RegisterNickNameTextBox.Text);
+                    proxy.FastSignUpAsync(RegisterEmailTextBox.Text, md5String, RegisterNickNameTextBox.Text);
                     SUBMITBUTTON.IsEnabled = false;
                     progressBar.Visibility = System.Windows.Visibility.Visible;
                 }
@@ -45,6 +46,26 @@ namespace GPSWithFriends
             }
             else
                 MessageBox.Show("Input incomplete or password not match. Please try again.");
+        }
+
+        void proxy_FastSignUpCompleted(object sender, Server.FastSignUpCompletedEventArgs e)
+        {
+            if (e.Error == null)
+            {
+                if (e.Result.StartsWith("GWF_E")) //register failed
+                {
+                    MessageBox.Show("Register failed. Please try again.");
+                }
+                else
+                {
+                    SaveLastLoginUser(RegisterEmailTextBox.Text);
+                    this.NavigationService.Navigate(new Uri("/LoginPage.xaml", UriKind.Relative));
+                }
+            }
+            else
+                MessageBox.Show("Connection failed.");
+            SUBMITBUTTON.IsEnabled = true;
+            progressBar.Visibility = System.Windows.Visibility.Collapsed;
         }
 
         //void proxy_registerCompleted(object sender, Server.registerCompletedEventArgs e)

@@ -10,7 +10,6 @@
     xmlns:maps="clr-namespace:Microsoft.Phone.Maps.Controls;assembly=Microsoft.Phone.Maps"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     mc:Ignorable="d"    
-    d:DataContext="{d:DesignData SampleData/MainViewModelSampleData.xaml}"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="Black"
@@ -102,7 +101,7 @@
                 <TextBlock Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding Status}" FontSize="12" VerticalAlignment="Bottom"></TextBlock>
                 <TextBlock Grid.Column="2" Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="2" Text="{Binding Distance}" FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Right" Padding="0,0,20,0"></TextBlock>
                 <toolkit:ContextMenuService.ContextMenu>
-                    <toolkit:ContextMenu toolkit:TiltEffect.IsTiltEnabled="True">
+                    <toolkit:ContextMenu toolkit:TiltEffect.IsTiltEnabled="True" Background="White">
                         <toolkit:MenuItem Header="Get Route" Foreground="Black" Click="FriendList_Route"/>
                         <toolkit:MenuItem Header="Send Message" Foreground="Black" Click="FriendList_SendMessage"/>
                         <toolkit:MenuItem Header="Clear Message" Foreground="Black" Click="FriendList_ClearMessage"/>
@@ -147,8 +146,8 @@
                     <RowDefinition Height="2*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Text="{Binding Content}" FontSize="32" VerticalAlignment="Bottom"></TextBlock>
-                <TextBlock Grid.Row="1" Text="{Binding Time}" FontSize="16" VerticalAlignment="Top"></TextBlock>
+                <TextBlock Grid.Row="0" Text="{Binding Content}" FontSize="24" VerticalAlignment="Bottom"></TextBlock>
+                <TextBlock Grid.Row="1" Text="{Binding Time}" FontSize="12" VerticalAlignment="Top"></TextBlock>
             </Grid>
         </DataTemplate>
 
@@ -275,12 +274,12 @@
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="0.2*"/>
                         <RowDefinition Height="4*"/>
                     </Grid.RowDefinitions>
                     <Button Grid.Row="0" Name="InviteButton" Style="{StaticResource NoBorderBigButtonStyle}" Click="InviteButton_Click">INVITE A FRIEND</Button>
                     <ProgressBar Grid.Row="0" Visibility="Collapsed" Name="InviteProgressBar" IsIndeterminate="True" VerticalAlignment="Top"></ProgressBar>
-                    <Button Grid.Row="1" Padding="0,4,0,0" Style="{StaticResource NoBorderBigButtonStyle}">SWING ANYONE</Button>
+                    <!--<Button Grid.Row="1" Padding="0,4,0,0" Style="{StaticResource NoBorderBigButtonStyle}">SWING ANYONE</Button>-->
                     <StackPanel Orientation="Vertical" Grid.Row="2">
                         <TextBlock></TextBlock>
                         <TextBlock FontSize="30">Friends Requests:</TextBlock>
@@ -299,19 +298,15 @@
                     <Grid.ColumnDefinitions>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="0.5*"/>
                         <RowDefinition Height="50"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Column="0" Grid.Row="0">
                         <toolkit:ToggleSwitch  VerticalAlignment="Top" Header="Hide Me" Margin="0,-20,0,-30"></toolkit:ToggleSwitch>
-                        <Button Name="ChangePhotoButton" Style="{StaticResource NoBorderBigButtonStyle}" FontSize="40">Change my Photo</Button>
-                        <Button Name="ChangeNickNameButton" Style="{StaticResource NoBorderBigButtonStyle}" FontSize="40" >Change my NickName</Button>
-                        <HyperlinkButton Name="LogOutButton" 
-                                     FontSize="36"
-                                     HorizontalAlignment="Left"
-                                     Tap="LogOutButton_Tap"
-                                     >Log out</HyperlinkButton>
+                        <!--<Button Name="ChangePhotoButton" Style="{StaticResource NoBorderBigButtonStyle}" FontSize="40">Change my Photo</Button>
+                        <Button Name="ChangeNickNameButton" Style="{StaticResource NoBorderBigButtonStyle}" FontSize="40" >Change my NickName</Button>-->
+                        <Button Name="LogOutButton" Style="{StaticResource NoBorderBigButtonStyle}" FontSize="40" Tap="LogOutButton_Tap" >Log out</Button>
                     </StackPanel>
                     <TextBlock FontSize="30" Grid.Row="1">Manage Friends</TextBlock>
                     <phone:LongListSelector  x:Name="FriendsManageListBox" 

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2012/deployment" AppPlatformVersion="8.0">
   <DefaultLanguage xmlns="" code="en-US" />
-  <App xmlns="" ProductID="{eb1c7838-3a40-4721-951c-9cf7bf9f9ed8}" Title="GPSWithFriends" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="GPSWithFriends author" Description="Sample description" Publisher="GPSWithFriends" PublisherID="{bb032874-447c-4cff-b752-dc04007a4ed6}">
+  <App xmlns="" ProductID="{eb1c7838-3a40-4721-951c-9cf7bf9f9ed8}" Title="GPSWithFriends" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="GPSWithFriends author" Description="GPSWithFriends is an app that can help you locate your friends. Your friends and you can see where you are and can send IM with each other." Publisher="GPSWithFriends" PublisherID="{bb032874-447c-4cff-b752-dc04007a4ed6}">
     <IconPath IsRelative="true" IsResource="false">logo_300_trans.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_NETWORKING" />
@@ -11,7 +11,7 @@
       <Capability Name="ID_CAP_WEBBROWSERCOMPONENT" />
     </Capabilities>
     <Tasks>
-      <DefaultTask Name="_default" NavigationPage="MainPage.xaml" />
+      <DefaultTask Name="_default" NavigationPage="LoginPage.xaml" />
     </Tasks>
     <Tokens>
       <PrimaryToken TokenID="GPSWithFriendsToken" TaskName="_default">

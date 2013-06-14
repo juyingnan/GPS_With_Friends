@@ -74,6 +74,11 @@ namespace GPSWithFriends.ViewModels
             else return false;
         }
 
+        public void SetStatus()
+        {
+            Status = "Last updated at " + lastUpdateTime.ToString();
+        }
+
         private string nickName;
         public string NickName
         {
@@ -91,8 +96,8 @@ namespace GPSWithFriends.ViewModels
             }
         }
 
-        private int uid;
-        public int Uid
+        private string uid;
+        public string Uid
         {
             get
             {
@@ -136,8 +141,9 @@ namespace GPSWithFriends.ViewModels
             {
                 if (value != lastUpdateTime)
                 {
-                    lastUpdateTime = value;
+                    lastUpdateTime = value.ToLocalTime();
                     NotifyPropertyChanged("LastUpdateTime");
+                    SetStatus();
                 }
             }
         }

@@ -66,10 +66,10 @@ namespace GPSWithFriends.ViewModels
         {
             Title = t;
         }
-        public GroupInfo(string t, int[] uids)
+        public GroupInfo(string t, string[] uids)
         {
             Title = t;
-            FriendUids = uids;
+            FriendEmails = uids;
         }
 
 
@@ -90,19 +90,36 @@ namespace GPSWithFriends.ViewModels
             }
         }
 
-        private int[] friendUids;
-        public int[] FriendUids
+        private bool isLoaded;
+        public bool IsLoaded
         {
             get
             {
-                return friendUids;
+                return isLoaded;
             }
             set
             {
-                if (value != friendUids)
+                if (value != isLoaded)
                 {
-                    friendUids = value;
-                    NotifyPropertyChanged("FriendUids");
+                    isLoaded = value;
+                    NotifyPropertyChanged("IsLoaded");
+                }
+            }
+        }
+
+        private string[] friendEmails;
+        public string[] FriendEmails
+        {
+            get
+            {
+                return friendEmails;
+            }
+            set
+            {
+                if (value != friendEmails)
+                {
+                    friendEmails = value;
+                    NotifyPropertyChanged("FriendEmails");
                 }
             }
         }

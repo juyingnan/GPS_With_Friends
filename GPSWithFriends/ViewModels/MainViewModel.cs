@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using GPSWithFriends.Resources;
 using System.Collections.Generic;
+using System.Windows;
 
 namespace GPSWithFriends.ViewModels
 {
@@ -19,6 +20,9 @@ namespace GPSWithFriends.ViewModels
             this.GroupInfos = new ObservableCollection<GroupInfo>();
             this.Groups = new ObservableCollection<Group<Friend>>();
             Me = new Friend() { Latitude = 181, Longitude = 181, NickName = ME };
+
+            proxy.GetGroupNamesCompleted += proxy_GetGroupNamesCompleted;
+            proxy.GetGroupInfoFromNameCompleted += proxy_GetGroupInfoFromNameCompleted;
         }
 
         /// <summary>
@@ -29,7 +33,7 @@ namespace GPSWithFriends.ViewModels
         public ObservableCollection<Group<Friend>> Groups { get; private set; }
         public ObservableCollection<GroupInfo> GroupInfos { get; private set; }
 
-        //Server.GPSwfriendsClient proxy = new Server.GPSwfriendsClient();
+        Server.UserActionSoapClient proxy = new Server.UserActionSoapClient();
 
         private Friend currentFriend;
         public Friend CurrentFriend
@@ -102,155 +106,69 @@ namespace GPSWithFriends.ViewModels
         /// </summary>
         public void LoadData()
         {
-            // Sample data; replace with real data
-            this.Friends.Add(new Friend() { NickName = "Wang Cong", Status = "updated in 16:20", Distance = "1.5 km", ImagePath = "/Assets/fakePor.png", Email = "Jushua@gmail.com", Latitude = 39.7677, Longitude = 116.3602,IsFriend=true,Uid=1, LastMessage=new Message(1,0,"Hi, I'm here. 我今天倒是tmd要试试消息究竟可以发多长是吧超超",DateTime.Now,false)});
-            this.Friends.Add(new Friend() { NickName = "Yu Zhe", Status = "updated in 16:22", Distance = "1 km", ImagePath = "/Assets/fakePor.png", Email = "Kate@gmail.com", Latitude = 39.7588, Longitude = 116.3510, IsFriend = true, Uid = 2, LastMessage = new Message(1, 0, "Hi, I'm here", DateTime.Now, true) });
-            this.Friends.Add(new Friend() { NickName = "Kate.Xu", Status = "updated in 15:30", Distance = "1.3 km", ImagePath = "/Assets/fakePor.png", Email = "Bao@gmail.com", Latitude = 39.7532, Longitude = 116.3452, IsFriend = true, Uid = 3, LastMessage= new Message(1, 0, "Hi, I'm here", DateTime.Now, false) });
-            this.Friends.Add(new Friend() { NickName = "Rye", Status = "updated in 16:12", Distance = "3 km", ImagePath = "/Assets/fakePor.png", Email = "Stranger@gmail.com", Latitude = 39.7532, Longitude = 116.3602, IsFriend = true, Uid = 4, LastMessage = new Message(1, 0, "Hi, I'm here", DateTime.Now, true) });
-            
-            this.Requests.Add(new Request() { Content = "Yu wants to friend you", Time = "8/5/2013 13:04", SenderName = "Yu", SenderEmail = "Yu@163.com" });
-            this.Requests.Add(new Request() { Content = "Hongye wants to friend you", Time = "7/5/2013 12:44", SenderName = "Hongye", SenderEmail = "Hongye@163.com" });
-            this.Requests.Add(new Request() { Content = "Kevin wants to friend you", Time = "7/5/2013 10:21", SenderName = "Kevin", SenderEmail = "Kevin@163.com" });
-
-            //get group info from web
-            GroupInfos.Add(new GroupInfo(DEFAULT_GROUP_NAME, new int[] { 1, 2 }));
-            GroupInfos.Add(new GroupInfo("Classmates", new int[] { 3 }));
-            GroupInfos.Add(new GroupInfo("Other", new int[] { 4 }));
-            GroupInfos.Add(new GroupInfo("Test", null));
-
-            //set group to friends
-            foreach (var friend in Friends)
-            {
-                foreach (var groupInfo in GroupInfos)
-                {
-                    if (groupInfo.FriendUids != null)
-                    {
-                        if (groupInfo.FriendUids.Contains(friend.Uid))
-                        {
-                            friend.Group = groupInfo.Title;
-                            break;
-                        }
-                    }
-                }
-            }            
-
-            //get group for longlistselector           
-            RefreshGroup();
-
-            IsDataLoaded = true;
+            ClearData();
 
             ///load real data from server
-            /// 1. get my uid
-            /// 2. get my groups via my uid
-            /// 3. for each group, get friends
-            /// 4. set currentFriends & currentGroup
-            /// 5. Set AllGroup
+            /// 1. get my groupinfos via my uid
+            /// 2. get my friends via group names
+            /// 
 
-            // 1. get my uid
-            //proxy.getUserCompleted += proxy_getUserCompleted;
-            try
-            {
-                //proxy.getUserAsync(Me.Email);
-            }
-            catch (Exception)
-            {
-            }
+            // 1 . get my group uid via my uid
+            proxy.GetGroupNamesAsync(me.Uid);
+            IsDataLoaded = true;
         }
 
-        //void proxy_getUserCompleted(object sender, Server.getUserCompletedEventArgs e)
-        //{
-        //    // 1 continued
-        //    if (e.Error == null)
-        //    {
-        //        Me.Uid = e.Result.uid;
-        //        // 2. get my groups via my uid
-        //        //proxy.getGroupsCompleted += proxy_getGroupsCompleted;
-        //        try
-        //        {
-        //            //proxy.getGroupsAsync(Me.Uid);
-        //        }
-        //        catch (Exception)
-        //        {
-        //        }
-        //    }
-        //}
+        public void ClearData()
+        {
+            Friends.Clear();
+            Groups.Clear();
+            GroupInfos.Clear();
+            Requests.Clear();
+        }
 
-        //void proxy_getGroupsCompleted(object sender, Server.getGroupsCompletedEventArgs e)
-        //{
-        //    // 2 continued
-        //    if (e.Error == null && e.Result != null)
-        //    {
+        void proxy_GetGroupNamesCompleted(object sender, Server.GetGroupNamesCompletedEventArgs e)
+        {
+            if (e.Error == null)
+            {
+                foreach (var item in e.Result)
+                {
+                    // 2. get my friends via group names
+                    GroupInfos.Add(new GroupInfo(item));
+                    proxy.GetGroupInfoFromNameAsync(me.Uid, item);
+                }
+            }
+            else
+                MessageBox.Show("Failed to get Group Names");
+        }
 
-        //        Groups.Clear();
-        //        // 3. for each group, get friends
-        //        foreach (var item in e.Result)
-        //        {
-        //            Friend[] tempFriends = null;
-        //            if (item.users.Length > 0)
-        //            {
-        //                tempFriends = new Friend[item.users.Length];
-        //                for (int i = 0; i < item.users.Length; i++)
-        //                {
-        //                    if (item.users[i].uid != Me.Uid)
-        //                    {
-        //                        tempFriends[i] = new Friend()
-        //                        {
-        //                            NickName = item.users[i].fName,
-        //                            Uid = item.users[i].uid,
-        //                            Status = "Last updated at " + item.users[i].lastLoc.date,
-        //                            IsFriend = true,
-        //                            ImagePath = "/Assets/fakePor.png",
-        //                            Latitude = item.users[i].lastLoc.latitude,
-        //                            Longitude = item.users[i].lastLoc.longitude
-        //                        };
-        //                    }
-        //                }
-        //            }
-        //            Groups.Add(new Group() { Gid = item.gid, Name = item.name, Owner = item.owner, Friends = tempFriends });
-        //        }
-
-        //        // 4. set Friends for Current Group
-        //        if (Groups.Count > 0)
-        //        {
-        //            CurrentGroup = this.Groups[0];
-        //            Friends.Clear();
-        //            foreach (var item in CurrentGroup.Friends)
-        //            {
-        //                if (item != null)
-        //                    Friends.Add(item);
-        //            }
-        //        }
-
-        //        // 5. Set AllGroup
-        //        List<Friend> tempAll = new List<Friend>();
-        //        foreach (var item in Groups)
-        //        {
-        //            foreach (var user in item.Friends)
-        //            {
-        //                if (user != null)
-        //                {
-        //                    bool isContained = false;
-        //                    foreach (var u in tempAll)
-        //                    {
-        //                        if (u.Uid == user.Uid)
-        //                            isContained = true;
-        //                    }
-        //                    if (!isContained)
-        //                        tempAll.Add(user);
-        //                }
-        //            }
-        //        }
-
-        //        Friend[] allFriend = new Friend[tempAll.Count];
-        //        for (int i = 0; i < tempAll.Count; i++)
-        //        {
-        //            allFriend[i] = tempAll[i];
-        //        }
-        //        AllGroup.Friends = allFriend;
-
-        //        this.IsDataLoaded = true;
-        //    }
-        //}
+        void proxy_GetGroupInfoFromNameCompleted(object sender, Server.GetGroupInfoFromNameCompletedEventArgs e)
+        {
+            if (e.Error == null)
+            {
+                foreach (var item in e.Result)
+                {
+                    Friends.Add(new Friend()
+                    {
+                        Email = item.email,
+                        ImagePath = "/Assets/fakePor.png",
+                        IsFriend = true,
+                        IsHidden = false,
+                        LastMessage = new Message("", "", "", DateTime.Now, true),
+                        NickName = item.name,
+                        Group = item.group_name
+                    });
+                    if (item.last_location != null)
+                    {
+                        Friends.Last().LastUpdateTime = item.last_location.last_time;
+                        Friends.Last().Latitude = item.last_location.latitude;
+                        Friends.Last().Longitude = item.last_location.longitude;
+                    }
+                    RefreshGroup();
+                }
+            }
+            else
+                MessageBox.Show("Failed to get Groups & friends");
+        }
 
         public void RefreshData()
         {
@@ -278,15 +196,15 @@ namespace GPSWithFriends.ViewModels
         {
             foreach (var groupInfo in GroupInfos)
             {
-                groupInfo.FriendUids = null;
+                groupInfo.FriendEmails = null;
                 foreach (var group in Groups)
                 {
                     if (groupInfo.Title.Equals(group.Title))
                     {
-                        groupInfo.FriendUids = new int[group.Count];
+                        groupInfo.FriendEmails = new string[group.Count];
                         for (int i = 0; i < group.Count; i++)
                         {
-                            groupInfo.FriendUids[i] = group[i].Uid;
+                            groupInfo.FriendEmails[i] = group[i].Email.ToString();
                         }
                     }
                 }
@@ -316,17 +234,17 @@ namespace GPSWithFriends.ViewModels
             }
 
             //Put My Friend First!
-            Group<Friend> temp = null;
-            foreach (var group in Groups)
-            {
-                if (group.Title.Equals(DEFAULT_GROUP_NAME))
-                    temp = group;
-            }
-            if (temp != null)
-            {
-                Groups.Remove(temp);
-                Groups.Insert(0, temp);
-            }
+            //Group<Friend> temp = null;
+            //foreach (var group in Groups)
+            //{
+            //    if (group.Title.Equals(DEFAULT_GROUP_NAME))
+            //        temp = group;
+            //}
+            //if (temp != null)
+            //{
+            //    Groups.Remove(temp);
+            //    Groups.Insert(0, temp);
+            //}
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
