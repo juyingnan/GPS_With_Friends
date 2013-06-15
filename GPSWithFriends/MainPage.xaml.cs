@@ -433,7 +433,7 @@ namespace GPSWithFriends
                     MessageBox.Show("Fail to send messag. Please try again.");
             }
             else
-                MessageBox.Show("Send Message Error.");
+                MessageBox.Show("Server connection error. Please try again later.");
 
         }
 
@@ -584,7 +584,9 @@ namespace GPSWithFriends
                     }
                 }
             }
-        }   
+            else
+                MessageBox.Show("Server connection error. Please try again later.");
+        }  
 
         private void RequestsListBox_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
@@ -671,7 +673,7 @@ namespace GPSWithFriends
                     App.ViewModel.RefreshData();    //success, refresh to get new friends
             }
             else
-                MessageBox.Show("Answer request Error.");
+                MessageBox.Show("Server connection error. Please try again later.");
         }
 
         private void FriendsManageListBox_Tap(object sender, System.Windows.Input.GestureEventArgs e)
@@ -960,6 +962,8 @@ namespace GPSWithFriends
                 }
                 App.ViewModel.RefreshData();
             }
+            else
+                MessageBox.Show("Server connection error. Please try again later.");
         }
 
         private void ApplicationBarIconFriendManageRemoveGroupButton_Click(object sender, EventArgs e)
@@ -1039,7 +1043,8 @@ namespace GPSWithFriends
                 }
                 App.ViewModel.RefreshData();
             }
-
+            else
+                MessageBox.Show("Server connection error. Please try again later.");
         }
 
         //void proxy_removeMemberCompleted(object sender, Server.removeMemberCompletedEventArgs e)

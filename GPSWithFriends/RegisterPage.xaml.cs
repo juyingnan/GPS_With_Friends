@@ -63,7 +63,7 @@ namespace GPSWithFriends
                 }
             }
             else
-                MessageBox.Show("Connection failed.");
+                MessageBox.Show("Server connection error. Please try again later.");
             SUBMITBUTTON.IsEnabled = true;
             progressBar.Visibility = System.Windows.Visibility.Collapsed;
         }

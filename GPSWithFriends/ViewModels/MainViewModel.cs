@@ -138,7 +138,7 @@ namespace GPSWithFriends.ViewModels
                 }
             }
             else
-                MessageBox.Show("Failed to get Group Names");
+                MessageBox.Show("Server connection error and failed to get Group Names. Please try again later.");
         }
 
         void proxy_GetGroupInfoFromNameCompleted(object sender, Server.GetGroupInfoFromNameCompletedEventArgs e)
@@ -167,7 +167,7 @@ namespace GPSWithFriends.ViewModels
                 }
             }
             else
-                MessageBox.Show("Failed to get Groups & friends");
+                MessageBox.Show("Server connection error and failed to get Groups & friends. Please try again later.");
         }
 
         public void RefreshData()

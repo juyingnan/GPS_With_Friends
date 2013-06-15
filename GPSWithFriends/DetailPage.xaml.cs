@@ -70,16 +70,14 @@ namespace GPSWithFriends
                 }
             }
             else
-            {
-                MessageBox.Show("Send Request Error.");
-            }
+                MessageBox.Show("Server connection error. Please try again later.");
             AddFriendButton.IsEnabled = true;
         }
 
         private void RemoveFriendButton_Click(object sender, RoutedEventArgs e)
         {
             //Double check
-            MessageBoxResult result = MessageBox.Show("Would you really like to remove "+App.ViewModel.CurrentFriend.NickName+"?", "Remove friend", MessageBoxButton.OKCancel);
+            MessageBoxResult result = MessageBox.Show("Would you really like to remove " + App.ViewModel.CurrentFriend.NickName + "?", "Remove friend", MessageBoxButton.OKCancel);
 
             if (result == MessageBoxResult.OK)
             {
@@ -97,7 +95,7 @@ namespace GPSWithFriends
                 {
 
                 }
-            }            
+            }
         }
 
         void proxy_DeleteFriendCompleted(object sender, Server.DeleteFriendCompletedEventArgs e)
@@ -116,16 +114,14 @@ namespace GPSWithFriends
                 }
             }
             else
-            {
-                MessageBox.Show("Send Request Error.");
-            }
+                MessageBox.Show("Server connection error. Please try again later.");
             RemoveFriendButton.IsEnabled = true;
         }
 
 
         private void GroupListPicker_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
+
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -134,18 +130,27 @@ namespace GPSWithFriends
             {
                 if (isStillFriend)
                 {
-                    if(!App.ViewModel.CurrentFriend.Group.Equals(App.ViewModel.Groups[GroupListPicker.SelectedIndex].Title))
-                    proxy.ChangeUserGroupAsync(App.ViewModel.Me.Uid,
-                        App.ViewModel.CurrentFriend.Group,
-                        App.ViewModel.Groups[GroupListPicker.SelectedIndex].Title,
-                        App.ViewModel.CurrentFriend.Email);
+                    if (!App.ViewModel.CurrentFriend.Group.Equals(App.ViewModel.Groups[GroupListPicker.SelectedIndex].Title))
+                        proxy.ChangeUserGroupAsync(App.ViewModel.Me.Uid,
+                            App.ViewModel.CurrentFriend.Group,
+                            App.ViewModel.Groups[GroupListPicker.SelectedIndex].Title,
+                            App.ViewModel.CurrentFriend.Email);
                 }
             }
         }
 
         void proxy_ChangeUserGroupCompleted(object sender, Server.ChangeUserGroupCompletedEventArgs e)
         {
-            App.ViewModel.RefreshData();
+            if (e.Error == null)
+            {
+                if (e.Result.Contains("ERROR"))
+                {
+                    MessageBox.Show("Remove friend request failed. Please try again.");
+                }
+                App.ViewModel.RefreshData();
+            }
+            else
+                MessageBox.Show("Server connection error. Please try again later.");
         }
     }
 }

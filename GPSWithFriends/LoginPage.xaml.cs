@@ -83,6 +83,8 @@ namespace GPSWithFriends
                         MessageBox.Show("UID error.");
                 }
             }
+            else
+                MessageBox.Show("Server connection error. Please try again later.");
             LOGINBUTTON.IsEnabled = true;
             REGISTERBUTTON.IsEnabled = true;
             progressBar.Visibility = System.Windows.Visibility.Collapsed;
