@@ -15,53 +15,42 @@ namespace GWF_WCF_WebRole
     // NOTE: In order to launch WCF Test Client for testing this service, please select UserService.svc or UserService.svc.cs at the Solution Explorer and start debugging.
     public class UserService : IUserService
     {
-        public string GetData(int value)
-        {
-            return string.Format("You entered: {0}", value);
-        }
-
-
-        CUser IUserService.GetUserFromId(string uid)
+        public CUser GetUser(string uid)
         {
             throw new NotImplementedException();
         }
 
-        CUser IUserService.GetUserFromEmail(string email)
+        public CUsers GetUsers(List<string> uid_list)
         {
             throw new NotImplementedException();
         }
 
-        CUsers IUserService.GetUsers(List<string> uid_list)
+        public GWFInfoCode DeleteUser(string uid, string passwordMD5)
         {
             throw new NotImplementedException();
         }
 
-        GWFInfoCode IUserService.DeleteUser(string uid, string passwordMD5)
+        public GWFInfoCode UpdatePassword(string uid, string passwordMD5)
         {
             throw new NotImplementedException();
         }
 
-        GWFInfoCode IUserService.UpdatePassword(string uid, string passwordMD5)
+        public GWFInfoCode UpdateNickName(string uid, string nick_name)
         {
             throw new NotImplementedException();
         }
 
-        GWFInfoCode IUserService.UpdateNickName(string uid, string nick_name)
+        public GWFInfoCode SignUp(string email, string passwordMD5)
         {
             throw new NotImplementedException();
         }
 
-        GWFInfoCode IUserService.SignUp(string email, string passwordMD5)
+        public GWFInfoCode SignIn(string email, string passwordMD5)
         {
             throw new NotImplementedException();
         }
 
-        GWFInfoCode IUserService.SignIn(CUser user, string passwordMD5)
-        {
-            throw new NotImplementedException();
-        }
-
-        GWFInfoCode IUserService.SignOff(string uid)
+        public GWFInfoCode SignOff(string uid)
         {
             throw new NotImplementedException();
         }

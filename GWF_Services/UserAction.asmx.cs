@@ -37,6 +37,7 @@ namespace GWF_WebServices
         [WebMethod]
         public string LogIn(string email, string password)
         {
+            email = email.ToLower();
             GWF_User user = new GWF_User();
 
             if (!email.IsValidEmail())
@@ -78,6 +79,7 @@ namespace GWF_WebServices
         {
             //return GWFInfoCode.GWF_E_INVALID_EMAIL_FORMAT.ToString();
             //GWFUser user2 = new GWFUser();
+            email = email.ToLower();
             GWF_User user = new GWF_User();
 
             if (!email.IsValidEmail())
@@ -188,6 +190,7 @@ namespace GWF_WebServices
         [WebMethod]
         public string SendMessage(string from_uid, string to_email2, string content)
         {
+            to_email2 = to_email2.ToLower();
             GWF_DBContext ctx = new GWF_DBContext();
             // Get recipient's user_id
             GWF_User user2 = ctx.GWF_Users.Where(u => u.user_email == to_email2).SingleOrDefault();
@@ -213,6 +216,7 @@ namespace GWF_WebServices
         [WebMethod]
         public string AddFriendRequest(string uid1, string email2)
         {
+            email2 = email2.ToLower();
             if (!email2.IsValidEmail())
             {
                 return GWFInfoCode.GWF_E_INVALID_EMAIL_FORMAT.ToString();
@@ -251,6 +255,7 @@ namespace GWF_WebServices
         [WebMethod]
         public string AnswerAddFriend(string uid1, string email2, bool accept)
         {
+            email2 = email2.ToLower();
             if (!email2.IsValidEmail())
             {
                 return GWFInfoCode.GWF_E_INVALID_EMAIL_FORMAT.ToString();
@@ -336,6 +341,7 @@ namespace GWF_WebServices
         [WebMethod]
         public string DeleteFriend(string uid1, string email2, string group_name)
         {
+            email2 = email2.ToLower();
             GWF_DBContext ctx = new GWF_DBContext();
             // Get friend uid
             GWF_User user2 = ctx.GWF_Users.Where(f => f.user_email == email2).SingleOrDefault();
@@ -476,6 +482,7 @@ namespace GWF_WebServices
         [WebMethod]
         public string ChangeUserGroup(string uid, string old_group_name, string new_group_name, string email2)
         {
+            email2 = email2.ToLower();
             GWF_DBContext ctx = new GWF_DBContext();
             CUser c_u = this.GetUserFromEmail(uid, email2);
             string uid2 = c_u.id;
@@ -548,6 +555,7 @@ namespace GWF_WebServices
         [WebMethod]
         public CUser GetUserFromEmail(string uid, string email)
         {
+            email = email.ToLower();
             GWF_DBContext ctx = new GWF_DBContext();
             GWF_User g_f = ctx.GWF_Users.Where(u => u.user_email == email).SingleOrDefault();
             if (g_f == null)

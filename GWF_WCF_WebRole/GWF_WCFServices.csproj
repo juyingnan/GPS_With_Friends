@@ -110,48 +110,6 @@
     <Compile Include="Contracts\Data\CProfile.cs" />
     <Compile Include="Contracts\Data\CUser.cs" />
     <Compile Include="Contracts\Data\Enums\CUserState.cs" />
-    <Compile Include="Models\GWF_DB.Context.cs">
-      <DependentUpon>GWF_DB.Context.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Models\GWF_DB.cs">
-      <DependentUpon>GWF_DB.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Models\GWF_DB.Designer.cs">
-      <DependentUpon>GWF_DB.edmx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Models\GWF_Device.cs">
-      <DependentUpon>GWF_DB.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\GWF_FriendRelation.cs">
-      <DependentUpon>GWF_DB.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\GWF_geo_Location.cs">
-      <DependentUpon>GWF_DB.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\GWF_Group.cs">
-      <DependentUpon>GWF_DB.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\GWF_Message.cs">
-      <DependentUpon>GWF_DB.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\GWF_Profile.cs">
-      <DependentUpon>GWF_DB.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\GWF_User.cs">
-      <DependentUpon>GWF_DB.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\GWF_User_Feed.cs">
-      <DependentUpon>GWF_DB.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\GWF_User_Group.cs">
-      <DependentUpon>GWF_DB.tt</DependentUpon>
-    </Compile>
     <Compile Include="Services\GroupService.cs" />
     <Compile Include="Services\MessageService.cs" />
     <Compile Include="Services\UserService.cs" />
@@ -170,6 +128,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -178,23 +137,6 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <EntityDeploy Include="Models\GWF_DB.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>GWF_DB.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\GWF_DB.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>GWF_DB.edmx</DependentUpon>
-      <LastGenOutput>GWF_DB.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Models\GWF_DB.edmx.diagram">
-      <DependentUpon>GWF_DB.edmx</DependentUpon>
-    </Content>
-    <Content Include="Models\GWF_DB.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>GWF_DB.edmx</DependentUpon>
-      <LastGenOutput>GWF_DB.cs</LastGenOutput>
-    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

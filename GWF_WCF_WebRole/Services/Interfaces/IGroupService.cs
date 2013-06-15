@@ -10,38 +10,38 @@ using GWF_WCF_WebRole.Contracts;
 namespace GWF_WCF_WebRole.Services.Interfaces
 {
     [ServiceContract]
-    interface IGroupService
+    public interface IGroupService
     {
         [WebInvoke(UriTemplate = "/users/{uid}/groups/name/{group_name}",
             Method = "POST",
             RequestFormat = WebMessageFormat.Xml,
             ResponseFormat = WebMessageFormat.Xml)]
         [OperationContract]
-        public GWFInfoCode CreateGroup(string uid, string group_name);
+        GWFInfoCode CreateGroup(string uid, string group_name);
 
         [WebGet(UriTemplate = "/users/{uid}/groups/id/{group_id}", ResponseFormat = WebMessageFormat.Xml)]
         [OperationContract]
-        public CGroup GetGroup(string uid, string group_id);
+        CGroup GetGroup(string uid, string group_id);
 
         [WebInvoke(UriTemplate = "/users/{uid}/groups/id/{group_id}/{uid2}",
             Method = "POST",
             RequestFormat = WebMessageFormat.Xml,
             ResponseFormat = WebMessageFormat.Xml)]
         [OperationContract]
-        public GWFInfoCode AddToGroup(string uid, string group_id, string uid2);
+        GWFInfoCode AddToGroup(string uid, string group_id, string uid2);
 
         [WebInvoke(UriTemplate = "/users/{uid}/groups/id/{group_id}/{uid2}",
             Method = "DELETE",
             RequestFormat = WebMessageFormat.Xml,
             ResponseFormat = WebMessageFormat.Xml)]
         [OperationContract]
-        public GWFInfoCode RemoveFromGroup(string uid, string group_id, string uid2);
+        GWFInfoCode RemoveFromGroup(string uid, string group_id, string uid2);
 
         [WebInvoke(UriTemplate = "/users/{uid}/groups/id/{from_gid}/{uid2}?_action=ChangeGroup&_to_gid=to_gid",
             Method = "PUT",
             RequestFormat = WebMessageFormat.Xml,
             ResponseFormat = WebMessageFormat.Xml)]
         [OperationContract]
-        public GWFInfoCode ChangeGroup(string uid, string from_gid, string to_gid, string uid2);
+        GWFInfoCode ChangeGroup(string uid, string from_gid, string to_gid, string uid2);
     }
 }
