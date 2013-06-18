@@ -105,7 +105,7 @@
                         <toolkit:MenuItem Header="Get Route" Foreground="Black" Click="FriendList_Route"/>
                         <toolkit:MenuItem Header="Send Message" Foreground="Black" Click="FriendList_SendMessage"/>
                         <toolkit:MenuItem Header="Clear Message" Foreground="Black" Click="FriendList_ClearMessage"/>
-                        <!--<toolkit:MenuItem Header="Remove from Group" Foreground="Black" Click="RemoveFromGroupItem_Click"/>-->
+                        <toolkit:MenuItem Header="Meet at meeting point!" Foreground="Black" Click="FriendList_MeetingPoing" Visibility="{Binding Visibility, ElementName=MeetingPointPushpin}"/>
                     </toolkit:ContextMenu>
                 </toolkit:ContextMenuService.ContextMenu>
             </Grid>
@@ -194,6 +194,7 @@
             <shell:ApplicationBarIconButton IconUri="/Assets/AppBar/locate.png" Text="Me" Click="ApplicationBarIconLocateMeButton_Click"/>
             <shell:ApplicationBarIconButton IconUri="/Assets/AppBar/showall.png" Text="Set View" Click="ApplicationBarIconShowAllButton_Click"/>
             <shell:ApplicationBarIconButton IconUri="/Assets/AppBar/refresh.png" Text="Refresh" Click="ApplicationBarIconRefreshButton_Click"/>
+            <shell:ApplicationBarIconButton IconUri="/Assets/AppBar/close.png" Text="Clean Route" Click="ApplicationBarIconCleanRouteButton_Click"/>
         </shell:ApplicationBar>
 
         <shell:ApplicationBar x:Key="AppBar_Invite" Mode="Default" Opacity="1.0" IsMenuEnabled="False" IsVisible="True"  BackgroundColor="{StaticResource PhoneAccentColor}">
@@ -239,12 +240,21 @@
                         <Image Source="/Assets/AppBar/add.png" Height="60" Width="60" Tap="Add_Image_Tap" Opacity="0.7"></Image>
                         <Image Source="/Assets/AppBar/minus.png" Height="60" Width="60" Tap="Minus_Image_Tap" Opacity="0.7"></Image>
                     </StackPanel>
-                    <maps:Map Grid.Row="0" x:Name="MyMap" Center="39, 116"  ZoomLevel="14" Pitch="45" >
+                    <maps:Map Grid.Row="0" x:Name="MyMap" Center="39, 116"  ZoomLevel="14" Pitch="45" Hold="MyMap_Hold">
                         <maptk:MapExtensions.Children>
                             <maptk:MapItemsControl  Name="FriendsLocationMarkerList"                                
                                 ItemsSource="{Binding Friends}" 
                                 ItemTemplate="{StaticResource MapPushpinDateTemplate}"/>
                             <maptk:UserLocationMarker DataContext="Me" GeoCoordinate="{Binding Geocoordinate}" Name="MyLocationMarker" Visibility="Collapsed"></maptk:UserLocationMarker>
+                            <maptk:Pushpin Name="MeetingPointPushpin"
+                                           Visibility="{Binding Geocoordinate, Converter={StaticResource geo2visConverter}}" 
+                                           GeoCoordinate="{Binding Geocoordinate}"
+                                           Background="Black" 
+                                           Tap="Pushpin_Tap">
+                                <maptk:Pushpin.Content>
+                                        <TextBlock Text="{Binding NickName}"></TextBlock>
+                                </maptk:Pushpin.Content>
+                            </maptk:Pushpin>
                         </maptk:MapExtensions.Children>
                     </maps:Map>
                     <Border Grid.Row="0"  VerticalAlignment="Top" Background="{StaticResource PhoneAccentBrush}" Opacity="0.5" OpacityMask="White" CornerRadius="0" Padding="20,0,20,0">
@@ -258,10 +268,11 @@
                                              toolkit:TiltEffect.IsTiltEnabled="True" 
                                              IsGroupingEnabled="true" 
                                              LayoutMode="List" 
-                                             HideEmptyGroups="True" 
+                                             HideEmptyGroups="True"                                             
                                              GroupHeaderTemplate="{StaticResource groupHeaderTemplate}"
                                              ItemTemplate="{StaticResource FriendLongListSelectorDataTemplate}"
                                              JumpListStyle="{StaticResource LongListSelectorJumpListStyle}"/>
+                    <MediaElement AutoPlay="False" Volume="100" Source="/Sounds/Message.wav" Name="MessageSound"></MediaElement>
                 </Grid>
             </phone:PivotItem>
 

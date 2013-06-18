@@ -23,11 +23,11 @@ namespace GPSWithFriends
         public RegisterPage()
         {
             InitializeComponent();
+            proxy.FastSignUpCompleted += proxy_FastSignUpCompleted;
         }
 
         private void Submit_Button_Click(object sender, RoutedEventArgs e)
         {
-            proxy.FastSignUpCompleted += proxy_FastSignUpCompleted;
             if (ContentCheck())
             {
                 try

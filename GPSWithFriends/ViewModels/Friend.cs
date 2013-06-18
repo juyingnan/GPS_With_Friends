@@ -33,6 +33,14 @@ namespace GPSWithFriends.ViewModels
             lastMessage = null;
         }
 
+        public void SetLocation(double lat, double lon)
+        {
+            this.latitude = lat;
+            this.longitude = lon;
+            this.CalculteGeoCoordinate();
+            this.CalculateDistance();
+        }
+
         public void CalculateDistance()
         {
             double temp;

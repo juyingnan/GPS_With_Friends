@@ -25,6 +25,7 @@ namespace GPSWithFriends
         {
             InitializeComponent();
             ReadLastLoginUser();
+            proxy.LogInCompleted += proxy_LogInCompleted;
         }
        
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -43,7 +44,6 @@ namespace GPSWithFriends
             {
                 string md5String = MD5Core.GetHashString(LoginPasswordBox.Password);
 
-                proxy.LogInCompleted += proxy_LogInCompleted;
                 proxy.LogInAsync(LoginUsernameTextBox.Text, md5String);
 
                 LOGINBUTTON.IsEnabled = false;

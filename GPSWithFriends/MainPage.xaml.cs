@@ -24,19 +24,21 @@ using System.Threading.Tasks;
 using Windows.Foundation;
 using System.Collections;
 using System.Windows.Threading;
+using Microsoft.Devices;
 
 namespace GPSWithFriends
 {
     public partial class MainPage : PhoneApplicationPage
     {
-        const int INTERVAL_BETWEEN_INQUERY_MESSAGE = 30;
-        const int MOVEMENT_THRESHOLD = 50;
+        const int INTERVAL_BETWEEN_INQUERY_MESSAGE = 10;
+        const int MOVEMENT_THRESHOLD = 100;
         const int TEST_TIMER_TIMERSPAN = 3;
         const int MAP_RECTANGLE_THICKNESS = 10;
         const int MAP_MAX_ZOOMLEVEL = 19;
         const int MAP_MIN_ZOOMLEVEL = 1;
         const double MAP_MIN_LOCATE_ZOOMLEVEL = 15;
         const string DEFAULT_GROUP_NAME = "My Friends";
+        const string MEETING_MESSAGE_HEAD = "[*MEETING*]";
 
         //GPS
         Geolocator myGeoLocator = new Geolocator();
@@ -48,8 +50,11 @@ namespace GPSWithFriends
         //Message Timer
         DispatcherTimer TimerForMessage = new DispatcherTimer();
 
+        //Vibrate
+        VibrateController vibrateController = VibrateController.Default;
+
         Server.UserActionSoapClient proxy = new Server.UserActionSoapClient();
-        
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -68,23 +73,32 @@ namespace GPSWithFriends
 
             myGeoLocator.DesiredAccuracy = PositionAccuracy.High;
             myGeoLocator.MovementThreshold = MOVEMENT_THRESHOLD;
+            myGeoLocator.PositionChanged += myGeoLocator_PositionChanged;
 
             //map extension controls data binding
             this.FriendsLocationMarkerList.ItemsSource = App.ViewModel.Friends;
             MyLocationMarker.DataContext = this.Me;
+            MeetingPointPushpin.DataContext = App.ViewModel.MeetingPoint;
 
             //update message
             TimerForMessage.Tick += TimerForMessage_Tick;
             TimerForMessage.Interval = TimeSpan.FromSeconds(INTERVAL_BETWEEN_INQUERY_MESSAGE);
             TimerForMessage.Start();
-            proxy.GetMessagesCompleted += proxy_GetMessagesCompleted;
-            proxy.GetMessagesAsync(Me.Uid);
 
+            proxy.GetMessagesCompleted += proxy_GetMessagesCompleted;
             proxy.SendMessageCompleted += proxy_SendMessageCompleted;
             proxy.AnswerAddFriendCompleted += proxy_AnswerAddFriendCompleted;
             proxy.CreateGroupCompleted += proxy_CreateGroupCompleted;
             proxy.DeleteGroupCompleted += proxy_DeleteGroupCompleted;
             proxy.GetUserFromEmailCompleted += proxy_GetUserFromEmailCompleted;
+        }
+
+        void myGeoLocator_PositionChanged(Geolocator sender, PositionChangedEventArgs args)
+        {
+            Deployment.Current.Dispatcher.BeginInvoke(() =>
+            {
+                SetMyLocation(args.Position);
+            });
         }
 
         void TimerForMessage_Tick(object sender, EventArgs e)
@@ -103,20 +117,39 @@ namespace GPSWithFriends
                     {
                         case Server.CMessageType.DEFAULT_TYPE:
                             break;
-                        case Server.CMessageType.IM_MESSAGE:                            
-                            foreach (var friend in App.ViewModel.Friends)
+                        case Server.CMessageType.IM_MESSAGE:
+                            if (item.content.StartsWith(MEETING_MESSAGE_HEAD))  //Meeting point message
                             {
-                                if (friend.Email.Equals(item.from_email))
+                                //deString
+                                string[] meetingMessage = item.content.Split(',');
+                                try
                                 {
-                                    friend.LastMessage = new Message()
-                                      {
-                                          Content = item.content,
-                                          IsCleared = false,
-                                          LastUpdateTime = item.timestamp,
-                                          FromEmail = item.from_email,
-                                          ToEmail = Me.Email
-                                      };
-                                    break;
+                                    GeoCoordinate geo = new GeoCoordinate(Double.Parse(meetingMessage[1]), Double.Parse(meetingMessage[2]));
+                                    GetMeetingPointRoute(geo, item.from_email);
+                                }
+                                catch (Exception)
+                                {                                    
+                                }
+                            }
+                            else   //Normal message
+                            {
+                                foreach (var friend in App.ViewModel.Friends)
+                                {
+                                    if (friend.Email.Equals(item.from_email))
+                                    {
+                                        friend.LastMessage = new Message()
+                                          {
+                                              Content = item.content,
+                                              IsCleared = false,
+                                              LastUpdateTime = item.timestamp,
+                                              FromEmail = item.from_email,
+                                              ToEmail = Me.Email
+                                          };
+                                        //play soundeffect and vibrate
+                                        MessageSound.Play();
+                                        vibrateController.Start(TimeSpan.FromSeconds(1));
+                                        break;
+                                    }
                                 }
                             }
                             break;
@@ -125,23 +158,23 @@ namespace GPSWithFriends
                             {
                                 if (friend.Email.Equals(item.from_email))
                                 {
-                                    string[] info = item.content.Trim(new char[]{'(',')'}).Split(',');
+                                    string[] info = item.content.Trim(new char[] { '(', ')' }).Split(',');
                                     if (info != null && info.Length == 3)    //judge the format "(email,lat,lon)"
                                     {
                                         try
                                         {
-                                            
-                                        friend.Latitude = Double.Parse(info[1]);//lat
-                                        friend.Longitude = Double.Parse(info[2]); //lon
+
+                                            friend.Latitude = Double.Parse(info[1]);//lat
+                                            friend.Longitude = Double.Parse(info[2]); //lon
                                         }
                                         catch (Exception)
                                         {
-                                            
+
                                         }
                                     }
                                     break;
                                 }
-                            } 
+                            }
                             break;
                         case Server.CMessageType.NOTIFICATION:
                             if (item.content.StartsWith("[*ANS_ADDF*]"))
@@ -204,14 +237,14 @@ namespace GPSWithFriends
             if (!App.ViewModel.IsDataLoaded)
             {
                 App.ViewModel.LoadData();
-            }            
+            }
 
             //if register page is visited before, backentry will be more than one
             while (this.NavigationService.CanGoBack)
             {
                 this.NavigationService.RemoveBackEntry();
             }
-        }        
+        }
 
         private async void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
         {
@@ -226,18 +259,10 @@ namespace GPSWithFriends
         /// <returns></returns>
         public async System.Threading.Tasks.Task LocateMe()
         {
+            Geoposition position = null;
             try
             {
-                Geoposition position = await myGeoLocator.GetGeopositionAsync(maximumAge: TimeSpan.FromMinutes(1), timeout: TimeSpan.FromSeconds(30));
-                GPSLocationTextblock.Text = "Location of Me: " + string.Format("Lat: {0:0.0000}, Lon: {1:0.0000}",
-                 position.Coordinate.Latitude, position.Coordinate.Longitude);
-                Me.Latitude = position.Coordinate.Latitude;
-                Me.Longitude = position.Coordinate.Longitude;
-                //refresh distance when I am located at first time
-                foreach (var item in App.ViewModel.Friends)
-                {
-                    item.CalculateDistance();
-                }
+                position = await myGeoLocator.GetGeopositionAsync(maximumAge: TimeSpan.FromMinutes(1), timeout: TimeSpan.FromSeconds(30));                
             }
             catch (UnauthorizedAccessException)
             {
@@ -249,23 +274,38 @@ namespace GPSWithFriends
             }
             finally
             {
-                if (Me.isLocated())
+                SetMyLocation(position);
+                GPSLocationTextblock.Text = "Location of Me: " + string.Format("Lat: {0:0.0000}, Lon: {1:0.0000}",
+ position.Coordinate.Latitude, position.Coordinate.Longitude);
+
+            }
+        }
+
+        private void SetMyLocation(Geoposition position)
+        {
+            Me.Latitude = position.Coordinate.Latitude;
+            Me.Longitude = position.Coordinate.Longitude;
+            //refresh distance when I am located at first time
+            foreach (var item in App.ViewModel.Friends)
+            {
+                item.CalculateDistance();
+            }
+            if (Me.isLocated())
+            {
+                if (App.ViewModel.IsDataLoaded) //to ensure Me.uid has been set
                 {
-                    if (App.ViewModel.IsDataLoaded) //to ensure Me.uid has been set
-                    {                        
-                        try
-                        {
-                            proxy.UpdateLocationAsync(Me.Uid, Me.Latitude, Me.Longitude);
-                        }
-                        catch (TimeoutException e)
-                        {
-                            MessageBox.Show(e.Message);
-                        }
-                        finally
-                        {
-                            MyLocationMarker.Visibility = System.Windows.Visibility.Visible;
-                            LocateFriend(Me);
-                        }
+                    try
+                    {
+                        proxy.UpdateLocationAsync(Me.Uid, Me.Latitude, Me.Longitude);
+                    }
+                    catch (TimeoutException e)
+                    {
+                        MessageBox.Show(e.Message);
+                    }
+                    finally
+                    {
+                        MyLocationMarker.Visibility = System.Windows.Visibility.Visible;
+                        LocateFriend(Me);
                     }
                 }
             }
@@ -418,6 +458,7 @@ namespace GPSWithFriends
             };
 
             messageBox.Show();
+            messageInputBox.Focus();
         }
 
         private void SendFriendMessage(Friend friend, string result)
@@ -450,26 +491,49 @@ namespace GPSWithFriends
                 int selectedIndex = App.ViewModel.Friends.IndexOf((sender as MenuItem).DataContext as Friend);
                 Friend friend = App.ViewModel.Friends[selectedIndex];
 
-                //Add start and end points
-                List<GeoCoordinate> MyCoordinates = new List<GeoCoordinate>();
-                MyCoordinates.Add(new GeoCoordinate(Me.Latitude, Me.Longitude));
-                MyCoordinates.Add(new GeoCoordinate(friend.Latitude, friend.Longitude));
-
-                //send the query
-                MyQuery = new RouteQuery();
-                MyQuery.Waypoints = MyCoordinates;
-                MyQuery.QueryCompleted += MyQuery_QueryCompleted;
-                try
+                if (!Me.isLocated())
                 {
-                    MyQuery.QueryAsync();
+                    MessageBox.Show("The route can't show until you are located.");
                 }
-                catch (Exception)
+                else if (!friend.isLocated())
                 {
+                    MessageBox.Show("The route can't show until this friend is located.");
+                }
+                else
+                {
+                    List<Friend> routeFriendList = new List<Friend>();
+                    routeFriendList.Add(Me);
+                    routeFriendList.Add(friend);
+                    GetRoute(routeFriendList);
                 }
             }
             catch (Exception)
             {
                 MessageBox.Show("Something gotta wrong.");
+            }
+        }
+
+        private void GetRoute(List<Friend> routeFriendList)
+        {
+            //Add points
+            List<GeoCoordinate> MyCoordinates = new List<GeoCoordinate>();
+
+            foreach (var friend in routeFriendList)
+            {
+                if (friend.isLocated())
+                    MyCoordinates.Add(new GeoCoordinate(friend.Latitude, friend.Longitude));
+            }
+
+            //send the query
+            MyQuery = new RouteQuery();
+            MyQuery.Waypoints = MyCoordinates;
+            MyQuery.QueryCompleted += MyQuery_QueryCompleted;
+            try
+            {
+                MyQuery.QueryAsync();
+            }
+            catch (Exception)
+            {
             }
         }
 
@@ -521,7 +585,7 @@ namespace GPSWithFriends
             CustomMessageBox messageBox = new CustomMessageBox()
             {
                 Caption = "Please input Email Address:",
-                Message = "Please input email address of the friend that you want to add.",
+                Message = "Please input email address of the friend that you want to add.\nNote: Inviting a friend means your agree to share your location with that friend.",
                 Content = emailInputBox,
                 LeftButtonContent = "View",
                 RightButtonContent = "Cancel",
@@ -586,7 +650,7 @@ namespace GPSWithFriends
             }
             else
                 MessageBox.Show("Server connection error. Please try again later.");
-        }  
+        }
 
         private void RequestsListBox_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
@@ -617,7 +681,7 @@ namespace GPSWithFriends
             CustomMessageBox messageBox = new CustomMessageBox()
             {
                 Caption = "Request Accept?",
-                Message = request.Content,
+                Message = request.Content + "\nNote: Accepting the request means your agree to share your location with that friend.",
                 LeftButtonContent = "Accept",
                 RightButtonContent = "Reject",
                 IsFullScreen = false,
@@ -755,7 +819,7 @@ namespace GPSWithFriends
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Add_Image_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {   
+        {
             //make sure zoomlevel <=19
             if (MyMap.ZoomLevel + 1 <= MAP_MAX_ZOOMLEVEL)
                 MyMap.ZoomLevel += 1;
@@ -785,6 +849,20 @@ namespace GPSWithFriends
             App.ViewModel.RefreshData();
         }
 
+        private void ApplicationBarIconCleanRouteButton_Click(object sender, EventArgs e)
+        {
+            //clean route
+            if (MyMapRoute != null)
+            {
+                //clear last route
+                MyMap.RemoveRoute(MyMapRoute);
+                MyMapRoute = null;
+            }
+
+            //clean meeting point
+            App.ViewModel.MeetingPoint.Geocoordinate = null;
+        }
+
         ///// <summary>
         ///// remove a friend from the group
         ///// </summary>
@@ -796,7 +874,7 @@ namespace GPSWithFriends
         //    {
         //        //get index
         //        int selectedIndex = App.ViewModel.Friends.IndexOf((sender as MenuItem).DataContext as Friend);
-                
+
         //        //test
         //        App.ViewModel.Friends.Remove(App.ViewModel.Friends[selectedIndex]);
         //        App.ViewModel.RefreshGroup();
@@ -818,7 +896,7 @@ namespace GPSWithFriends
 
         private void ApplicationBarIconAllAcceptButton_Click(object sender, EventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show("Would you really like to accept all requests?", "Accept all", MessageBoxButton.OKCancel);
+            MessageBoxResult result = MessageBox.Show("Would you really like to accept all requests?\nNote: Accepting the requests means your agree to share your location with these friends.", "Accept all", MessageBoxButton.OKCancel);
 
             if (result == MessageBoxResult.OK)
             {
@@ -834,7 +912,7 @@ namespace GPSWithFriends
                 {
                     RequestDone(item, true);
                 }
-            }          
+            }
         }
 
         private void ApplicationBarIconAllRejectButton_Click(object sender, EventArgs e)
@@ -855,7 +933,7 @@ namespace GPSWithFriends
                 {
                     RequestDone(item, false);
                 }
-            }  
+            }
         }
 
         private void ApplicationBarIconFriendManageRefreshButton_Click(object sender, EventArgs e)
@@ -884,7 +962,7 @@ namespace GPSWithFriends
         private void LogOutButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             //Double check
-            MessageBoxResult result =MessageBox.Show("Would you like to Log out?","Log Out", MessageBoxButton.OKCancel);
+            MessageBoxResult result = MessageBox.Show("Would you like to Log out?", "Log Out", MessageBoxButton.OKCancel);
 
             if (result == MessageBoxResult.OK)
             {
@@ -932,7 +1010,7 @@ namespace GPSWithFriends
                             if (result.Length > 0 && !isExisted)  //make sure there is input and the no repeated name
                             //if!=null
                             {
-                                proxy.CreateGroupAsync(Me.Uid, result);                                
+                                proxy.CreateGroupAsync(Me.Uid, result);
                             }
                             else
                                 MessageBox.Show("Input is empty or there has already been a group with that name.");
@@ -1016,7 +1094,7 @@ namespace GPSWithFriends
                             if (result == MessageBoxResult.OK)
                             {
                                 proxy.DeleteGroupAsync(Me.Uid, App.ViewModel.Groups[groupListPicker.SelectedIndex].Title);
-                            }                            
+                            }
                         }
                         break;
                     case CustomMessageBoxResult.RightButton:
@@ -1047,6 +1125,44 @@ namespace GPSWithFriends
                 MessageBox.Show("Server connection error. Please try again later.");
         }
 
+        private void MyMap_Hold(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            try
+            {
+                System.Windows.Point p = e.GetPosition(this.MyMap);
+                GeoCoordinate geo = new GeoCoordinate();
+                geo = MyMap.ConvertViewportPointToGeoCoordinate(p);
+                GetMeetingPointRoute(geo, Me.NickName);
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        private void GetMeetingPointRoute(GeoCoordinate geo, string somebody)
+        {
+
+            App.ViewModel.MeetingPoint.SetLocation(geo.Latitude, geo.Longitude);
+            App.ViewModel.MeetingPoint.NickName = somebody + ": Let's meet here!";
+            if (Me.isLocated())
+            {
+                GetRoute(new List<Friend>() { Me, App.ViewModel.MeetingPoint });
+            }
+        }
+
+        private void FriendList_MeetingPoing(object sender, RoutedEventArgs e)
+        {
+            //get index
+            int selectedIndex = App.ViewModel.Friends.IndexOf((sender as MenuItem).DataContext as Friend);
+            Friend friend = App.ViewModel.Friends[selectedIndex];
+
+            //Set Message string
+            string meetingMessage = "[*MEETING*]";
+            meetingMessage += "," + App.ViewModel.MeetingPoint.Latitude.ToString() + "," + App.ViewModel.MeetingPoint.Longitude.ToString();
+
+            proxy.SendMessageAsync(Me.Uid, friend.Email, meetingMessage);
+        }
+
         //void proxy_removeMemberCompleted(object sender, Server.removeMemberCompletedEventArgs e)
         //{
         //    if (e.Error == null)
@@ -1057,7 +1173,7 @@ namespace GPSWithFriends
         //        }
         //    }
         //}
-        
+
         // Sample code for building a localized ApplicationBar
         //private void BuildLocalizedApplicationBar()
         //{

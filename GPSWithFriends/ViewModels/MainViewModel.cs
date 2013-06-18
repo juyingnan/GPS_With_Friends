@@ -11,6 +11,7 @@ namespace GPSWithFriends.ViewModels
     public class MainViewModel : INotifyPropertyChanged
     {
         const string ME = "Me";
+        const string JUNCTION = "Let's Meet here.";
         const string DEFAULT_GROUP_NAME = "My Friends";
 
         public MainViewModel()
@@ -20,6 +21,7 @@ namespace GPSWithFriends.ViewModels
             this.GroupInfos = new ObservableCollection<GroupInfo>();
             this.Groups = new ObservableCollection<Group<Friend>>();
             Me = new Friend() { Latitude = 181, Longitude = 181, NickName = ME };
+            MeetingPoint = new Friend { Latitude = 181, Longitude = 181, NickName = JUNCTION };
 
             proxy.GetGroupNamesCompleted += proxy_GetGroupNamesCompleted;
             proxy.GetGroupInfoFromNameCompleted += proxy_GetGroupInfoFromNameCompleted;
@@ -68,6 +70,24 @@ namespace GPSWithFriends.ViewModels
                 }
             }
         }
+
+        private Friend meetingPoint;
+        public Friend MeetingPoint
+        {
+            get
+            {
+                return meetingPoint;
+            }
+            set
+            {
+                if (value != meetingPoint)
+                {
+                    meetingPoint = value;
+                    NotifyPropertyChanged("MeetingPoint");
+                }
+            }
+        }
+
 
         /// <summary>
         /// Sample property that returns a localized string
