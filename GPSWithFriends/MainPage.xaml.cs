@@ -234,9 +234,12 @@ namespace GPSWithFriends
         // Load data for the ViewModel Items
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (!App.ViewModel.IsDataLoaded)
+            if (App.ViewModel.isLoggedin)
             {
-                App.ViewModel.LoadData();
+                if (!App.ViewModel.IsDataLoaded)
+                {
+                    App.ViewModel.LoadData();
+                }
             }
 
             //if register page is visited before, backentry will be more than one
@@ -418,7 +421,6 @@ namespace GPSWithFriends
 
         private void InputMessageToFriend(Friend friend)
         {
-            //get group name
             TextBox messageInputBox = new TextBox();
             TiltEffect.SetIsTiltEnabled(messageInputBox, true);
             CustomMessageBox messageBox = new CustomMessageBox()
@@ -458,7 +460,6 @@ namespace GPSWithFriends
             };
 
             messageBox.Show();
-            messageInputBox.Focus();
         }
 
         private void SendFriendMessage(Friend friend, string result)
@@ -967,6 +968,7 @@ namespace GPSWithFriends
             if (result == MessageBoxResult.OK)
             {
                 App.ViewModel.ClearData();
+                App.ViewModel.isLoggedin = false;
                 this.NavigationService.Navigate(new Uri("/LoginPage.xaml", UriKind.Relative));
             }
         }
@@ -1161,6 +1163,36 @@ namespace GPSWithFriends
             meetingMessage += "," + App.ViewModel.MeetingPoint.Latitude.ToString() + "," + App.ViewModel.MeetingPoint.Longitude.ToString();
 
             proxy.SendMessageAsync(Me.Uid, friend.Email, meetingMessage);
+        }
+
+        private void AppBarMenuItemPrivacy_Click(object sender, EventArgs e)
+        {
+            HyperlinkButton PrivacyStatementHyperLink = new HyperlinkButton() { Content = "http://gwf.azurewebsites.net/", HorizontalAlignment = HorizontalAlignment.Left, NavigateUri = new Uri("http://gwf.azurewebsites.net/") };
+            CustomMessageBox messageBox = new CustomMessageBox()
+            {
+                Caption = "Privacy Statement",
+                Message = "Please follow the link below to see the privacy statement.",
+                Content = PrivacyStatementHyperLink,
+                LeftButtonContent = "Done",
+                IsRightButtonEnabled=false,
+                IsFullScreen = false,
+            };
+
+            messageBox.Dismissed += (s1, e1) =>
+            {
+                switch (e1.Result)
+                {
+                    case CustomMessageBoxResult.LeftButton:
+                        break;
+                    case CustomMessageBoxResult.RightButton:
+                        break;
+                    case CustomMessageBoxResult.None:
+                        break;
+                    default:
+                        break;
+                }
+            };
+            messageBox.Show();
         }
 
         //void proxy_removeMemberCompleted(object sender, Server.removeMemberCompletedEventArgs e)

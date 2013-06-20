@@ -77,6 +77,7 @@ namespace GPSWithFriends
                     if (uid != null)
                     {
                         App.ViewModel.Me.Uid = uid;
+                        App.ViewModel.isLoggedin = true;
                         this.NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.Relative));
                     }
                     else
@@ -154,6 +155,36 @@ namespace GPSWithFriends
             if ((sender as PasswordBox).Password.Length < INPUT_MAX_LENGTH_WITH_TIPS)
                 PasswordInputTooltipTextBlock.Visibility = System.Windows.Visibility.Visible;
             else PasswordInputTooltipTextBlock.Visibility = System.Windows.Visibility.Collapsed;
+        }
+
+        private void PrivacyButton_Click(object sender, RoutedEventArgs e)
+        {
+            HyperlinkButton PrivacyStatementHyperLink = new HyperlinkButton() { Content = "http://gwf.azurewebsites.net/", HorizontalAlignment = HorizontalAlignment.Left, NavigateUri = new Uri("http://gwf.azurewebsites.net/") };
+            CustomMessageBox messageBox = new CustomMessageBox()
+            {
+                Caption = "Privacy Statement",
+                Message = "Please follow the link below to see the privacy statement.",
+                Content = PrivacyStatementHyperLink,
+                LeftButtonContent = "Done",
+                IsRightButtonEnabled = false,
+                IsFullScreen = false,
+            };
+
+            messageBox.Dismissed += (s1, e1) =>
+            {
+                switch (e1.Result)
+                {
+                    case CustomMessageBoxResult.LeftButton:
+                        break;
+                    case CustomMessageBoxResult.RightButton:
+                        break;
+                    case CustomMessageBoxResult.None:
+                        break;
+                    default:
+                        break;
+                }
+            };
+            messageBox.Show();
         }
     }
 }

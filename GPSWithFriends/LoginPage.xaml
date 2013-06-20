@@ -51,11 +51,12 @@
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="3*"/>
+                <RowDefinition Height="0.3*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
                 <RowDefinition Height="0.5*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"/>
@@ -70,8 +71,7 @@
             <Button VerticalAlignment="Center" Grid.Row="4" Grid.Column="0"  Grid.ColumnSpan="2" Width="200" Name="LOGINBUTTON" Click="LOGINBUTTON_Click">Login</Button>
             <ProgressBar Name="progressBar" Grid.Row="4" Grid.ColumnSpan="2" VerticalAlignment="Top" Visibility="Collapsed" IsIndeterminate="True"></ProgressBar>
             <HyperlinkButton VerticalAlignment="Center" Grid.Row="5" Grid.Column="0"  Grid.ColumnSpan="2" Width="200" Name="REGISTERBUTTON" Click="REGISTERBUTTON_Click">Register</HyperlinkButton>
-            <!--<HyperlinkButton HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="7" Grid.Column="0" Margin="0,0,10,0">Press Here</HyperlinkButton>
-            <TextBlock  Grid.Row="7" Grid.Column="1" VerticalAlignment="Center">if not bunny_gg@hotmail.com</TextBlock>-->      
+            <HyperlinkButton HorizontalAlignment="Center" VerticalAlignment="Bottom" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,10,0" Click="PrivacyButton_Click">Privacy Statement</HyperlinkButton>
         </Grid>
     </Grid>
 

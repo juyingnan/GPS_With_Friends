@@ -195,6 +195,9 @@
             <shell:ApplicationBarIconButton IconUri="/Assets/AppBar/showall.png" Text="Set View" Click="ApplicationBarIconShowAllButton_Click"/>
             <shell:ApplicationBarIconButton IconUri="/Assets/AppBar/refresh.png" Text="Refresh" Click="ApplicationBarIconRefreshButton_Click"/>
             <shell:ApplicationBarIconButton IconUri="/Assets/AppBar/close.png" Text="Clean Route" Click="ApplicationBarIconCleanRouteButton_Click"/>
+            <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem Text="Privacy Statement" Click="AppBarMenuItemPrivacy_Click"/>
+            </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
 
         <shell:ApplicationBar x:Key="AppBar_Invite" Mode="Default" Opacity="1.0" IsMenuEnabled="False" IsVisible="True"  BackgroundColor="{StaticResource PhoneAccentColor}">

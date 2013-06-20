@@ -161,6 +161,8 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <None Include="GPSWithFriends_2013_06_19_09_05_49.sap" />
+    <None Include="GPSWithFriends_2013_06_19_14_48_47.sap" />
     <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml">

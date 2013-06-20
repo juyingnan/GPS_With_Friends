@@ -88,6 +88,7 @@ namespace GPSWithFriends.ViewModels
             }
         }
 
+        public bool isLoggedin = false;
 
         /// <summary>
         /// Sample property that returns a localized string
